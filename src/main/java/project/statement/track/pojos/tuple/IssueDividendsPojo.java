@@ -4,28 +4,37 @@ import java.math.BigDecimal;
 
 public class IssueDividendsPojo {
 
-	private String idIssue;
+	private Integer idIssue;
 	
-	private String issue;
+	private String issueInitials;
+	
+	private String issueDescription;
 	
 	private BigDecimal TotalDividends;
 	
 	private BigDecimal TotalDividendsMxn;
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
-
-	public String getIssue() {
-		return issue;
+	public String getIssueInitials() {
+		return issueInitials;
 	}
 
-	public void setIssue(String issue) {
-		this.issue = issue;
+	public void setIssueInitials(String issueInitials) {
+		this.issueInitials = issueInitials;
+	}
+
+	public String getIssueDescription() {
+		return issueDescription;
+	}
+
+	public void setIssueDescription(String issueDescription) {
+		this.issueDescription = issueDescription;
 	}
 
 	public BigDecimal getTotalDividends() {

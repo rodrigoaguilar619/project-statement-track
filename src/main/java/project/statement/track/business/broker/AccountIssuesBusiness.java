@@ -33,7 +33,7 @@ public class AccountIssuesBusiness {
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;
 	
-	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, String idIssue) throws BusinessException {
+	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, Integer idIssue) throws BusinessException {
 		
 		List<MovementsMoney> movementsMoneyDividend = movementsMoneyRepository.getMovementsMoneyDividend(idBrokerAccount, idIssue);
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();

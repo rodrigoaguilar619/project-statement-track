@@ -16,7 +16,8 @@ public abstract class MovementsMoney_ {
 	public static volatile SingularAttribute<MovementsMoney, Integer> id;
 	public static volatile SingularAttribute<MovementsMoney, Integer> idBrokerAccount;
 	public static volatile SingularAttribute<MovementsMoney, Date> dateTransaction;
-	public static volatile SingularAttribute<MovementsMoney, String> idIssue;
+	public static volatile SingularAttribute<MovementsMoney, Integer> idIssue;
+	public static volatile SingularAttribute<MovementsMoney, CatalogIssue> catalogIssue;
 
 	public static final String AMOUNT = "amount";
 	public static final String ID_TYPE_TRANSACTION = "idTypeTransaction";

@@ -29,7 +29,7 @@ public class MovementsIssue implements Serializable {
 	private int idBrokerAccount;
 
 	@Column(name="id_issue")
-	private String idIssue;
+	private Integer idIssue;
 
 	@Column(name="id_type_movement")
 	private int idTypeMovement;
@@ -81,11 +81,11 @@ public class MovementsIssue implements Serializable {
 		this.idBrokerAccount = idBrokerAccount;
 	}
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return this.idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
 

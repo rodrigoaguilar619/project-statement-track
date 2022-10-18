@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class BrokerSnowBallBusiness {
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 	
-	private String getIssueId(String company) throws BusinessException {
+	private Integer getIssueId(String company) throws BusinessException {
 		
 		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
 		
@@ -60,6 +62,25 @@ public class BrokerSnowBallBusiness {
 			throw new BusinessException("Error company " + company + " not found on mapping");
 		else
 			return catalogIssue.getId();
+	}
+	
+	private void swapBuyAndComision(List<BrokerDataSnowball> brokerDataSnowballs) {
+		
+		for(int indexBuy = 0; indexBuy < brokerDataSnowballs.size(); indexBuy++) {
+			
+			if (brokerDataSnowballs.get(indexBuy).getMovementDescription().equals("Compromiso de Inversión")) {
+				
+				for(int indexCompromise = 0; indexCompromise < brokerDataSnowballs.size(); indexCompromise++) {
+					
+					if (brokerDataSnowballs.get(indexCompromise).getMovementDescription().equals("Comision por Compromiso de Inversión") &&
+						indexCompromise < indexBuy && 
+						brokerDataSnowballs.get(indexCompromise).getDateTransaction().compareTo(brokerDataSnowballs.get(indexBuy).getDateTransaction()) == 0 &&
+						brokerDataSnowballs.get(indexCompromise).getCompany().equals(brokerDataSnowballs.get(indexBuy).getCompany()) &&
+						brokerDataSnowballs.get(indexCompromise).getTotalIssues() == brokerDataSnowballs.get(indexBuy).getTotalIssues() )
+							Collections.swap(brokerDataSnowballs, indexBuy, indexCompromise);
+				}
+			}
+		}
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -82,6 +103,12 @@ public class BrokerSnowBallBusiness {
 	public void assignSnowBallData() throws BusinessException {
 		
 		List<BrokerDataSnowball> brokerDataSnowballs = brokerDataSnowBallRepository.getDataPending();
+		swapBuyAndComision(brokerDataSnowballs);
+		
+		for(BrokerDataSnowball brokerDataSnowball: brokerDataSnowballs) {
+			
+			System.out.println("test broker snowball " + brokerDataSnowball.toString());
+		}
 		
 		for(BrokerDataSnowball brokerDataSnowball: brokerDataSnowballs) {
 			
@@ -122,8 +149,7 @@ public class BrokerSnowBallBusiness {
 				table_track = "movements_issue";
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión")) {
-				//TODO: deploy
-				
+
 				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
 				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY.getId());
 				
@@ -134,18 +160,6 @@ public class BrokerSnowBallBusiness {
 				brokerDataSnowball.setTrackTable("movements_issue");
 				brokerDataSnowball.setTrackTableId(movementsIssue.getId() + "");
 				genericCustomPersistance.update(brokerDataSnowball);
-				/*movementIssuePojo = new MovementIssuePojo();
-				movementIssuePojo.setDateTransaction(brokerDataSnowball.getDateTransaction());
-				movementIssuePojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getId());
-				movementIssuePojo.setIdIssue(getIssueId(brokerDataSnowball.getCompany()));
-				movementIssuePojo.setIdTypeMovement(CatalogTypeMovementEnum.BUY.getId());
-				movementIssuePojo.setQuantityIssues(brokerDataSnowball.getTotalIssues());
-				movementIssuePojo.setPriceTotal(brokerDataSnowball.getBalanceExit());
-				movementIssuePojo.setPriceIssueUnity(brokerDataSnowball.getBalanceExit().divide(new BigDecimal(brokerDataSnowball.getTotalIssues()), 2, RoundingMode.HALF_UP));
-				
-				movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
-				entityToSave = movementsIssue;
-				table_track = "movements_issue";*/
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Pago de Rendimiento Mensual") ||
 					brokerDataSnowball.getMovementDescription().equals("Bono por Dividendo") ||

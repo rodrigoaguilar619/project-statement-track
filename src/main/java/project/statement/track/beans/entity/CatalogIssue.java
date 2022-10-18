@@ -16,7 +16,9 @@ public class CatalogIssue implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String id;
+	private Integer id;
+	
+	private String initials;
 
 	private String description;
 	
@@ -26,12 +28,20 @@ public class CatalogIssue implements Serializable {
 	public CatalogIssue() {
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getInitials() {
+		return initials;
+	}
+
+	public void setInitials(String initials) {
+		this.initials = initials;
 	}
 
 	public String getDescription() {

@@ -1,14 +1,16 @@
 package project.statement.track.pojos.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LoadFileStatementRequestPojo {
 
-	private String file;
+	MultipartFile file;
 
-	public String getFile() {
+	public MultipartFile getFile() {
 		return file;
 	}
 
-	public void setFile(String file) {
+	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
 }

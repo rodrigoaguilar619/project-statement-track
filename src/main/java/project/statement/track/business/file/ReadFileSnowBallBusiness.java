@@ -15,6 +15,7 @@ import lib.base.backend.persistance.GenericPersistence;
 import project.statement.track.beans.entity.BrokerDataSnowball;
 import project.statement.track.business.broker.BrokerSnowBallBusiness;
 import project.statement.track.pojos.BrokerSnowBallPojo;
+import project.statement.track.pojos.request.LoadFileBase64StatementRequestPojo;
 import project.statement.track.pojos.request.LoadFileStatementRequestPojo;
 import project.statement.track.utils.BrokerSnowBallUtil;
 
@@ -30,11 +31,10 @@ public class ReadFileSnowBallBusiness {
 	
 	@Autowired
 	BrokerSnowBallBusiness brokerSnowBallBusiness;
-
-	@Transactional(rollbackFor = Exception.class)
-	public void executeRegisterIssueTransactionFromFile(LoadFileStatementRequestPojo requestPojo) throws IOException, BusinessException, ParseException {
+	
+	private void registerIssueTransaction(String fileBase64) throws BusinessException {
 		
-		String textHtml = new String(Base64.getDecoder().decode(requestPojo.getFile()));
+		String textHtml = new String(Base64.getDecoder().decode(fileBase64));
 		String[] textHtmlSplit = textHtml.split("\n", 1);
 		
 		if(textHtmlSplit.length == 0 || !textHtml.split("\n", 1)[0].contains("<div class=\"row\">"))
@@ -44,5 +44,19 @@ public class ReadFileSnowBallBusiness {
 		
 		brokerSnowBallBusiness.storeDataSnowBall(resultList);
 		brokerSnowBallBusiness.assignSnowBallData();
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public void executeRegisterIssueTransactionFromFileBase64(LoadFileBase64StatementRequestPojo requestPojo) throws IOException, BusinessException, ParseException {
+		
+		registerIssueTransaction(requestPojo.getFile());
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void executeRegisterIssueTransactionFromFile(LoadFileStatementRequestPojo requestPojo) throws IOException, BusinessException, ParseException {
+		
+		String fileBase64 = new String(Base64.getEncoder().encode(requestPojo.getFile().getBytes()), StandardCharsets.UTF_8);
+		
+		registerIssueTransaction(fileBase64);
 	}
 }

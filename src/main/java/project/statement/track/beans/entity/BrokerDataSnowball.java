@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 @Entity
 @Table(name="broker_data_snowball")
 public class BrokerDataSnowball {
@@ -179,5 +181,11 @@ public class BrokerDataSnowball {
 
 	public void setStatusMovement(Boolean statusMovement) {
 		this.statusMovement = statusMovement;
+	}
+	
+	@Override
+	public String toString()
+	{
+	  return ToStringBuilder.reflectionToString(this);
 	}
 }

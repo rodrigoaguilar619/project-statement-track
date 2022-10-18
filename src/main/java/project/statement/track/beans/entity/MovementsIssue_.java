@@ -13,7 +13,7 @@ public abstract class MovementsIssue_ {
 	public static volatile SingularAttribute<MovementsIssue, Integer> idTypeMovement;
 	public static volatile SingularAttribute<MovementsIssue, BigDecimal> priceIssueUnity;
 	public static volatile SingularAttribute<MovementsIssue, BigDecimal> priceTotal;
-	public static volatile SingularAttribute<MovementsIssue, String> idIssue;
+	public static volatile SingularAttribute<MovementsIssue, Integer> idIssue;
 	public static volatile SingularAttribute<MovementsIssue, Integer> id;
 	public static volatile SingularAttribute<MovementsIssue, Integer> idBrokerAccount;
 	public static volatile SingularAttribute<MovementsIssue, Date> dateTransaction;

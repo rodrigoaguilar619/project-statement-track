@@ -71,7 +71,7 @@ public class MovementsIssueRepository {
 		return result != null ? result : new BigDecimal(0);
 	}
 	
-	public MovementsIssue getMovementsIssueByPriceTotal(BigDecimal priceTotal, String idIssue, Integer idTypeMovement) {
+	public MovementsIssue getMovementsIssueByPriceTotal(BigDecimal priceTotal, Integer idIssue, Integer idTypeMovement) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<MovementsIssue> cq = cb.createQuery(MovementsIssue.class);
@@ -89,7 +89,7 @@ public class MovementsIssueRepository {
 		return resultList.size() > 0 ? resultList.get(0) : null;
 	}
 	
-	public MovementsIssue getMovementsIssueByQuantityIssues(Integer quantityIssues, String idIssue, Integer idTypeMovement) {
+	public MovementsIssue getMovementsIssueByQuantityIssues(Integer quantityIssues, Integer idIssue, Integer idTypeMovement) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<MovementsIssue> cq = cb.createQuery(MovementsIssue.class);
@@ -130,10 +130,11 @@ public class MovementsIssueRepository {
 			CatalogIssue catalogIssue = (CatalogIssue) tuple.get(0);
 			
 			IssueTotalsPojo issueTotalsPojo = new IssueTotalsPojo();
-			issueTotalsPojo.setIssue(catalogIssue.getDescription());
-			issueTotalsPojo.setIssueAbreviation(catalogIssue.getId());
+			issueTotalsPojo.setIdIssue(catalogIssue.getId());
+			issueTotalsPojo.setIssueAbreviation(catalogIssue.getInitials());
 			issueTotalsPojo.setPriceTotals((BigDecimal) tuple.get(1));
 			issueTotalsPojo.setQuantityIssues(new BigDecimal(tuple.get(2).toString()));
+			issueTotalsPojo.setIssueDescription(catalogIssue.getDescription());
 			
 			resultList.add(issueTotalsPojo);
 		}
@@ -141,38 +142,5 @@ public class MovementsIssueRepository {
 		return resultList;
 	}
 	
-	//TODO: verify if remove
-	/*public List<IssueTotalsPojo> getIssuesBuyTotals(Integer idBrokerAccount, List<Integer> idEstatusList) {
-		
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Tuple> cq = cb.createTupleQuery();
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
-		cq.multiselect(root.get(MovementsIssue_.catalogIssue), cb.sum(root.get(MovementsIssue_.priceTotal)), cb.sum(root.get(MovementsIssue_.quantityIssues)));
-		cq.groupBy(root.get(MovementsIssue_.idIssue));
-		
-		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(root.get(MovementsIssue_.idBrokerAccount).in(idEstatusList));
-
-		cq.where( predicatesAnd.toArray(new Predicate[0]) );
-		
-		List<Tuple> resultTuple = em.createQuery(cq).getResultList();
-		
-		List<IssueTotalsPojo> resultList = new ArrayList<>();
-		
-		for (Tuple tuple: resultTuple) {
-			
-			CatalogIssue catalogIssue = (CatalogIssue) tuple.get(0);
-			
-			IssueTotalsPojo issueTotalsPojo = new IssueTotalsPojo();
-			issueTotalsPojo.setIssue(catalogIssue.getDescription());
-			issueTotalsPojo.setIssueAbreviation(catalogIssue.getId());
-			issueTotalsPojo.setPriceTotals((BigDecimal) tuple.get(1));
-			issueTotalsPojo.setQuantityIssues(new BigDecimal(tuple.get(2).toString()));
-			
-			resultList.add(issueTotalsPojo);
-		}
-		
-		return resultList;
-	}*/
+	
 }

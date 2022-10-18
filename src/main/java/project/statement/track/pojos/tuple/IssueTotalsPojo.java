@@ -8,10 +8,12 @@ public class IssueTotalsPojo {
 	
 	private BigDecimal priceTotals;
 	
-	private String issue;
+	private Integer idIssue;
 	
 	private String issueAbreviation;
 
+	private String issueDescription;
+	
 	public BigDecimal getQuantityIssues() {
 		return quantityIssues;
 	}
@@ -28,12 +30,12 @@ public class IssueTotalsPojo {
 		this.priceTotals = priceTotals;
 	}
 
-	public String getIssue() {
-		return issue;
+	public Integer getIdIssue() {
+		return idIssue;
 	}
 
-	public void setIssue(String issue) {
-		this.issue = issue;
+	public void setIdIssue(Integer idIssue) {
+		this.idIssue = idIssue;
 	}
 
 	public String getIssueAbreviation() {
@@ -42,5 +44,13 @@ public class IssueTotalsPojo {
 
 	public void setIssueAbreviation(String issueAbreviation) {
 		this.issueAbreviation = issueAbreviation;
+	}
+
+	public String getIssueDescription() {
+		return issueDescription;
+	}
+
+	public void setIssueDescription(String issueDescription) {
+		this.issueDescription = issueDescription;
 	}
 }

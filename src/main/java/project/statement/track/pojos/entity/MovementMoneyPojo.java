@@ -15,7 +15,7 @@ public class MovementMoneyPojo {
 
 	private Integer idTypeTransaction;
 	
-	private String idIssue;
+	private Integer idIssue;
 
 	public BigDecimal getAmount() {
 		return amount;
@@ -49,11 +49,11 @@ public class MovementMoneyPojo {
 		this.idTypeTransaction = idTypeTransaction;
 	}
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
 

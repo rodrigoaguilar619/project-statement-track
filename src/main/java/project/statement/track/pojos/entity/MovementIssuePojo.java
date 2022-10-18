@@ -13,7 +13,7 @@ public class MovementIssuePojo {
 
 	private int idBrokerAccount;
 
-	private String idIssue;
+	private Integer idIssue;
 
 	private int idTypeMovement;
 
@@ -39,11 +39,11 @@ public class MovementIssuePojo {
 		this.idBrokerAccount = idBrokerAccount;
 	}
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
 

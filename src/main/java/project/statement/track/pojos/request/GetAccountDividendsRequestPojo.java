@@ -4,7 +4,7 @@ public class GetAccountDividendsRequestPojo {
 
 	private Integer idBrokerAccount;
 	
-	private String idIssue;
+	private Integer idIssue;
 
 	public Integer getIdBrokerAccount() {
 		return idBrokerAccount;
@@ -14,11 +14,11 @@ public class GetAccountDividendsRequestPojo {
 		this.idBrokerAccount = idBrokerAccount;
 	}
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
 }

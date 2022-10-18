@@ -38,7 +38,7 @@ public class MovementsMoney implements Serializable {
 	private int idTypeTransaction;
 	
 	@Column(name="id_issue")
-	private String idIssue;
+	private Integer idIssue;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_type_transaction", insertable = false, updatable= false)
@@ -111,11 +111,11 @@ public class MovementsMoney implements Serializable {
 		this.catalogTypeTransaction = catalogTypeTransaction;
 	}
 
-	public String getIdIssue() {
+	public Integer getIdIssue() {
 		return idIssue;
 	}
 
-	public void setIdIssue(String idIssue) {
+	public void setIdIssue(Integer idIssue) {
 		this.idIssue = idIssue;
 	}
 

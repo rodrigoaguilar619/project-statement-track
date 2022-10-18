@@ -1,11 +1,8 @@
 package project.statement.track.business.broker;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
-import lib.utils.backend.format.DateUtil;
 import project.statement.track.beans.entity.BrokerAccount;
-import project.statement.track.beans.entity.CatalogTypeMovement;
 import project.statement.track.beans.entity.MovementsIssue;
 import project.statement.track.beans.entity.MovementsMoney;
 import project.statement.track.pojos.business.broker.OperationStatementDataPojo;
@@ -24,6 +19,7 @@ import project.statement.track.pojos.request.AccountStatementRequestPojo;
 import project.statement.track.pojos.response.AccountStatementResponsePojo;
 import project.statement.track.repository.MovementsIssueRepository;
 import project.statement.track.repository.MovementsMoneyRepository;
+import project.statement.track.utils.AccountUtil;
 import project.statement.track.utils.BuildEntityToPojoUtil;
 import project.statement.track.vo.catalogs.CatalogTypeMovementEnum;
 import project.statement.track.vo.catalogs.CatalogTypeTransactionEnum;
@@ -40,30 +36,15 @@ public class AccountStatementBusiness {
 	BuildEntityToPojoUtil buildEntityToPojoUtil;
 	
 	@Autowired
+	AccountUtil accountUtil;
+	
+	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;
 	
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 	
-	private BigDecimal getMovementMoneyPreviousTotal(BrokerAccount brokerAccount, CatalogTypeTransactionEnum catalogTypeTransaction, Integer year, Integer month) throws BusinessException {
-		
-		if(brokerAccount.getCutDay() == -1) {
-			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
-			return movementsMoneyRepository.getMovementsMoneyPreviousTotal(brokerAccount.getId(), catalogTypeTransaction.getId(), dateEnd);
-		}
-		else
-			throw new BusinessException("Function of cut day not implemented");
-	}
 	
-	private BigDecimal getMovementIssuePreviousTotal(BrokerAccount brokerAccount, CatalogTypeMovementEnum atalogTypeMovement, Integer year, Integer month) throws BusinessException {
-		
-		if(brokerAccount.getCutDay() == -1) {
-			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
-			return movementsIssueRepository.getMovementsIssuePreviousTotal(brokerAccount.getId(), atalogTypeMovement.getId(), dateEnd);
-		}
-		else
-			throw new BusinessException("Function of cut day not implemented");
-	}
 
 	private List<MovementsMoney> getPeriodMoneyMovements(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
 		
@@ -129,7 +110,7 @@ public class AccountStatementBusiness {
 			operationstatementDataPojo.setDate(movementsIssue.getDateTransaction().getTime());
 			operationstatementDataPojo.setDateFormated(movementsIssue.getDateTransaction().toString());
 			operationstatementDataPojo.setTypeOperationId(movementsIssue.getIdTypeMovement());
-			operationstatementDataPojo.setTypeOperationDescription(movementsIssue.getCatalogTypeMovement().getDescription());
+			operationstatementDataPojo.setTypeOperationDescription(movementsIssue.getCatalogTypeMovement().getDescription() + "/" + movementsIssue.getCatalogIssue().getInitials());
 			operationstatementDataPojo.setAmount(movementsIssue.getPriceTotal());
 			operationstatementDataPojo.setDefinitionTypeOperationEnum(DefinitionTypeOperationEnum.ISSUE);
 			
@@ -198,24 +179,7 @@ public class AccountStatementBusiness {
 		return operationStatementDataPojos;
 	}
 	
-	public BigDecimal getTotalPreviousPeriod(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
-		
-		BigDecimal movementsMoneyDepositsTotal;
-		BigDecimal movementsMoneyWithDrawsTotal;
-		BigDecimal movementsMoneyDividendTotal;
-		BigDecimal movementsIssueBuyTotal;
-		BigDecimal movementsIssueBuyMarketSecundaryTotal;
-		BigDecimal movementsIssueSellTotal;
-		
-		movementsMoneyDepositsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.DEPOSIT, year, month);
-		movementsMoneyDividendTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.DIVIDEND, year, month);
-		movementsMoneyWithDrawsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.WITHDRAW, year, month);
-		movementsIssueBuyTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.BUY, year, month);
-		movementsIssueBuyMarketSecundaryTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY, year, month);
-		movementsIssueSellTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.SELL, year, month);
-		
-		return movementsMoneyDepositsTotal.add(movementsIssueSellTotal).add(movementsMoneyDividendTotal).subtract(movementsMoneyWithDrawsTotal).subtract(movementsIssueBuyTotal).subtract(movementsIssueBuyMarketSecundaryTotal).setScale(2, RoundingMode.HALF_UP);
-	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
@@ -226,8 +190,8 @@ public class AccountStatementBusiness {
 		AccountStatementResponsePojo accountStatementResponsePojo = new AccountStatementResponsePojo();
 		accountStatementResponsePojo.setYear(requestPojo.getYear());
 		accountStatementResponsePojo.setMonth(requestPojo.getMonth());
-		accountStatementResponsePojo.setPreviousBalance(getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth()));
-		accountStatementResponsePojo.setCurrentBalance(getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth() + 1));
+		accountStatementResponsePojo.setPreviousBalance(accountUtil.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth()));
+		accountStatementResponsePojo.setCurrentBalance(accountUtil.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth() + 1));
 		accountStatementResponsePojo.setOperationsStatement(getPeriodOperations(brokerAccount, requestPojo.getYear(), requestPojo.getMonth(), accountStatementResponsePojo.getPreviousBalance()));
 		accountStatementResponsePojo.setBrokerAccountResume(buildEntityToPojoUtil.mapBrokerAccountResumePojo(null, brokerAccount));
 		
