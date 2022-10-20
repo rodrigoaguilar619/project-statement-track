@@ -6,23 +6,23 @@
 	<parent>
 		<groupId>com.parent.project.web</groupId>
 		<artifactId>lib-parent-project-web</artifactId>
-		<version>1.1.0</version>
+		<version>2.0.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>project.statement.track</groupId>
 	<artifactId>project-statement-track</artifactId>
-	<version>1.7.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>1.0.0</version>
+	<packaging>${prop.packaging.type}</packaging>
 	<name>project-statement-track</name>
 	<description>Statement track project</description>
 
 	<properties>
 		<jar.name>${server.servlet.context-path}</jar.name>
-		<project.build.main.class>project.statement.track.config.starter.Application</project.build.main.class>
-		<prop.main.class>project.statement.track.config.starter.Application</prop.main.class>
-		<prop.main.class.heroku>project.statement.track.config.starter.Application</prop.main.class.heroku>
+		<project.build.main.class>project.statement.track.config.starter.AppStatementTrack</project.build.main.class>
+		<prop.main.class>project.statement.track.config.starter.AppStatementTrack</prop.main.class>
+		<prop.main.class.heroku>project.statement.track.config.starter.AppStatementTrack</prop.main.class.heroku>
 		<test.skip>true</test.skip>
 	</properties>
 
@@ -33,11 +33,6 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-csv</artifactId>
 		    <version>1.1</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
 		</dependency>
 		
 		<dependency>

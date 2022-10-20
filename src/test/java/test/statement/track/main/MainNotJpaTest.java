@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ComponentScan.Filter;
 
-import project.statement.track.config.starter.Application;
+import project.statement.track.config.starter.AppStatementTrack;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,7 +18,7 @@ excludeFilters= {@Filter(type = FilterType.REGEX, pattern="project.statement.tra
 		@Filter(type = FilterType.REGEX, pattern="project.statement.track.business.*"),
 		@Filter(type = FilterType.REGEX, pattern="project.statement.track.config.starter.*"),
 		@Filter(type = FilterType.REGEX, pattern="project.statement.track.config.beans.DataBaseBeans")})
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = AppStatementTrack.class)
 @SpringBootApplication(exclude = {
     DataSourceAutoConfiguration.class, 
     DataSourceTransactionManagerAutoConfiguration.class, 

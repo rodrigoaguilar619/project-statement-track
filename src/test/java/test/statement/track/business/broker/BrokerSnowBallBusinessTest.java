@@ -1,20 +1,16 @@
 package test.statement.track.business.broker;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import project.statement.track.business.broker.BrokerSnowBallBusiness;
-import project.statement.track.config.starter.ApplicationDisablingServices;
-import project.statement.track.pojos.BrokerSnowBallPojo;
-import project.statement.track.utils.BrokerSnowBallUtil;
-import project.statement.track.utils.ReadFileUtil;
+import project.statement.track.app.utils.ReadFileUtil;
+import project.statement.track.config.starter.AppStatementTrack;
+import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
 
-@SpringBootTest(classes = ApplicationDisablingServices.class)
+@SpringBootTest(classes = AppStatementTrack.class)
 public class BrokerSnowBallBusinessTest {
 	
 	@Autowired
