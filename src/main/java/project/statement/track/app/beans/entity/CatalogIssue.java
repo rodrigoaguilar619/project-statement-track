@@ -25,9 +25,6 @@ public class CatalogIssue implements Serializable {
 	@Column(name="description_snowball")
 	private String descriptionSnowball;
 
-	public CatalogIssue() {
-	}
-
 	public Integer getId() {
 		return this.id;
 	}

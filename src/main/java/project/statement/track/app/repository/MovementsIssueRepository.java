@@ -4,27 +4,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.entity.MovementsIssue;
 import project.statement.track.app.beans.entity.MovementsIssue_;
-import project.statement.track.app.beans.entity.MovementsMoney;
-import project.statement.track.app.beans.entity.MovementsMoney_;
-import project.statement.track.app.pojos.tuple.IssueTotalsPojo;
+import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 
 @Repository
 public class MovementsIssueRepository {
@@ -86,7 +79,7 @@ public class MovementsIssueRepository {
 		
 		List<MovementsIssue> resultList =  em.createQuery(cq).getResultList();
 		
-		return resultList.size() > 0 ? resultList.get(0) : null;
+		return !resultList.isEmpty() ? resultList.get(0) : null;
 	}
 	
 	public MovementsIssue getMovementsIssueByQuantityIssues(Integer quantityIssues, Integer idIssue, Integer idTypeMovement) {
@@ -104,7 +97,7 @@ public class MovementsIssueRepository {
 		
 		List<MovementsIssue> resultList =  em.createQuery(cq).getResultList();
 		
-		return resultList.size() > 0 ? resultList.get(0) : null;
+		return !resultList.isEmpty() ? resultList.get(0) : null;
 	}
 	
 	public List<IssueTotalsPojo> getIssuesTotals(Integer idBrokerAccount, List<Integer> idTypeMovementList) {
@@ -142,5 +135,19 @@ public class MovementsIssueRepository {
 		return resultList;
 	}
 	
+	public boolean verifyIssueRegistered(Integer idIssue) {
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
+		
+		List<Predicate> predicatesAnd = new ArrayList<>();
+		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idIssue), idIssue));
+		
+		cq.where( predicatesAnd.toArray(new Predicate[0]) );
+		cq.select(cb.count(root.get(MovementsIssue_.id)));
+
+		return em.createQuery(cq).getResultList().get(0) > 0;
+	}
 	
 }

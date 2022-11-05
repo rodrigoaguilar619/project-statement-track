@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.StringWebResponse;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HTMLParser;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lib.base.backend.exception.data.BusinessException;
@@ -26,10 +24,7 @@ public class WebScrapUtil {
 			Page pageOrigin = client.getPage(uri);
 			
 			StringWebResponse response = new StringWebResponse( pageOrigin.getWebResponse().getContentAsString(StandardCharsets.UTF_8), url);
-			HtmlPage page = HTMLParser.parseHtml(response, client.getCurrentWindow());
-			//System.out.println("page: " + page.asXml());
-			
-			return page;
+			return HTMLParser.parseHtml(response, client.getCurrentWindow());
 			
 		} catch (FailingHttpStatusCodeException | IOException e) {
 			throw new BusinessException("Error reading file html");
@@ -46,10 +41,7 @@ public class WebScrapUtil {
 			URL url = new URL("http://www.example.com");
 			
 			StringWebResponse response = new StringWebResponse(textHtml, url);
-			HtmlPage page = HTMLParser.parseHtml(response, client.getCurrentWindow());
-			//System.out.println("page: " + page.asXml());
-			
-			return page;
+			return HTMLParser.parseHtml(response, client.getCurrentWindow());
 			
 		} catch (FailingHttpStatusCodeException | IOException e) {
 			throw new BusinessException("Error reading file html");
@@ -58,14 +50,12 @@ public class WebScrapUtil {
 	
 	public HtmlPage readHtmlFile(String path) throws BusinessException {
 		
-		HtmlPage page = readHtml("file:\\\\" + path);
-		return page;
+		return readHtml("file:\\\\" + path);
 	}
 	
 	public HtmlPage readHtmlText(String text) throws BusinessException {
 		
-		HtmlPage page = readHtmlString(text);
-		return page;
+		return readHtmlString(text);
 	}
 	
 }

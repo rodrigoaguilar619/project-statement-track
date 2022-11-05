@@ -18,11 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import project.statement.track.app.beans.entity.CatalogIssue;
-import project.statement.track.app.beans.entity.MovementsIssue_;
 import project.statement.track.app.beans.entity.MovementsMoney;
 import project.statement.track.app.beans.entity.MovementsMoney_;
-import project.statement.track.app.pojos.tuple.IssueDividendsPojo;
-import project.statement.track.app.pojos.tuple.IssueTotalsPojo;
+import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
 import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
 
 @Repository

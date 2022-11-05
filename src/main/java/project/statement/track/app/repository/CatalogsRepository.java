@@ -12,8 +12,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import project.statement.track.app.beans.entity.BrokerDataSnowball;
-import project.statement.track.app.beans.entity.BrokerDataSnowball_;
 import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.entity.CatalogIssue_;
 

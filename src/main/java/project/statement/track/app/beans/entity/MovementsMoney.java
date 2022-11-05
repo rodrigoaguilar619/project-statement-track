@@ -52,9 +52,6 @@ public class MovementsMoney implements Serializable {
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
 	CatalogIssue catalogIssue;
 
-	public MovementsMoney() {
-	}
-
 	public int getId() {
 		return this.id;
 	}

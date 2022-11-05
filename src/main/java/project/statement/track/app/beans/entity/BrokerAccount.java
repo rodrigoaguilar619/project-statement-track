@@ -34,9 +34,6 @@ public class BrokerAccount implements Serializable {
 	@Column(name="date_creation")
 	private Date dateCreation;
 
-	public BrokerAccount() {
-	}
-
 	public int getId() {
 		return this.id;
 	}

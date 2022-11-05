@@ -16,9 +16,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.utils.date.DateFormatUtil;
-import lib.base.backend.utils.date.DateUtil;
 import project.statement.track.app.beans.entity.BrokerDataSnowball;
-import project.statement.track.app.pojos.BrokerSnowBallPojo;
+import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 
 public class BrokerSnowBallUtil {
 	
@@ -26,13 +25,69 @@ public class BrokerSnowBallUtil {
 	private WebScrapUtil webScrapUtil;
 	
 	@Autowired
-	private DateUtil dateUtil;
-	
-	@Autowired
 	private DateFormatUtil dateFormatUtil;
 	
 	private String getNumberFormat(String number) {
 		return number.replace("$", "").replace(" MXN", "").replace(",", "");
+	}
+	
+	private void assignSnowBallValue(BrokerSnowBallPojo brokerSnowBallPojo, Map<String, String> movementDataMap) throws BusinessException {
+		
+		for (Map.Entry<String,String> entry : movementDataMap.entrySet()) {
+			
+			switch (entry.getKey()) {
+			case "Saldo Anterior":
+				brokerSnowBallPojo.setPreviousBalance(getNumberFormat(entry.getValue()));
+				break;
+			case "Egreso":
+				brokerSnowBallPojo.setExit(getNumberFormat(entry.getValue()));
+				break;
+			case "Ingreso":
+				brokerSnowBallPojo.setEntry(getNumberFormat(entry.getValue()));
+				break;
+			case "Saldo Actual":
+				brokerSnowBallPojo.setActualBalance(getNumberFormat(entry.getValue()));
+				break;
+			case "Hora":
+				brokerSnowBallPojo.setHour(entry.getValue());
+				break;
+			case "Movimiento":
+				brokerSnowBallPojo.setMovementDescription(entry.getValue());
+				break;
+			case "Operación":
+				brokerSnowBallPojo.setMovementDescription(entry.getValue());
+				break;
+			case "Empresa":
+				brokerSnowBallPojo.setCompany(entry.getValue());
+				break;
+			case "Acciones":
+				brokerSnowBallPojo.setTotalIssues(entry.getValue());
+				break;
+			case "ODIs Adquiridas":
+				brokerSnowBallPojo.setTotalIssues(entry.getValue());
+				break;
+			case "Forma de pago":
+				brokerSnowBallPojo.setTypePayment(entry.getValue());
+				break;
+			case "Estatus":
+				brokerSnowBallPojo.setStatus(entry.getValue());
+				break;
+			case "Referencia":
+				brokerSnowBallPojo.setReference(entry.getValue());
+				break;
+			case "Transfiere":
+				//ignore parameter	
+				break;
+			case "Recibe":
+				//ignore parameter	
+				break;
+			case "Fecha de IE":
+				//ignore parameter	
+				break;
+			default:
+				throw new BusinessException("Parameter not recognized key: " + entry.getKey() + " value: " + entry.getValue());
+			}
+		}
 	}
 	
 	private List<BrokerSnowBallPojo> getDataSnowBall(HtmlPage page) throws BusinessException {
@@ -47,17 +102,14 @@ public class BrokerSnowBallUtil {
 		while (childrensElements.iterator().hasNext()) {
 			
 			DomElement element = childrensElements.iterator().next();
-			//System.out.println("Node element text " + element.asText());
 			
 			String nodeData = element.asText();
 			
 			if (nodeData.matches("\\d{4}-\\d{2}-\\d{2}")) {
 				
-				//System.out.println("Node date element " + dateNode.get(0).asText());
 				currentDate = nodeData;
 			}
 			else if (currentDate != null) {
-				//System.out.println("Node element " + element.asXml());
 				
 				brokerSnowBallPojo = new BrokerSnowBallPojo();
 				brokerSnowBallPojo.setDate(currentDate);
@@ -75,66 +127,9 @@ public class BrokerSnowBallUtil {
 					movementDataMap.put(movementDataList[i].trim(), movementDataList[i + 1].trim());
 				}
 				
-				for (Map.Entry<String,String> entry : movementDataMap.entrySet()) {
-					
-					switch (entry.getKey()) {
-					case "Saldo Anterior":
-						brokerSnowBallPojo.setPreviousBalance(getNumberFormat(entry.getValue()));
-						break;
-					case "Egreso":
-						brokerSnowBallPojo.setExit(getNumberFormat(entry.getValue()));
-						break;
-					case "Ingreso":
-						brokerSnowBallPojo.setEntry(getNumberFormat(entry.getValue()));
-						break;
-					case "Saldo Actual":
-						brokerSnowBallPojo.setActualBalance(getNumberFormat(entry.getValue()));
-						break;
-					case "Hora":
-						brokerSnowBallPojo.setHour(entry.getValue());
-						break;
-					case "Movimiento":
-						brokerSnowBallPojo.setMovementDescription(entry.getValue());
-						break;
-					case "Operación":
-						brokerSnowBallPojo.setMovementDescription(entry.getValue());
-						break;
-					case "Empresa":
-						brokerSnowBallPojo.setCompany(entry.getValue());
-						break;
-					case "Acciones":
-						brokerSnowBallPojo.setTotalIssues(entry.getValue());
-						break;
-					case "ODIs Adquiridas":
-						brokerSnowBallPojo.setTotalIssues(entry.getValue());
-						break;
-					case "Forma de pago":
-						brokerSnowBallPojo.setTypePayment(entry.getValue());
-						break;
-					case "Estatus":
-						brokerSnowBallPojo.setStatus(entry.getValue());
-						break;
-					case "Referencia":
-						brokerSnowBallPojo.setReference(entry.getValue());
-						break;
-					case "Transfiere":
-						//ignore parameter	
-						break;
-					case "Recibe":
-						//ignore parameter	
-						break;
-					case "Fecha de IE":
-						//ignore parameter	
-						break;
-					default:
-						throw new BusinessException("Parameter not recognized key: " + entry.getKey() + " value: " + entry.getValue());
-					}
-				}
+				assignSnowBallValue(brokerSnowBallPojo, movementDataMap);
 		        
 				snowBallPojos.add(brokerSnowBallPojo);
-				
-				//movementDataMap.forEach((key, value) -> System.out.println(key + ": " + value));
-				//System.out.println("-----");
 			}
 		}
 		

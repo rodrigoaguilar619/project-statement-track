@@ -14,9 +14,9 @@ import lib.base.backend.persistance.GenericPersistence;
 import project.statement.track.app.beans.entity.BrokerAccount;
 import project.statement.track.app.beans.entity.MovementsIssue;
 import project.statement.track.app.beans.entity.MovementsMoney;
-import project.statement.track.app.pojos.business.broker.OperationStatementDataPojo;
-import project.statement.track.app.pojos.petition.data.AccountStatementDataPojo;
-import project.statement.track.app.pojos.petition.request.AccountStatementRequestPojo;
+import project.statement.track.app.beans.pojos.business.broker.OperationStatementDataPojo;
+import project.statement.track.app.beans.pojos.petition.data.AccountStatementDataPojo;
+import project.statement.track.app.beans.pojos.petition.request.AccountStatementRequestPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.utils.AccountUtil;
@@ -44,7 +44,10 @@ public class AccountStatementBusiness {
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 	
-	
+	private String messageOperationNotFound(OperationStatementDataPojo operationStatementDataPojo) {
+		
+		return String.format("For balance definition type operation not found. type operation: %s table: %s", operationStatementDataPojo.getTypeOperationId(), operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription());
+	}
 
 	private List<MovementsMoney> getPeriodMoneyMovements(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
 		
@@ -81,10 +84,15 @@ public class AccountStatementBusiness {
 			
 			OperationStatementDataPojo operationstatementDataPojo = new OperationStatementDataPojo();
 			
+			String typeOperationDescription = movementsMoney.getCatalogTypeTransaction().getDescription();
+			
+			if (movementsMoney.getIdTypeTransaction() == CatalogTypeTransactionEnum.DIVIDEND.getId())
+				typeOperationDescription += " / " + ((movementsMoney.getCatalogIssue() != null) ? movementsMoney.getCatalogIssue().getInitials() : "");
+			
 			operationstatementDataPojo.setDate(movementsMoney.getDateTransaction().getTime());
 			operationstatementDataPojo.setDateFormated(movementsMoney.getDateTransaction().toString());
 			operationstatementDataPojo.setTypeOperationId(movementsMoney.getIdTypeTransaction());
-			operationstatementDataPojo.setTypeOperationDescription(movementsMoney.getCatalogTypeTransaction().getDescription());
+			operationstatementDataPojo.setTypeOperationDescription(typeOperationDescription);
 			operationstatementDataPojo.setAmount(movementsMoney.getAmount());
 			operationstatementDataPojo.setDefinitionTypeOperationEnum(DefinitionTypeOperationEnum.MOVEMENT);
 			
@@ -110,7 +118,7 @@ public class AccountStatementBusiness {
 			operationstatementDataPojo.setDate(movementsIssue.getDateTransaction().getTime());
 			operationstatementDataPojo.setDateFormated(movementsIssue.getDateTransaction().toString());
 			operationstatementDataPojo.setTypeOperationId(movementsIssue.getIdTypeMovement());
-			operationstatementDataPojo.setTypeOperationDescription(movementsIssue.getCatalogTypeMovement().getDescription() + "/" + movementsIssue.getCatalogIssue().getInitials());
+			operationstatementDataPojo.setTypeOperationDescription(movementsIssue.getCatalogTypeMovement().getDescription() + " / " + movementsIssue.getCatalogIssue().getInitials());
 			operationstatementDataPojo.setAmount(movementsIssue.getPriceTotal());
 			operationstatementDataPojo.setDefinitionTypeOperationEnum(DefinitionTypeOperationEnum.ISSUE);
 			
@@ -118,6 +126,48 @@ public class AccountStatementBusiness {
 		}
 		
 		return operationStatementDataPojos;
+	}
+	
+	private OperationStatementDataPojo getPeriodOperationMovement(OperationStatementDataPojo operationStatementDataPojo, BigDecimal currentBalance) throws BusinessException {
+		
+		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.DEPOSIT.getId()) ||
+				operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.DIVIDEND.getId()) ) {
+				
+				currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
+				operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
+				operationStatementDataPojo.setBalance(currentBalance);
+			}
+			else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.WITHDRAW.getId())) {
+				
+				currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
+				operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
+				operationStatementDataPojo.setBalance(currentBalance);
+			}
+			else
+				throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
+		
+		return operationStatementDataPojo;
+	}
+	
+	private OperationStatementDataPojo getPeriodOperationIssue(OperationStatementDataPojo operationStatementDataPojo, BigDecimal currentBalance) throws BusinessException {
+		
+		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.BUY.getId()) ||
+			operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId())) {
+			
+			currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
+			operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
+			operationStatementDataPojo.setBalance(currentBalance);
+		}
+		else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.SELL.getId())) {
+			
+			currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
+			operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
+			operationStatementDataPojo.setBalance(currentBalance);
+		}
+		else
+			throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
+		
+		return operationStatementDataPojo;
 	}
 	
 	private List<OperationStatementDataPojo> getPeriodOperations(BrokerAccount brokerAccount, Integer year, Integer month, BigDecimal previousBalance) throws BusinessException {
@@ -134,46 +184,16 @@ public class AccountStatementBusiness {
 			
 			if (operationStatementDataPojo.getDefinitionTypeOperationEnum().equals(DefinitionTypeOperationEnum.MOVEMENT)) {
 				
-				if (operationStatementDataPojo.getTypeOperationId() == CatalogTypeTransactionEnum.DEPOSIT.getId()) {
-					
-					currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setBalance(currentBalance);
-				}
-				else if (operationStatementDataPojo.getTypeOperationId() == CatalogTypeTransactionEnum.DIVIDEND.getId()) {
-					
-					currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setBalance(currentBalance);
-				}
-				else if (operationStatementDataPojo.getTypeOperationId() == CatalogTypeTransactionEnum.WITHDRAW.getId()) {
-					
-					currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
-					operationStatementDataPojo.setBalance(currentBalance);
-				}
-				else
-					throw new BusinessException("For balance definition type operation not found. type operation: " + operationStatementDataPojo.getTypeOperationId() + " table: " + operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription());
+				getPeriodOperationMovement(operationStatementDataPojo, currentBalance);
+				currentBalance = operationStatementDataPojo.getBalance();
 			}
 			else if (operationStatementDataPojo.getDefinitionTypeOperationEnum().equals(DefinitionTypeOperationEnum.ISSUE)) {
 				
-				if (operationStatementDataPojo.getTypeOperationId() == CatalogTypeMovementEnum.BUY.getId() | operationStatementDataPojo.getTypeOperationId() == CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId()) {
-					
-					currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
-					operationStatementDataPojo.setBalance(currentBalance);
-				}
-				else if (operationStatementDataPojo.getTypeOperationId() == CatalogTypeMovementEnum.SELL.getId()) {
-					
-					currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
-					operationStatementDataPojo.setBalance(currentBalance);
-				}
-				else
-					throw new BusinessException("For balance definition type operation not found. type operation: " + operationStatementDataPojo.getTypeOperationId() + " table: " + operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription());
+				getPeriodOperationIssue(operationStatementDataPojo, currentBalance);
+				currentBalance = operationStatementDataPojo.getBalance();
 			}
 			else
-				throw new BusinessException("For balance definition type operation not found. type operation: " + operationStatementDataPojo.getTypeOperationId() + " table: " + operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription());
+				throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
 		}
 		
 		return operationStatementDataPojos;

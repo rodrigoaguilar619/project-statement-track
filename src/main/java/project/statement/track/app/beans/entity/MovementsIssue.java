@@ -54,9 +54,6 @@ public class MovementsIssue implements Serializable {
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
 	CatalogIssue catalogIssue;
 
-	public MovementsIssue() {
-	}
-
 	public int getId() {
 		return this.id;
 	}

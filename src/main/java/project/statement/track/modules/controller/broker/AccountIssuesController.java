@@ -2,29 +2,28 @@ package project.statement.track.modules.controller.broker;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import lib.base.backend.exception.data.BusinessException;
-import project.statement.track.app.pojos.petition.data.GetAccountDividendsDataPojo;
-import project.statement.track.app.pojos.petition.request.GetAccountDividendsRequestPojo;
+import lib.base.backend.utils.RestUtil;
+import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
+import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
 import project.statement.track.modules.business.broker.AccountIssuesBusiness;
 
 @RestController
 public class AccountIssuesController {
-
-	private static final Logger log = LoggerFactory.getLogger(AccountIssuesController.class);
 	
 	@Autowired
 	AccountIssuesBusiness accountIssuesBusiness;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping(path = "/api/account/issues/getMovementsDividend", consumes = "application/json", produces = "application/json")
-	public GetAccountDividendsDataPojo getMovementsDividend(HttpServletResponse httpResponse, @RequestBody GetAccountDividendsRequestPojo requestPojo) throws BusinessException {
+	public ResponseEntity getMovementsDividend(HttpServletResponse httpResponse, @RequestBody GetAccountDividendsRequestPojo requestPojo) {
 		
-		return accountIssuesBusiness.executeGetAccountDividends(requestPojo);
+		GetAccountDividendsDataPojo dataPojo = accountIssuesBusiness.executeGetAccountDividends(requestPojo);
+		return new RestUtil().buildResponseSuccess(dataPojo, "Movements dividends getted");
 	}
 }

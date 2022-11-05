@@ -32,9 +32,6 @@ public class CatalogBroker implements Serializable {
 	@JoinColumn(name="id_type_currency")
 	private CatalogTypeCurrency catalogTypeCurrency;
 
-	public CatalogBroker() {
-	}
-
 	public int getId() {
 		return this.id;
 	}

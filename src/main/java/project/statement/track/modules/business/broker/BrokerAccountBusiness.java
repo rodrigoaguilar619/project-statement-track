@@ -4,7 +4,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.persistance.GenericPersistence;
 import project.statement.track.app.beans.entity.BrokerAccount;
-import project.statement.track.app.pojos.entity.BrokerAccountResumePojo;
-import project.statement.track.app.pojos.petition.data.GetBADateStatementsDataPojo;
-import project.statement.track.app.pojos.petition.data.GetBrokerAccountsDataPojo;
-import project.statement.track.app.pojos.petition.data.GetBADateStatementsDataPojo.StatementYearPojo;
-import project.statement.track.app.pojos.petition.request.GetBADateStatementsRequestPojo;
-import project.statement.track.app.pojos.petition.request.GetBrokerAccountsRequestPojo;
+import project.statement.track.app.beans.pojos.entity.BrokerAccountResumePojo;
+import project.statement.track.app.beans.pojos.petition.data.GetBADateStatementsDataPojo;
+import project.statement.track.app.beans.pojos.petition.data.GetBrokerAccountsDataPojo;
+import project.statement.track.app.beans.pojos.petition.request.GetBADateStatementsRequestPojo;
+import project.statement.track.app.beans.pojos.petition.request.GetBrokerAccountsRequestPojo;
 import project.statement.track.app.utils.BuildEntityToPojoUtil;
 
 @Component
@@ -32,6 +30,7 @@ public class BrokerAccountBusiness {
 	@Autowired
 	BuildEntityToPojoUtil buildEntityToPojoUtil;
 	
+	@SuppressWarnings("unchecked")
 	public List<BrokerAccountResumePojo> getBrokerAccounts() {
 		
 		List<BrokerAccount> brokerAccounts = genericCustomPersistance.findAll(BrokerAccount.class);
@@ -47,7 +46,7 @@ public class BrokerAccountBusiness {
 		return brokerAccountResumePojos;
 	}
 	
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
 	public GetBADateStatementsDataPojo executeGetDateStatements(GetBADateStatementsRequestPojo requestPojo) {
 		

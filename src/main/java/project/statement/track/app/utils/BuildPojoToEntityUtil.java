@@ -1,14 +1,13 @@
 package project.statement.track.app.utils;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
+import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.entity.MovementsIssue;
 import project.statement.track.app.beans.entity.MovementsMoney;
-import project.statement.track.app.pojos.entity.MovementIssuePojo;
-import project.statement.track.app.pojos.entity.MovementMoneyPojo;
-import project.statement.track.app.vo.catalogs.CatalogBrokerAccountEnum;
-import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
+import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
+import project.statement.track.app.beans.pojos.entity.MovementIssuePojo;
+import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
 
 public class BuildPojoToEntityUtil {
 
@@ -41,5 +40,17 @@ public class BuildPojoToEntityUtil {
 		movementsIssue.setPriceIssueUnity(movementIssuePojo.getPriceIssueUnity());
 		
 		return movementsIssue;
+	}
+	
+	public CatalogIssue generateCatalogIssueEntity(CatalogIssue catalogIssue, CatalogIssuePojo catalogIssuePojo) {
+		
+		if (catalogIssue == null)
+			catalogIssue = new CatalogIssue();
+		
+		catalogIssue.setInitials(catalogIssuePojo.getInitials());
+		catalogIssue.setDescription(catalogIssuePojo.getDescription());
+		catalogIssue.setDescriptionSnowball(catalogIssuePojo.getDescriptionCustom());
+		
+		return catalogIssue;
 	}
 }

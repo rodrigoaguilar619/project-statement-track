@@ -1,10 +1,12 @@
 package project.statement.track.app.utils;
 
 import project.statement.track.app.beans.entity.BrokerAccount;
+import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.entity.MovementsMoney;
-import project.statement.track.app.pojos.entity.BrokerAccountResumePojo;
-import project.statement.track.app.pojos.entity.MovementMoneyPojo;
-import project.statement.track.app.pojos.entity.MovementMoneyResumePojo;
+import project.statement.track.app.beans.pojos.entity.BrokerAccountResumePojo;
+import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
+import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
+import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 
 public class BuildEntityToPojoUtil {
 
@@ -39,11 +41,24 @@ public class BuildEntityToPojoUtil {
 	
 	public MovementMoneyResumePojo mapMovementMoneyResumePojo(MovementMoneyResumePojo movementMoneyResumePojo, MovementsMoney movementMoney) {
 		
-		movementMoneyResumePojo = (MovementMoneyResumePojo) mapMovementMoneyPojo(new MovementMoneyResumePojo(), movementMoney);
+		movementMoneyResumePojo = (MovementMoneyResumePojo) mapMovementMoneyPojo(movementMoneyResumePojo, movementMoney);
 		movementMoneyResumePojo.setIssueDescription(movementMoney.getCatalogIssue().getDescription());
 		movementMoneyResumePojo.setTypeTransactionDescription(movementMoney.getCatalogTypeTransaction().getDescription());
 		movementMoneyResumePojo.setBrokerAccountDescription(movementMoney.getBrokerAccount().getDescription());
 		
 		return movementMoneyResumePojo;
+	}
+	
+	public CatalogIssuePojo mapCatalogIssuePojo(CatalogIssuePojo catalogIssuePojo, CatalogIssue catalogIssue) {
+		
+		if (catalogIssuePojo == null)
+			catalogIssuePojo = new CatalogIssuePojo();
+		
+		catalogIssuePojo.setDescription(catalogIssue.getDescription());
+		catalogIssuePojo.setDescriptionCustom(catalogIssue.getDescriptionSnowball());
+		catalogIssuePojo.setInitials(catalogIssue.getInitials());
+		catalogIssuePojo.setId(catalogIssue.getId());
+		
+		return catalogIssuePojo;
 	}
 }

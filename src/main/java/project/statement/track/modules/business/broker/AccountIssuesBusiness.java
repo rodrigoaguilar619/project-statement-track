@@ -7,16 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.BrokerAccount;
 import project.statement.track.app.beans.entity.MovementsMoney;
-import project.statement.track.app.pojos.entity.MovementMoneyPojo;
-import project.statement.track.app.pojos.entity.MovementMoneyResumePojo;
-import project.statement.track.app.pojos.petition.data.AccountStatementDataPojo;
-import project.statement.track.app.pojos.petition.data.GetAccountDividendsDataPojo;
-import project.statement.track.app.pojos.petition.request.AccountStatementRequestPojo;
-import project.statement.track.app.pojos.petition.request.GetAccountDividendsRequestPojo;
+import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
+import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
+import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.utils.BuildEntityToPojoUtil;
 
@@ -33,14 +28,14 @@ public class AccountIssuesBusiness {
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;
 	
-	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, Integer idIssue) throws BusinessException {
+	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, Integer idIssue) {
 		
 		List<MovementsMoney> movementsMoneyDividend = movementsMoneyRepository.getMovementsMoneyDividend(idBrokerAccount, idIssue);
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
 		for(MovementsMoney movementsMoney: movementsMoneyDividend) {
 			
-			MovementMoneyResumePojo movementMoneyResumePojo = buildEntityToPojoUtil.mapMovementMoneyResumePojo(null, movementsMoney);
+			MovementMoneyResumePojo movementMoneyResumePojo = buildEntityToPojoUtil.mapMovementMoneyResumePojo(new MovementMoneyResumePojo(), movementsMoney);
 			movementMoneyResumePojos.add(movementMoneyResumePojo);
 		}
 		
@@ -48,7 +43,7 @@ public class AccountIssuesBusiness {
 	}
 	
 	@Transactional(rollbackFor = Exception.class)
-	public GetAccountDividendsDataPojo executeGetAccountDividends(GetAccountDividendsRequestPojo requestPojo) throws BusinessException {
+	public GetAccountDividendsDataPojo executeGetAccountDividends(GetAccountDividendsRequestPojo requestPojo) {
 		
 		List<MovementMoneyResumePojo> movementMoneyPojos = getAccountIssuesDividends(requestPojo.getIdBrokerAccount(), requestPojo.getIdIssue());
 		
