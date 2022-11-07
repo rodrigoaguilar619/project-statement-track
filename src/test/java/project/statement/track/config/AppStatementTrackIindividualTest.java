@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 	})
 @ComponentScan(basePackages = "${app.config.component.scan}",
 	excludeFilters = {
+			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "lib.base.backend.web.repository.*"),
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.config.*"),
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.app.*"),
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.modules.*"),
