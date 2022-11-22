@@ -1,4 +1,4 @@
-package project.statement.track.app.utils;
+package test.statement.track.app.utils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import lib.base.backend.utils.ExecuteMethodUtil;
 import lib.base.backend.utils.ReadFileUtil;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
-import project.statement.track.config.AppStatementTrackTest;
+import project.statement.track.app.utils.BrokerSnowBallUtil;
+import test.statement.track.config.AppStatementTrackTest;
 
 @SpringBootTest(classes = AppStatementTrackTest.class)
 class BrokerSnowBallUtilTest {

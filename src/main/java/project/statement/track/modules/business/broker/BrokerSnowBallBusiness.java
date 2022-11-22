@@ -269,14 +269,14 @@ public class BrokerSnowBallBusiness {
 		}
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void executeStatementSnowBall(String textHtml) throws BusinessException {
 		
 		List<BrokerSnowBallPojo> resultList = brokerSnowBallUtil.getDataSnowBallFromText(textHtml);
 		storeDataSnowBall(resultList);
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void executeAssignSnowBallData() throws BusinessException {
 		
 		assignSnowBallData();

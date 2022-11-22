@@ -1,4 +1,4 @@
-package project.statement.track.config;
+package test.statement.track.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,9 +23,9 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.modules.*"),
 			@Filter(type = FilterType.ASSIGNABLE_TYPE, value = DataBaseBeans.class),			
 	})
-public abstract class AppStatementTrackIindividualTest {
+public class AppStatementTrackIndividualTest {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppStatementTrackIindividualTest.class, args);
+		SpringApplication.run(AppStatementTrackIndividualTest.class, args);
 	}
 }

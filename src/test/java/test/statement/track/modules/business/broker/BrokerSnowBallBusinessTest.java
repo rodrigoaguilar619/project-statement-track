@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import lib.base.backend.utils.ExecuteMethodUtil;
 import lib.base.backend.utils.ReadFileUtil;
-import project.statement.track.config.AppStatementTrackTest;
 import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
+import test.statement.track.config.AppStatementTrackTest;
 
 @SpringBootTest(classes = AppStatementTrackTest.class)
 class BrokerSnowBallBusinessTest {
@@ -37,7 +37,7 @@ class BrokerSnowBallBusinessTest {
 		});
 	}
 	
-	@Test
+	//@Test
 	void assignDataSnowBallTest() throws Throwable {
 		
 		ExecuteMethodUtil.execute("ASSIGN DATA SNOWBALL", () -> {

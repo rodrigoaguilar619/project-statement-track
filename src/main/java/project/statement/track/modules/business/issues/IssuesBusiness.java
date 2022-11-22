@@ -32,7 +32,7 @@ public class IssuesBusiness {
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public GetIssuesBuyDataPojo executeGetIssuesBuy(GetIssuesBuyRequestPojo requestPojo) {
 		
 		//TODO: add minus for sell issues

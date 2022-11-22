@@ -51,7 +51,7 @@ public class CrudCatalogIssueBusiness {
 	BuildEntityToPojoUtil buildEntityToPojoUtil;
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public GetCatalogIssueDataPojo executeGetCatalogIssue(GenericCatalogIdRequestPojo requestPojo) {
 		
 		CatalogIssue catalogIssue = (CatalogIssue) genericCustomPersistance.findById(CatalogIssue.class, requestPojo.getId());
@@ -64,7 +64,7 @@ public class CrudCatalogIssueBusiness {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public CatalogDataPojo executeGetCatalogIssues(CatalogRequestPojo requestPojo) {
 		
 		List<CatalogIssue> catalogList = genericCustomPersistance.findAll(CatalogIssue.class);
@@ -88,7 +88,7 @@ public class CrudCatalogIssueBusiness {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public GenericCatalogDataPojo executeSaveUpdateCatalogIssue(CrudCatalogIssueRequestPojo requestPojo, CrudOptionsEnum crudOptionsEnum) {
 		
 		CatalogIssuePojo catalogData = requestPojo.getCatalogData();
@@ -107,7 +107,7 @@ public class CrudCatalogIssueBusiness {
 		return dataPojo;
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public GenericCatalogDataPojo executeDeleteCatalogIssue(GenericCatalogIdRequestPojo requestPojo) throws BusinessException {
 	
 		if (movementsIssueRepository.verifyIssueRegistered(requestPojo.getId()))
