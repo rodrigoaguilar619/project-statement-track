@@ -94,15 +94,20 @@ public class BrokerSnowBallBusiness {
 		
 		for(int indexBuy = 0; indexBuy < brokerDataSnowballs.size(); indexBuy++) {
 			
-			if (brokerDataSnowballs.get(indexBuy).getMovementDescription().equals("Compromiso de Inversión")) {
+			BrokerDataSnowball brokerDataSnowballBuy = brokerDataSnowballs.get(indexBuy);
+			
+			if (brokerDataSnowballBuy.getMovementDescription().equals("Compromiso de Inversión") || 
+					brokerDataSnowballBuy.getMovementDescription().equals("Pago de compra de acciones en Snowball Market")) {
 				
 				for(int indexCompromise = 0; indexCompromise < brokerDataSnowballs.size(); indexCompromise++) {
 					
-					if (brokerDataSnowballs.get(indexCompromise).getMovementDescription().equals("Comision por Compromiso de Inversión") &&
+					BrokerDataSnowball brokerDataSnowballCompromise = brokerDataSnowballs.get(indexCompromise);
+					
+					if ((brokerDataSnowballCompromise.getMovementDescription().equals("Comision por Compromiso de Inversión") || brokerDataSnowballCompromise.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market") ) &&
 						indexCompromise < indexBuy && 
-						brokerDataSnowballs.get(indexCompromise).getDateTransaction().compareTo(brokerDataSnowballs.get(indexBuy).getDateTransaction()) == 0 &&
-						brokerDataSnowballs.get(indexCompromise).getCompany().equals(brokerDataSnowballs.get(indexBuy).getCompany()) &&
-						brokerDataSnowballs.get(indexCompromise).getTotalIssues().equals(brokerDataSnowballs.get(indexBuy).getTotalIssues()) )
+						brokerDataSnowballCompromise.getDateTransaction().compareTo(brokerDataSnowballBuy.getDateTransaction()) == 0 &&
+								brokerDataSnowballCompromise.getCompany().equals(brokerDataSnowballBuy.getCompany()) &&
+								brokerDataSnowballCompromise.getTotalIssues().equals(brokerDataSnowballBuy.getTotalIssues()) )
 							Collections.swap(brokerDataSnowballs, indexBuy, indexCompromise);
 				}
 			}
@@ -211,10 +216,21 @@ public class BrokerSnowBallBusiness {
 				entityToSave = movementsIssue;
 				tableTrack = TABLE_NAME_MOVEMENTS_ISSUE;
 			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión")) {
+			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión") ) {
 
 				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
 				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY.getId());
+				
+				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
+				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
+				genericCustomPersistance.update(movementsIssue);
+				
+				updateSnowBallTrack(brokerDataSnowball, TABLE_NAME_MOVEMENTS_ISSUE, movementsIssue.getId());
+			}
+			else if (brokerDataSnowball.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market")) {
+
+				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
+				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId());
 				
 				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
 				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
@@ -237,8 +253,7 @@ public class BrokerSnowBallBusiness {
 				tableTrack = "movements_money";
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Pago de compra de acciones en Mercado Secundario") ||
-					brokerDataSnowball.getMovementDescription().equals("Pago de compra de acciones en Snowball Market") ||
-					brokerDataSnowball.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market")) {
+					brokerDataSnowball.getMovementDescription().equals("Pago de compra de acciones en Snowball Market")) {
 
 				movementIssuePojo = buildMovementIssueBuyMarketSecundary(brokerDataSnowball);
 				
