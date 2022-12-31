@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
@@ -29,7 +30,7 @@ public class MovementsMoneyRepository {
 	@Autowired
 	EntityManager em;
 	
-	private BigDecimal getMovementsMoneyTotals(SingularAttribute<MovementsMoney, BigDecimal> column, Integer idBrokerAccount, Integer idTypetransaction) {
+	private BigDecimal getMovementsMoneyTotals(SingularAttribute<MovementsMoney, BigDecimal> column, Integer idBrokerAccount, Integer idTypetransaction, Map<String, String> filters) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
@@ -40,12 +41,27 @@ public class MovementsMoneyRepository {
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), idTypetransaction));
 		
+		buildMovementsMoneyFiltersDates(filters, root, cb, predicatesAnd);
+		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
 		TypedQuery<BigDecimal> typedQuery = em.createQuery(cq);
 		BigDecimal result = typedQuery.getSingleResult();
 		
 		return result != null ? result : new BigDecimal(0);
+	}
+	
+	private void buildMovementsMoneyFiltersDates(Map<String, String> filters, Root<MovementsMoney> root, CriteriaBuilder cb, List<Predicate> predicatesAnd) {
+		
+		if (filters != null) {
+			
+			if (filters.get("filterDateStart") != null) {
+				predicatesAnd.add(cb.greaterThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(new Long(filters.get("filterDateStart")))));
+			}
+			if (filters.get("filterDateEnd") != null) {
+				predicatesAnd.add(cb.lessThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(new Long(filters.get("filterDateEnd")))));
+			}
+		}
 	}
 	
 	public List<MovementsMoney> getMovementsMoney(Integer idBrokerAccount, Integer idTypetransaction, Integer year, Integer month) {
@@ -76,8 +92,8 @@ public class MovementsMoneyRepository {
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(cb.lessThan(root.get(MovementsMoney_.dateTransaction), dateEnd));
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), idTypetransaction));
+		predicatesAnd.add(cb.lessThan(root.get(MovementsMoney_.dateTransaction), dateEnd));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -87,14 +103,14 @@ public class MovementsMoneyRepository {
 		return result != null ? result : new BigDecimal(0);
 	}
 	
-	public BigDecimal getMovementsMoneyTotals(Integer idBrokerAccount, Integer idTypetransaction) {
+	public BigDecimal getMovementsMoneyTotals(Integer idBrokerAccount, Integer idTypetransaction, Map<String, String> filters) {
 		
-		return getMovementsMoneyTotals(MovementsMoney_.amount, idBrokerAccount, idTypetransaction);
+		return getMovementsMoneyTotals(MovementsMoney_.amount, idBrokerAccount, idTypetransaction, filters);
 	}
 	
-	public BigDecimal getMovementsMoneyTotalsMxn(Integer idBrokerAccount, Integer idTypetransaction) {
+	public BigDecimal getMovementsMoneyTotalsMxn(Integer idBrokerAccount, Integer idTypetransaction, Map<String, String> filters) {
 		
-		return getMovementsMoneyTotals(MovementsMoney_.amountMxn, idBrokerAccount, idTypetransaction);
+		return getMovementsMoneyTotals(MovementsMoney_.amountMxn, idBrokerAccount, idTypetransaction, filters);
 	}
 	
 	public List<MovementsMoney> getMovementsMoneyDividend(Integer idBrokerAccount, Integer idIssue) {
@@ -113,7 +129,7 @@ public class MovementsMoneyRepository {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	public List<MovementsMoney> getMovementsMoney(Integer idBrokerAccount, List<Integer> idTypTransactionList) {
+	public List<MovementsMoney> getMovementsMoney(Integer idBrokerAccount, List<Integer> idTypTransactionList, Map<String, String> filters) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<MovementsMoney> cq = cb.createQuery(MovementsMoney.class);
@@ -123,12 +139,14 @@ public class MovementsMoneyRepository {
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
 		predicatesAnd.add(root.get(MovementsMoney_.idTypeTransaction).in(idTypTransactionList));
 		
+		buildMovementsMoneyFiltersDates(filters, root, cb, predicatesAnd);
+		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
 		return em.createQuery(cq).getResultList();
 	}
 	
-	public List<IssueDividendsPojo> getMovementsMoneyDividendTotals(Integer idBrokerAccount) {
+	public List<IssueDividendsPojo> getMovementsMoneyDividendTotals(Integer idBrokerAccount, Map<String, String> filters) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tuple> cq = cb.createQuery(Tuple.class);
@@ -139,6 +157,8 @@ public class MovementsMoneyRepository {
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), CatalogTypeTransactionEnum.DIVIDEND.getId()));
+		
+		buildMovementsMoneyFiltersDates(filters, root, cb, predicatesAnd);
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		

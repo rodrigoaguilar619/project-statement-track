@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,12 +41,12 @@ public class AccountResumeBusiness {
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;
 	
-	private List<MovementMoneyResumePojo> getMovementsMoneyResume(Integer idBrokerAccount) {
+	private List<MovementMoneyResumePojo> getMovementsMoneyResume(Integer idBrokerAccount, Map<String, String> filters) {
 		
 		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogTypeTransactionEnum.DEPOSIT.getId(), CatalogTypeTransactionEnum.WITHDRAW.getId());
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
-		List<MovementsMoney> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList);
+		List<MovementsMoney> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList, filters);
 		
 		for(MovementsMoney movementMoney: movementsMoneys) {
 			
@@ -59,9 +60,9 @@ public class AccountResumeBusiness {
 		return movementMoneyResumePojos;
 	}
 	
-	private List<IssueDividendsPojo> getMovementsMoneyDividendsResume(Integer idBrokerAccount) {
+	private List<IssueDividendsPojo> getMovementsMoneyDividendsResume(Integer idBrokerAccount, Map<String, String> filters) {
 		
-		return movementsMoneyRepository.getMovementsMoneyDividendTotals(idBrokerAccount);
+		return movementsMoneyRepository.getMovementsMoneyDividendTotals(idBrokerAccount, filters);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -71,14 +72,14 @@ public class AccountResumeBusiness {
 		BrokerAccount brokerAccount = (BrokerAccount) genericCustomPersistance.findById(BrokerAccount.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar currentDate = Calendar.getInstance();
-		currentDate.setTime(new Date());
+		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(new Long(requestPojo.getFilters().get("filterDateEnd"))) : new Date());
 		
 		Integer currentYear = currentDate.get(Calendar.YEAR);
 		Integer currentMonth = currentDate.get(Calendar.MONTH) + 1;
 		
-		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DEPOSIT.getId());
-		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.WITHDRAW.getId());
-		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DIVIDEND.getId());
+		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DEPOSIT.getId(), requestPojo.getFilters());
+		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.WITHDRAW.getId(), requestPojo.getFilters());
+		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DIVIDEND.getId(), requestPojo.getFilters());
 		BigDecimal currentBalance = accountUtil.getTotalPreviousPeriod(brokerAccount, currentYear, currentMonth);
 		
 		GetAccountResumeDataPojo responsePojo = new GetAccountResumeDataPojo();
@@ -86,8 +87,8 @@ public class AccountResumeBusiness {
 		responsePojo.setTotalWithdraws(totalWithdraws);
 		responsePojo.setCurrentBalance(currentBalance);
 		responsePojo.setTotalDividends(totalDividends);
-		responsePojo.setMovementsMoney(getMovementsMoneyResume(requestPojo.getIdBrokerAccount()));
-		responsePojo.setMovementsMoneyDividend(getMovementsMoneyDividendsResume(requestPojo.getIdBrokerAccount()));
+		responsePojo.setMovementsMoney(getMovementsMoneyResume(requestPojo.getIdBrokerAccount(), requestPojo.getFilters()));
+		responsePojo.setMovementsMoneyDividend(getMovementsMoneyDividendsResume(requestPojo.getIdBrokerAccount(), requestPojo.getFilters()));
 		
 		return responsePojo;
 	}
