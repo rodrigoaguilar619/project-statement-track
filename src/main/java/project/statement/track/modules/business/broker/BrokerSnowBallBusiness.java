@@ -166,6 +166,16 @@ public class BrokerSnowBallBusiness {
 		
 		return movementIssuePojo;
 	}
+	
+	private CatalogIssue getCatalogIssue(String company) throws BusinessException {
+		
+		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
+		
+		if (catalogIssue == null)
+			throw new BusinessException("Catalog no found for company '" + company + "' on registering movement money transaction");
+		
+		return catalogIssue;
+	}
 
 	@SuppressWarnings({ "unchecked" })
 	public void storeDataSnowBall(List<BrokerSnowBallPojo> snowBallPojos) throws BusinessException {
@@ -218,7 +228,7 @@ public class BrokerSnowBallBusiness {
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión") ) {
 
-				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
+				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
 				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY.getId());
 				
 				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
@@ -229,7 +239,7 @@ public class BrokerSnowBallBusiness {
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market")) {
 
-				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
+				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
 				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId());
 				
 				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
@@ -244,7 +254,7 @@ public class BrokerSnowBallBusiness {
 					brokerDataSnowball.getMovementDescription().equals("Pago de Comisión Variable") ||
 					brokerDataSnowball.getMovementDescription().equals("Pago de RODI")) {
 				
-				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
+				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
 				
 				movementMoneyPojo = buildMovementMoneyPayDividend(brokerDataSnowball, catalogIssue);
 				movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
@@ -266,7 +276,7 @@ public class BrokerSnowBallBusiness {
 					brokerDataSnowball.getMovementDescription().equals("Devolución de pago de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI") ||
 					brokerDataSnowball.getMovementDescription().equals("Devolución de comision de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI")) {
 				
-				catalogIssue = catalogsRepository.getCatalogIssueSnowBall(brokerDataSnowball.getCompany());
+				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
 				movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId());
 				
 				if (movementsIssue == null)

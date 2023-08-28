@@ -3,6 +3,7 @@ package project.statement.track.app.utils;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,11 @@ public class BrokerSnowBallUtil {
 				
 				String movementData = nodeData.replace("\n\r", "");
 				String[] movementDataList = movementData.split("\r\n");
+				
+				List<String> movementDataListTmp = new ArrayList<>(Arrays.asList(movementDataList));
+				movementDataListTmp.remove(" Descargar");
+				movementDataListTmp.remove("Descargar");
+				movementDataList = movementDataListTmp.toArray(new String[0]);
 				
 				Map<String, String> movementDataMap = new LinkedHashMap<>();
 				
