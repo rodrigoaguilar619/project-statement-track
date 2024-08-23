@@ -7,8 +7,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import lib.base.backend.web.config.beans.DataBaseBeans;
 import org.springframework.context.annotation.ComponentScan.Filter;
+
+//import lib.base.backend.modules.web.config.beans.DataBaseBeans;
 
 @SpringBootApplication(exclude = {
 	    DataSourceAutoConfiguration.class, 
@@ -21,7 +22,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.config.*"),
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.app.*"),
 			@ComponentScan.Filter(type = FilterType.REGEX, pattern = "project.statement.track.modules.*"),
-			@Filter(type = FilterType.ASSIGNABLE_TYPE, value = DataBaseBeans.class),			
+			@Filter(type = FilterType.ASSIGNABLE_TYPE/*, value = DataBaseBeans.class*/),			
 	})
 public class AppStatementTrackIndividualTest {
 

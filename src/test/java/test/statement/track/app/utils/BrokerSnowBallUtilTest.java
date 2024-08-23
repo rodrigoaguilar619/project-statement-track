@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import lib.base.backend.utils.ExecuteMethodUtil;
-import lib.base.backend.utils.ReadFileUtil;
+import lib.base.backend.utils.FileUtil;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.utils.BrokerSnowBallUtil;
 import test.statement.track.config.AppStatementTrackTest;
@@ -19,8 +19,7 @@ class BrokerSnowBallUtilTest {
 	@Autowired
 	BrokerSnowBallUtil brokerSnowBallUtil;
 	
-	@Autowired
-	ReadFileUtil readFileUtil;
+	FileUtil readFileUtil = new FileUtil();
 
 	@Test
 	void redFileHtmlTest() throws Throwable {

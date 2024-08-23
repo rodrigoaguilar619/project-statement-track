@@ -1,10 +1,12 @@
-package project.statement.track.app.utils;
+package project.statement.track.config.helper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import lib.base.backend.exception.data.BusinessException;
 import project.statement.track.app.beans.entity.BrokerAccount;
@@ -13,7 +15,8 @@ import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
 import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
 
-public class AccountUtil {
+@Component
+public class AccountHelper {
 	
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;

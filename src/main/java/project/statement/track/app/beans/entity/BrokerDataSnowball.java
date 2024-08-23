@@ -3,14 +3,14 @@ package project.statement.track.app.beans.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name="broker_data_snowball")
@@ -58,7 +58,7 @@ public class BrokerDataSnowball {
 	private String trackTable;
 	
 	@Column(name="track_table_id")
-	private String trackTableId;
+	private Integer trackTableId;
 	
 	@Column(name="status_movement")
 	private Boolean statusMovement;
@@ -167,11 +167,11 @@ public class BrokerDataSnowball {
 		this.trackTable = trackTable;
 	}
 
-	public String getTrackTableId() {
+	public Integer getTrackTableId() {
 		return trackTableId;
 	}
 
-	public void setTrackTableId(String trackTableId) {
+	public void setTrackTableId(Integer trackTableId) {
 		this.trackTableId = trackTableId;
 	}
 

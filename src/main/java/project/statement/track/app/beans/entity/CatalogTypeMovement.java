@@ -1,7 +1,8 @@
 package project.statement.track.app.beans.entity;
 
-import javax.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 import project.statement.track.app.beans.entity.generic.GenericCatalogIntEntity;
 
 

@@ -23,24 +23,17 @@ import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
 import project.statement.track.app.repository.BrokerDataSnowBallRepository;
 import project.statement.track.app.repository.CatalogsRepository;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.utils.BrokerSnowBallUtil;
-import project.statement.track.app.utils.BuildPojoToEntityUtil;
 import project.statement.track.app.vo.catalogs.CatalogBrokerAccountEnum;
 import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
 import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class BrokerSnowBallBusiness {
+public class BrokerSnowBallBusiness extends MainBusiness {
 	
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BrokerSnowBallUtil brokerSnowBallUtil;
-	
-	@Autowired
-	BuildPojoToEntityUtil buildPojoToEntityUtil;
 	
 	@Autowired
 	CatalogsRepository catalogsRepository;
@@ -76,7 +69,7 @@ public class BrokerSnowBallBusiness {
 	private void updateSnowBallTrack(BrokerDataSnowball brokerDataSnowball, String trackTable, Integer trackId) {
 		
 		brokerDataSnowball.setTrackTable(trackTable);
-		brokerDataSnowball.setTrackTableId(trackId + "");
+		brokerDataSnowball.setTrackTableId(trackId);
 		genericCustomPersistance.update(brokerDataSnowball);
 	}
 	

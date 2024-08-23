@@ -19,24 +19,21 @@ import project.statement.track.app.beans.pojos.petition.data.AccountStatementDat
 import project.statement.track.app.beans.pojos.petition.request.AccountStatementRequestPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.utils.AccountUtil;
-import project.statement.track.app.utils.BuildEntityToPojoUtil;
 import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
 import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
 import project.statement.track.app.vo.catalogs.DefinitionTypeOperationEnum;
+import project.statement.track.config.helper.AccountHelper;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class AccountStatementBusiness {
+public class AccountStatementBusiness extends MainBusiness {
 	
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
 	
 	@Autowired
-	BuildEntityToPojoUtil buildEntityToPojoUtil;
-	
-	@Autowired
-	AccountUtil accountUtil;
+	AccountHelper accountUtil;
 	
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;

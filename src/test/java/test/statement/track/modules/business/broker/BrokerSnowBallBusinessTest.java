@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lib.base.backend.utils.ExecuteMethodUtil;
-import lib.base.backend.utils.ReadFileUtil;
+import lib.base.backend.utils.FileUtil;
 import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
 import test.statement.track.config.AppStatementTrackTest;
 
@@ -17,8 +17,7 @@ class BrokerSnowBallBusinessTest {
 	@Autowired
 	BrokerSnowBallBusiness brokerSnowBallBusiness;
 	
-	@Autowired
-	ReadFileUtil readFileUtil;
+	FileUtil readFileUtil = new FileUtil();
 	
 	@Test
 	void storeStatementSnowBallTest() throws Throwable {

@@ -13,17 +13,14 @@ import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.utils.BuildEntityToPojoUtil;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class AccountIssuesBusiness {
+public class AccountIssuesBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BuildEntityToPojoUtil buildEntityToPojoUtil;
 	
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;

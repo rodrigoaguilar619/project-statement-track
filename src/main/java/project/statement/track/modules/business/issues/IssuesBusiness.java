@@ -12,22 +12,15 @@ import project.statement.track.app.beans.pojos.petition.data.GetIssuesBuyDataPoj
 import project.statement.track.app.beans.pojos.petition.request.GetIssuesBuyRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.utils.BrokerSnowBallUtil;
-import project.statement.track.app.utils.BuildPojoToEntityUtil;
 import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class IssuesBusiness {
+public class IssuesBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BrokerSnowBallUtil brokerSnowBallUtil;
-	
-	@Autowired
-	BuildPojoToEntityUtil buildPojoToEntityUtil;
 	
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;

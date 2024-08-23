@@ -14,18 +14,15 @@ import lib.base.backend.persistance.GenericPersistence;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileBase64StatementRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileStatementRequestPojo;
-import project.statement.track.app.utils.BrokerSnowBallUtil;
+import project.statement.track.modules.business.MainBusiness;
 import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
 
 @Component
-public class ReadFileSnowBallBusiness {
+public class ReadFileSnowBallBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BrokerSnowBallUtil brokerSnowBallUtil;
 	
 	@Autowired
 	BrokerSnowBallBusiness brokerSnowBallBusiness;

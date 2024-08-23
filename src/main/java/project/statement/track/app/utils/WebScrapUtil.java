@@ -3,12 +3,14 @@ package project.statement.track.app.utils;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.StringWebResponse;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HTMLParser;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 import lib.base.backend.exception.data.BusinessException;
 
 public class WebScrapUtil {

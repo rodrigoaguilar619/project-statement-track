@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -22,11 +21,9 @@ import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 
 public class BrokerSnowBallUtil {
 	
-	@Autowired
-	private WebScrapUtil webScrapUtil;
+	private WebScrapUtil webScrapUtil = new WebScrapUtil();
 	
-	@Autowired
-	private DateFormatUtil dateFormatUtil;
+	private DateFormatUtil dateFormatUtil = new DateFormatUtil();
 	
 	private String getNumberFormat(String number) {
 		return number.replace("$", "").replace(" MXN", "").replace(",", "");

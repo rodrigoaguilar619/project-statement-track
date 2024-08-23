@@ -18,17 +18,14 @@ import project.statement.track.app.beans.pojos.petition.data.GetBADateStatements
 import project.statement.track.app.beans.pojos.petition.data.GetBrokerAccountsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetBADateStatementsRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetBrokerAccountsRequestPojo;
-import project.statement.track.app.utils.BuildEntityToPojoUtil;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class BrokerAccountBusiness {
+public class BrokerAccountBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BuildEntityToPojoUtil buildEntityToPojoUtil;
 	
 	@SuppressWarnings("unchecked")
 	public List<BrokerAccountResumePojo> getBrokerAccounts() {

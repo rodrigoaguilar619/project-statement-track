@@ -21,22 +21,19 @@ import project.statement.track.app.beans.pojos.petition.data.GetAccountResumeDat
 import project.statement.track.app.beans.pojos.petition.request.GetAccountResumeRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.utils.AccountUtil;
-import project.statement.track.app.utils.BuildEntityToPojoUtil;
 import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
+import project.statement.track.config.helper.AccountHelper;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class AccountResumeBusiness {
+public class AccountResumeBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	GenericPersistence genericCustomPersistance;
 	
 	@Autowired
-	BuildEntityToPojoUtil buildEntityToPojoUtil;
-	
-	@Autowired
-	AccountUtil accountUtil;
+	AccountHelper accountUtil;
 	
 	@Autowired
 	MovementsMoneyRepository movementsMoneyRepository;

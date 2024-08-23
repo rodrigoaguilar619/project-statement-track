@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.enumerators.CrudOptionsEnum;
 import lib.base.backend.exception.data.BusinessException;
+import lib.base.backend.modules.catalog.repository.CatalogRepository;
 import lib.base.backend.persistance.GenericPersistence;
 import lib.base.backend.pojo.catalog.CatalogDataPojo;
 import lib.base.backend.pojo.catalog.CatalogRequestPojo;
 import lib.base.backend.utils.CatalogUtil;
-import lib.base.backend.web.repository.CatalogBaseRepository;
 import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
 import project.statement.track.app.beans.pojos.petition.data.GenericCatalogDataPojo;
@@ -22,18 +22,17 @@ import project.statement.track.app.beans.pojos.petition.request.catalog.CrudCata
 import project.statement.track.app.beans.pojos.petition.request.catalog.GenericCatalogIdRequestPojo;
 import project.statement.track.app.repository.CatalogsRepository;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.utils.BuildEntityToPojoUtil;
-import project.statement.track.app.utils.BuildPojoToEntityUtil;
+import project.statement.track.modules.business.MainBusiness;
 
 @Component
-public class CrudCatalogIssueBusiness {
+public class CrudCatalogIssueBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
 	protected GenericPersistence genericCustomPersistance;
 	
 	@Autowired
-	CatalogBaseRepository catalogBaseRepository;
+	CatalogRepository catalogBaseRepository;
 	
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
@@ -41,14 +40,7 @@ public class CrudCatalogIssueBusiness {
 	@Autowired
 	CatalogsRepository catalogsRepository;
 	
-	@Autowired
-	CatalogUtil catalogUtil;
-	
-	@Autowired
-	BuildPojoToEntityUtil buildPojoToEntityUtil;
-	
-	@Autowired
-	BuildEntityToPojoUtil buildEntityToPojoUtil;
+	CatalogUtil catalogUtil = new CatalogUtil();
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
