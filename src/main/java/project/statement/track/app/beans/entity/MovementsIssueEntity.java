@@ -12,20 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-
-/**
- * The persistent class for the movements_issue database table.
- * 
- */
 @Entity
 @Table(name="movements_issue")
-@NamedQuery(name="MovementsIssue.findAll", query="SELECT m FROM MovementsIssue m")
-public class MovementsIssue implements Serializable {
+public class MovementsIssueEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -43,7 +36,7 @@ public class MovementsIssue implements Serializable {
 	private Integer idIssue;
 
 	@Column(name="id_type_movement")
-	private int idTypeMovement;
+	private Integer idTypeMovement;
 
 	@Column(name="price_issue_unity")
 	private BigDecimal priceIssueUnity;
@@ -59,11 +52,11 @@ public class MovementsIssue implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_type_movement", insertable = false, updatable= false)
-	CatalogTypeMovement catalogTypeMovement;
+	CatalogTypeMovementEntity catalogTypeMovement;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
-	CatalogIssue catalogIssue;
+	CatalogIssueEntity catalogIssue;
 
 	public int getId() {
 		return this.id;
@@ -129,19 +122,19 @@ public class MovementsIssue implements Serializable {
 		this.priceTotal = priceTotal;
 	}
 
-	public CatalogTypeMovement getCatalogTypeMovement() {
+	public CatalogTypeMovementEntity getCatalogTypeMovement() {
 		return catalogTypeMovement;
 	}
 
-	public void setCatalogTypeMovement(CatalogTypeMovement catalogTypeMovement) {
+	public void setCatalogTypeMovement(CatalogTypeMovementEntity catalogTypeMovement) {
 		this.catalogTypeMovement = catalogTypeMovement;
 	}
 
-	public CatalogIssue getCatalogIssue() {
+	public CatalogIssueEntity getCatalogIssue() {
 		return catalogIssue;
 	}
 
-	public void setCatalogIssue(CatalogIssue catalogIssue) {
+	public void setCatalogIssue(CatalogIssueEntity catalogIssue) {
 		this.catalogIssue = catalogIssue;
 	}
 

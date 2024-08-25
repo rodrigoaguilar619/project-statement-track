@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
@@ -27,10 +27,10 @@ public class AccountIssuesBusiness extends MainBusiness {
 	
 	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, Integer idIssue) {
 		
-		List<MovementsMoney> movementsMoneyDividend = movementsMoneyRepository.getMovementsMoneyDividend(idBrokerAccount, idIssue);
+		List<MovementsMoneyEntity> movementsMoneyDividend = movementsMoneyRepository.getMovementsMoneyDividend(idBrokerAccount, idIssue);
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
-		for(MovementsMoney movementsMoney: movementsMoneyDividend) {
+		for(MovementsMoneyEntity movementsMoney: movementsMoneyDividend) {
 			
 			MovementMoneyResumePojo movementMoneyResumePojo = buildEntityToPojoUtil.mapMovementMoneyResumePojo(new MovementMoneyResumePojo(), movementsMoney);
 			movementMoneyResumePojos.add(movementMoneyResumePojo);

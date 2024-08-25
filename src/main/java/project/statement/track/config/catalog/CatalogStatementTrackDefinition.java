@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lib.base.backend.modules.catalog.interaface.CatalogDefinition;
-import project.statement.track.app.beans.entity.BrokerAccount;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
 
 public class CatalogStatementTrackDefinition implements CatalogDefinition {
 
@@ -13,7 +13,7 @@ public class CatalogStatementTrackDefinition implements CatalogDefinition {
 	
 	public CatalogStatementTrackDefinition() {
 		
-		catalogs.put("brokerAccount", BrokerAccount.class);
+		catalogs.put("brokerAccount", BrokerAccountEntity.class);
 		
 	}
 

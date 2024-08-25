@@ -14,7 +14,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.utils.date.DateFormatUtil;
-import project.statement.track.app.beans.entity.BrokerDataSnowball;
+import project.statement.track.app.beans.entity.BrokerDataSnowballEntity;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 
@@ -150,14 +150,14 @@ public class BrokerSnowBallUtil {
 		return getDataSnowBall(page);
 	}
 	
-	public List<BrokerDataSnowball> mapDataSnowBall(List<BrokerSnowBallPojo> snowBallPojos) throws BusinessException {
+	public List<BrokerDataSnowballEntity> mapDataSnowBall(List<BrokerSnowBallPojo> snowBallPojos) throws BusinessException {
 		
-		List<BrokerDataSnowball> brokerDataSnowballs = new ArrayList<>();
+		List<BrokerDataSnowballEntity> brokerDataSnowballs = new ArrayList<>();
 		
 		try {
 			for(BrokerSnowBallPojo brokerSnowBallPojo: snowBallPojos) {
 				
-				BrokerDataSnowball brokerDataSnowball = new BrokerDataSnowball();
+				BrokerDataSnowballEntity brokerDataSnowball = new BrokerDataSnowballEntity();
 				
 				brokerDataSnowball.setId(brokerSnowBallPojo.getDate().replace("-", "_") + "_" + brokerSnowBallPojo.getHour().replace(":", "_") + "_" + brokerSnowBallPojo.getPreviousBalance() + "_" + brokerSnowBallPojo.getActualBalance());
 				brokerDataSnowball.setActualBalance(brokerSnowBallPojo.getActualBalance() != null ? new BigDecimal(brokerSnowBallPojo.getActualBalance()) : null);

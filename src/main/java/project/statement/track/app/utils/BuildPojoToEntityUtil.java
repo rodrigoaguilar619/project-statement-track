@@ -2,19 +2,19 @@ package project.statement.track.app.utils;
 
 import java.util.Date;
 
-import project.statement.track.app.beans.entity.CatalogIssue;
-import project.statement.track.app.beans.entity.MovementsIssue;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.CatalogIssueEntity;
+import project.statement.track.app.beans.entity.MovementsIssueEntity;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
 import project.statement.track.app.beans.pojos.entity.MovementIssuePojo;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
 
 public class BuildPojoToEntityUtil {
 
-	public MovementsMoney generateMovementsMoneyEntity(MovementsMoney movementsMoney, MovementMoneyPojo movementMoneyPojo) {
+	public MovementsMoneyEntity generateMovementsMoneyEntity(MovementsMoneyEntity movementsMoney, MovementMoneyPojo movementMoneyPojo) {
 		
 		if (movementsMoney == null)
-			movementsMoney = new MovementsMoney();
+			movementsMoney = new MovementsMoneyEntity();
 		
 		movementsMoney.setAmount(movementMoneyPojo.getAmount());
 		movementsMoney.setAmountMxn(movementMoneyPojo.getAmountMxn());
@@ -26,10 +26,10 @@ public class BuildPojoToEntityUtil {
 		return movementsMoney;
 	}
 	
-	public MovementsIssue generateMovementsIssueEntity(MovementsIssue movementsIssue, MovementIssuePojo movementIssuePojo) {
+	public MovementsIssueEntity generateMovementsIssueEntity(MovementsIssueEntity movementsIssue, MovementIssuePojo movementIssuePojo) {
 		
 		if (movementsIssue == null)
-			movementsIssue = new MovementsIssue();
+			movementsIssue = new MovementsIssueEntity();
 		
 		movementsIssue.setDateTransaction(movementIssuePojo.getDateTransaction());
 		movementsIssue.setIdBrokerAccount(movementIssuePojo.getIdBrokerAccount());
@@ -42,10 +42,10 @@ public class BuildPojoToEntityUtil {
 		return movementsIssue;
 	}
 	
-	public CatalogIssue generateCatalogIssueEntity(CatalogIssue catalogIssue, CatalogIssuePojo catalogIssuePojo) {
+	public CatalogIssueEntity generateCatalogIssueEntity(CatalogIssueEntity catalogIssue, CatalogIssuePojo catalogIssuePojo) {
 		
 		if (catalogIssue == null)
-			catalogIssue = new CatalogIssue();
+			catalogIssue = new CatalogIssueEntity();
 		
 		catalogIssue.setInitials(catalogIssuePojo.getInitials());
 		catalogIssue.setDescription(catalogIssuePojo.getDescription());

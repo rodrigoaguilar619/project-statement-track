@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.BrokerAccount;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountResumeDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountResumeRequestPojo;
@@ -43,9 +43,9 @@ public class AccountResumeBusiness extends MainBusiness {
 		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogsEntity.CatalogTypeTransaction.DEPOSIT, CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
-		List<MovementsMoney> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList, filters);
+		List<MovementsMoneyEntity> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList, filters);
 		
-		for(MovementsMoney movementMoney: movementsMoneys) {
+		for(MovementsMoneyEntity movementMoney: movementsMoneys) {
 			
 			MovementMoneyResumePojo movementMoneyResumePojo = (MovementMoneyResumePojo) buildEntityToPojoUtil.mapMovementMoneyPojo(new MovementMoneyResumePojo(), movementMoney);
 			movementMoneyResumePojo.setTypeTransactionDescription(movementMoney.getCatalogTypeTransaction().getDescription());
@@ -66,7 +66,7 @@ public class AccountResumeBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public GetAccountResumeDataPojo executeGetAccountResume(GetAccountResumeRequestPojo requestPojo) throws BusinessException {
 		
-		BrokerAccount brokerAccount = (BrokerAccount) genericCustomPersistance.findById(BrokerAccount.class, requestPojo.getIdBrokerAccount());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar currentDate = Calendar.getInstance();
 		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(Long.parseLong(requestPojo.getFilters().get("filterDateEnd"))) : new Date());

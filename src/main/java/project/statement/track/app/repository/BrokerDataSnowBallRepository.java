@@ -11,8 +11,8 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import project.statement.track.app.beans.entity.BrokerDataSnowball;
-import project.statement.track.app.beans.entity.BrokerDataSnowball_;
+import project.statement.track.app.beans.entity.BrokerDataSnowballEntity;
+import project.statement.track.app.beans.entity.BrokerDataSnowballEntity_;
 
 @Repository
 public class BrokerDataSnowBallRepository {
@@ -20,15 +20,15 @@ public class BrokerDataSnowBallRepository {
 	@Autowired
 	EntityManager em;
 	
-	public List<BrokerDataSnowball> getDataPending() {
+	public List<BrokerDataSnowballEntity> getDataPending() {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<BrokerDataSnowball> cq = cb.createQuery(BrokerDataSnowball.class);
-		Root<BrokerDataSnowball> root = cq.from(BrokerDataSnowball.class);
+		CriteriaQuery<BrokerDataSnowballEntity> cq = cb.createQuery(BrokerDataSnowballEntity.class);
+		Root<BrokerDataSnowballEntity> root = cq.from(BrokerDataSnowballEntity.class);
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.isNull(root.get(BrokerDataSnowball_.trackTable)));
-		predicatesAnd.add(cb.equal(root.get(BrokerDataSnowball_.statusMovement), true));
+		predicatesAnd.add(cb.isNull(root.get(BrokerDataSnowballEntity_.trackTable)));
+		predicatesAnd.add(cb.equal(root.get(BrokerDataSnowballEntity_.statusMovement), true));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		

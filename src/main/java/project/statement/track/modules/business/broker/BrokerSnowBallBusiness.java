@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.BrokerDataSnowball;
-import project.statement.track.app.beans.entity.CatalogIssue;
-import project.statement.track.app.beans.entity.MovementsIssue;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.BrokerDataSnowballEntity;
+import project.statement.track.app.beans.entity.CatalogIssueEntity;
+import project.statement.track.app.beans.entity.MovementsIssueEntity;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.beans.pojos.entity.MovementIssuePojo;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
@@ -46,7 +46,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	private static final String TABLE_NAME_MOVEMENTS_ISSUE = "movements_issue";
 	
 	@SuppressWarnings("unchecked")
-	private void saveSnowBallEntity(BrokerDataSnowball brokerDataSnowball, Object entityToSave, String tableTrack) throws BusinessException {
+	private void saveSnowBallEntity(BrokerDataSnowballEntity brokerDataSnowball, Object entityToSave, String tableTrack) throws BusinessException {
 		
 		if (entityToSave != null) {
 		
@@ -65,7 +65,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void updateSnowBallTrack(BrokerDataSnowball brokerDataSnowball, String trackTable, Integer trackId) {
+	private void updateSnowBallTrack(BrokerDataSnowballEntity brokerDataSnowball, String trackTable, Integer trackId) {
 		
 		brokerDataSnowball.setTrackTable(trackTable);
 		brokerDataSnowball.setTrackTableId(trackId);
@@ -74,7 +74,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	
 	private Integer getIssueId(String company) throws BusinessException {
 		
-		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
+		CatalogIssueEntity catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
 		
 		if (catalogIssue == null)
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgMapCompanyNotFound(company));
@@ -82,18 +82,18 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 			return catalogIssue.getId();
 	}
 	
-	private void swapBuyAndComision(List<BrokerDataSnowball> brokerDataSnowballs) {
+	private void swapBuyAndComision(List<BrokerDataSnowballEntity> brokerDataSnowballs) {
 		
 		for(int indexBuy = 0; indexBuy < brokerDataSnowballs.size(); indexBuy++) {
 			
-			BrokerDataSnowball brokerDataSnowballBuy = brokerDataSnowballs.get(indexBuy);
+			BrokerDataSnowballEntity brokerDataSnowballBuy = brokerDataSnowballs.get(indexBuy);
 			
 			if (brokerDataSnowballBuy.getMovementDescription().equals("Compromiso de Inversión") || 
 					brokerDataSnowballBuy.getMovementDescription().equals("Pago de compra de acciones en Snowball Market")) {
 				
 				for(int indexCompromise = 0; indexCompromise < brokerDataSnowballs.size(); indexCompromise++) {
 					
-					BrokerDataSnowball brokerDataSnowballCompromise = brokerDataSnowballs.get(indexCompromise);
+					BrokerDataSnowballEntity brokerDataSnowballCompromise = brokerDataSnowballs.get(indexCompromise);
 					
 					if ((brokerDataSnowballCompromise.getMovementDescription().equals("Comision por Compromiso de Inversión") || brokerDataSnowballCompromise.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market") ) &&
 						indexCompromise < indexBuy && 
@@ -106,7 +106,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		}
 	}
 	
-	private MovementMoneyPojo buildMovementMoneyDeposit(BrokerDataSnowball brokerDataSnowball) {
+	private MovementMoneyPojo buildMovementMoneyDeposit(BrokerDataSnowballEntity brokerDataSnowball) {
 		
 		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
@@ -118,7 +118,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		return movementMoneyPojo;
 	}
 	
-	private MovementIssuePojo buildMovementIssueInvestment(BrokerDataSnowball brokerDataSnowball) throws BusinessException {
+	private MovementIssuePojo buildMovementIssueInvestment(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		MovementIssuePojo movementIssuePojo = new MovementIssuePojo();
 		movementIssuePojo.setDateTransaction(brokerDataSnowball.getDateTransaction());
@@ -132,7 +132,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		return movementIssuePojo;
 	}
 	
-	private MovementMoneyPojo buildMovementMoneyPayDividend(BrokerDataSnowball brokerDataSnowball, CatalogIssue catalogIssue) {
+	private MovementMoneyPojo buildMovementMoneyPayDividend(BrokerDataSnowballEntity brokerDataSnowball, CatalogIssueEntity catalogIssue) {
 		
 		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
@@ -145,7 +145,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		return movementMoneyPojo;
 	}
 	
-	private MovementIssuePojo buildMovementIssueBuyMarketSecundary(BrokerDataSnowball brokerDataSnowball) throws BusinessException {
+	private MovementIssuePojo buildMovementIssueBuyMarketSecundary(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		MovementIssuePojo movementIssuePojo = new MovementIssuePojo();
 		movementIssuePojo.setDateTransaction(brokerDataSnowball.getDateTransaction());
@@ -159,9 +159,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		return movementIssuePojo;
 	}
 	
-	private CatalogIssue getCatalogIssue(String company) throws BusinessException {
+	private CatalogIssueEntity getCatalogIssue(String company) throws BusinessException {
 		
-		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
+		CatalogIssueEntity catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
 		
 		if (catalogIssue == null)
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgCatalogNotFoundForCompany(company));
@@ -172,11 +172,11 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	@SuppressWarnings({ "unchecked" })
 	public void storeDataSnowBall(List<BrokerSnowBallPojo> snowBallPojos) throws BusinessException {
 		
-		List<BrokerDataSnowball> brokerDataSnowballs = brokerSnowBallUtil.mapDataSnowBall(snowBallPojos);
+		List<BrokerDataSnowballEntity> brokerDataSnowballs = brokerSnowBallUtil.mapDataSnowBall(snowBallPojos);
 		
 		if(!brokerDataSnowballs.isEmpty()) {
 			
-			BrokerDataSnowball brokerDataSnowball = (BrokerDataSnowball) genericCustomPersistance.findById(BrokerDataSnowball.class, brokerDataSnowballs.get(0).getId());
+			BrokerDataSnowballEntity brokerDataSnowball = (BrokerDataSnowballEntity) genericCustomPersistance.findById(BrokerDataSnowballEntity.class, brokerDataSnowballs.get(0).getId());
 			
 			if(brokerDataSnowball != null)
 				throw new BusinessException(CatalogsErrorMessage.getErrorMsgStatementIdRegistered());
@@ -188,19 +188,19 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	@SuppressWarnings("unchecked")
 	public void assignSnowBallData() throws BusinessException {
 		
-		List<BrokerDataSnowball> brokerDataSnowballs = brokerDataSnowBallRepository.getDataPending();
+		List<BrokerDataSnowballEntity> brokerDataSnowballs = brokerDataSnowBallRepository.getDataPending();
 
 		swapBuyAndComision(brokerDataSnowballs);
 		
-		for(BrokerDataSnowball brokerDataSnowball: brokerDataSnowballs) {
+		for(BrokerDataSnowballEntity brokerDataSnowball: brokerDataSnowballs) {
 			
 			Object entityToSave = null;
 			String tableTrack = null;
 			MovementMoneyPojo movementMoneyPojo = null;
 			MovementIssuePojo movementIssuePojo = null;
-			MovementsMoney movementsMoney = null;
-			MovementsIssue movementsIssue = null;
-			CatalogIssue catalogIssue = null;
+			MovementsMoneyEntity movementsMoney = null;
+			MovementsIssueEntity movementsIssue = null;
+			CatalogIssueEntity catalogIssue = null;
 			
 			if (brokerDataSnowball.getMovementDescription().equals("Deposito")) {
 				

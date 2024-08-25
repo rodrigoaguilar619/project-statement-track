@@ -7,18 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
-
-/**
- * The persistent class for the catalog_issue database table.
- * 
- */
 @Entity
 @Table(name="catalog_issue")
-@NamedQuery(name="CatalogIssue.findAll", query="SELECT c FROM CatalogIssue c")
-public class CatalogIssue implements Serializable {
+public class CatalogIssueEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

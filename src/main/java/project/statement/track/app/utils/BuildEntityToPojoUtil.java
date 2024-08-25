@@ -1,8 +1,8 @@
 package project.statement.track.app.utils;
 
-import project.statement.track.app.beans.entity.BrokerAccount;
-import project.statement.track.app.beans.entity.CatalogIssue;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
+import project.statement.track.app.beans.entity.CatalogIssueEntity;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.BrokerAccountResumePojo;
 import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
@@ -10,7 +10,7 @@ import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 
 public class BuildEntityToPojoUtil {
 
-	public BrokerAccountResumePojo mapBrokerAccountResumePojo(BrokerAccountResumePojo brokerAccountResumePojo, BrokerAccount brokerAccount) {
+	public BrokerAccountResumePojo mapBrokerAccountResumePojo(BrokerAccountResumePojo brokerAccountResumePojo, BrokerAccountEntity brokerAccount) {
 		
 		if (brokerAccountResumePojo == null)
 			brokerAccountResumePojo = new BrokerAccountResumePojo();
@@ -24,7 +24,7 @@ public class BuildEntityToPojoUtil {
 		return brokerAccountResumePojo;
 	}
 	
-	public MovementMoneyPojo mapMovementMoneyPojo(MovementMoneyPojo movementMoneyPojo, MovementsMoney movementMoney) {
+	public MovementMoneyPojo mapMovementMoneyPojo(MovementMoneyPojo movementMoneyPojo, MovementsMoneyEntity movementMoney) {
 		
 		if (movementMoneyPojo == null)
 			movementMoneyPojo = new MovementMoneyPojo();
@@ -39,7 +39,7 @@ public class BuildEntityToPojoUtil {
 		return movementMoneyPojo;
 	}
 	
-	public MovementMoneyResumePojo mapMovementMoneyResumePojo(MovementMoneyResumePojo movementMoneyResumePojo, MovementsMoney movementMoney) {
+	public MovementMoneyResumePojo mapMovementMoneyResumePojo(MovementMoneyResumePojo movementMoneyResumePojo, MovementsMoneyEntity movementMoney) {
 		
 		movementMoneyResumePojo = (MovementMoneyResumePojo) mapMovementMoneyPojo(movementMoneyResumePojo, movementMoney);
 		movementMoneyResumePojo.setIssueDescription(movementMoney.getCatalogIssue().getDescription());
@@ -49,7 +49,7 @@ public class BuildEntityToPojoUtil {
 		return movementMoneyResumePojo;
 	}
 	
-	public CatalogIssuePojo mapCatalogIssuePojo(CatalogIssuePojo catalogIssuePojo, CatalogIssue catalogIssue) {
+	public CatalogIssuePojo mapCatalogIssuePojo(CatalogIssuePojo catalogIssuePojo, CatalogIssueEntity catalogIssue) {
 		
 		if (catalogIssuePojo == null)
 			catalogIssuePojo = new CatalogIssuePojo();

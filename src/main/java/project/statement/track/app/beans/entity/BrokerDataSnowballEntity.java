@@ -1,5 +1,6 @@
 package project.statement.track.app.beans.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,7 +15,9 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name="broker_data_snowball")
-public class BrokerDataSnowball {
+public class BrokerDataSnowballEntity implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column(name="id")

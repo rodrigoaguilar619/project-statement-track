@@ -5,11 +5,11 @@ import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
-@StaticMetamodel(CatalogTypeTransaction.class)
-public abstract class CatalogTypeTransaction_ {
+@StaticMetamodel(CatalogTypeMovementEntity.class)
+public abstract class CatalogTypeMovementEntity_ {
 
-	public static volatile SingularAttribute<CatalogTypeTransaction, String> description;
-	public static volatile SingularAttribute<CatalogTypeTransaction, Integer> id;
+	public static volatile SingularAttribute<CatalogTypeMovementEntity, String> description;
+	public static volatile SingularAttribute<CatalogTypeMovementEntity, Integer> id;
 
 	public static final String DESCRIPTION = "description";
 	public static final String ID = "id";

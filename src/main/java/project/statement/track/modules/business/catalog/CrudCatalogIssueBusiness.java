@@ -13,7 +13,7 @@ import lib.base.backend.modules.catalog.repository.CatalogRepository;
 import lib.base.backend.persistance.GenericPersistence;
 import lib.base.backend.pojo.catalog.CatalogDataPojo;
 import lib.base.backend.utils.CatalogUtil;
-import project.statement.track.app.beans.entity.CatalogIssue;
+import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
 import project.statement.track.app.beans.pojos.petition.data.GenericCatalogDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetCatalogIssueDataPojo;
@@ -46,7 +46,7 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public GetCatalogIssueDataPojo executeGetCatalogIssue(GenericCatalogIdRequestPojo requestPojo) {
 		
-		CatalogIssue catalogIssue = (CatalogIssue) genericCustomPersistance.findById(CatalogIssue.class, requestPojo.getId());
+		CatalogIssueEntity catalogIssue = (CatalogIssueEntity) genericCustomPersistance.findById(CatalogIssueEntity.class, requestPojo.getId());
 		CatalogIssuePojo catalogIssuePojo = buildEntityToPojoUtil.mapCatalogIssuePojo(null, catalogIssue);
 		
 		GetCatalogIssueDataPojo responsePojo = new GetCatalogIssueDataPojo();
@@ -59,10 +59,10 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public CatalogDataPojo executeGetCatalogIssues() {
 		
-		List<CatalogIssue> catalogList = genericCustomPersistance.findAll(CatalogIssue.class);
+		List<CatalogIssueEntity> catalogList = genericCustomPersistance.findAll(CatalogIssueEntity.class);
 		List<CatalogIssuePojo> catalogPojoList = new ArrayList<>();
 		
-		for (CatalogIssue catalogIssue: catalogList) {
+		for (CatalogIssueEntity catalogIssue: catalogList) {
 			
 			CatalogIssuePojo catalogIssuePojo = new CatalogIssuePojo();
 			catalogIssuePojo.setDescription(catalogIssue.getDescription());
@@ -84,7 +84,7 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	public GenericCatalogDataPojo executeSaveUpdateCatalogIssue(CrudCatalogIssueRequestPojo requestPojo, CrudOptionsEnum crudOptionsEnum) {
 		
 		CatalogIssuePojo catalogData = requestPojo.getCatalogData();
-		CatalogIssue catalogIssue = crudOptionsEnum.equals(CrudOptionsEnum.SAVE) ? null : (CatalogIssue) genericCustomPersistance.findById(CatalogIssue.class, catalogData.getId());
+		CatalogIssueEntity catalogIssue = crudOptionsEnum.equals(CrudOptionsEnum.SAVE) ? null : (CatalogIssueEntity) genericCustomPersistance.findById(CatalogIssueEntity.class, catalogData.getId());
 		
 		catalogIssue = buildPojoToEntityUtil.generateCatalogIssueEntity(catalogIssue, catalogData);
 		
@@ -105,7 +105,7 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 		if (movementsIssueRepository.verifyIssueRegistered(requestPojo.getId()))
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueTransactionRegistered());
 		
-		catalogBaseRepository.deleteCatalog(CatalogIssue.class, requestPojo.getId());
+		catalogBaseRepository.deleteCatalog(CatalogIssueEntity.class, requestPojo.getId());
 		
 		GenericCatalogDataPojo dataDto = new GenericCatalogDataPojo();
 		dataDto.setId(requestPojo.getId());

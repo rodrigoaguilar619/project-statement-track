@@ -11,20 +11,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-
-/**
- * The persistent class for the broker_account database table.
- * 
- */
 @Entity
 @Table(name="broker_account")
-@NamedQuery(name="BrokerAccount.findAll", query="SELECT b FROM BrokerAccount b")
-public class BrokerAccount implements Serializable {
+public class BrokerAccountEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,13 +26,15 @@ public class BrokerAccount implements Serializable {
 
 	@Column(name="cut_day")
 	private int cutDay;
+	
+	@Column(name="id_broker")
+	private Integer idBroker;
 
 	private String description;
 
-	//bi-directional many-to-one association to CatalogBroker
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id_broker")
-	private CatalogBroker catalogBroker;
+	@JoinColumn(name="id_broker", insertable = false, updatable = false)
+	private CatalogBrokerEntity catalogBroker;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_creation")
@@ -69,11 +64,11 @@ public class BrokerAccount implements Serializable {
 		this.description = description;
 	}
 
-	public CatalogBroker getCatalogBroker() {
+	public CatalogBrokerEntity getCatalogBroker() {
 		return this.catalogBroker;
 	}
 
-	public void setCatalogBroker(CatalogBroker catalogBroker) {
+	public void setCatalogBroker(CatalogBrokerEntity catalogBroker) {
 		this.catalogBroker = catalogBroker;
 	}
 

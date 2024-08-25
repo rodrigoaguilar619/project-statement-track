@@ -15,9 +15,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import project.statement.track.app.beans.entity.CatalogIssue;
-import project.statement.track.app.beans.entity.MovementsIssue;
-import project.statement.track.app.beans.entity.MovementsIssue_;
+import project.statement.track.app.beans.entity.CatalogIssueEntity;
+import project.statement.track.app.beans.entity.MovementsIssueEntity;
+import project.statement.track.app.beans.entity.MovementsIssueEntity_;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 
 @Repository
@@ -26,19 +26,19 @@ public class MovementsIssueRepository {
 	@Autowired
 	EntityManager em;
 	
-	public List<MovementsIssue> getMovementsIssue(Integer idBrokerAccount, Integer idTypeMovement, Integer year, Integer month) {
+	public List<MovementsIssueEntity> getMovementsIssue(Integer idBrokerAccount, Integer idTypeMovement, Integer year, Integer month) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<MovementsIssue> cq = cb.createQuery(MovementsIssue.class);
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
+		CriteriaQuery<MovementsIssueEntity> cq = cb.createQuery(MovementsIssueEntity.class);
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(cb.function("YEAR", Integer.class, root.get(MovementsIssue_.dateTransaction)), year));
-		predicatesAnd.add(cb.equal(cb.function("MONTH", Integer.class, root.get(MovementsIssue_.dateTransaction)), month));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idBrokerAccount), idBrokerAccount));
+		predicatesAnd.add(cb.equal(cb.function("YEAR", Integer.class, root.get(MovementsIssueEntity_.dateTransaction)), year));
+		predicatesAnd.add(cb.equal(cb.function("MONTH", Integer.class, root.get(MovementsIssueEntity_.dateTransaction)), month));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idBrokerAccount), idBrokerAccount));
 		
 		if (idTypeMovement != null)
-			predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idTypeMovement), idTypeMovement));
+			predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idTypeMovement), idTypeMovement));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -49,13 +49,13 @@ public class MovementsIssueRepository {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
-		cq.select(cb.sum(root.<BigDecimal>get(MovementsIssue_.priceTotal)));
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
+		cq.select(cb.sum(root.<BigDecimal>get(MovementsIssueEntity_.priceTotal)));
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(cb.lessThan(root.get(MovementsIssue_.dateTransaction), dateEnd));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idTypeMovement), idTypeMovement));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idBrokerAccount), idBrokerAccount));
+		predicatesAnd.add(cb.lessThan(root.get(MovementsIssueEntity_.dateTransaction), dateEnd));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idTypeMovement), idTypeMovement));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -65,38 +65,38 @@ public class MovementsIssueRepository {
 		return result != null ? result : new BigDecimal(0);
 	}
 	
-	public MovementsIssue getMovementsIssueByPriceTotal(BigDecimal priceTotal, Integer idIssue, Integer idTypeMovement) {
+	public MovementsIssueEntity getMovementsIssueByPriceTotal(BigDecimal priceTotal, Integer idIssue, Integer idTypeMovement) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<MovementsIssue> cq = cb.createQuery(MovementsIssue.class);
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
+		CriteriaQuery<MovementsIssueEntity> cq = cb.createQuery(MovementsIssueEntity.class);
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.priceTotal), priceTotal));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idIssue), idIssue));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idTypeMovement), idTypeMovement));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.priceTotal), priceTotal));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idIssue), idIssue));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idTypeMovement), idTypeMovement));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
-		List<MovementsIssue> resultList =  em.createQuery(cq).getResultList();
+		List<MovementsIssueEntity> resultList =  em.createQuery(cq).getResultList();
 		
 		return !resultList.isEmpty() ? resultList.get(0) : null;
 	}
 	
-	public MovementsIssue getMovementsIssueByQuantityIssues(Integer quantityIssues, Integer idIssue, Integer idTypeMovement) {
+	public MovementsIssueEntity getMovementsIssueByQuantityIssues(Integer quantityIssues, Integer idIssue, Integer idTypeMovement) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<MovementsIssue> cq = cb.createQuery(MovementsIssue.class);
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
+		CriteriaQuery<MovementsIssueEntity> cq = cb.createQuery(MovementsIssueEntity.class);
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.quantityIssues), quantityIssues));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idIssue), idIssue));
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idTypeMovement), idTypeMovement));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.quantityIssues), quantityIssues));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idIssue), idIssue));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idTypeMovement), idTypeMovement));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
-		List<MovementsIssue> resultList =  em.createQuery(cq).getResultList();
+		List<MovementsIssueEntity> resultList =  em.createQuery(cq).getResultList();
 		
 		return !resultList.isEmpty() ? resultList.get(0) : null;
 	}
@@ -105,13 +105,13 @@ public class MovementsIssueRepository {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Tuple> cq = cb.createTupleQuery();
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
-		cq.multiselect(root.get(MovementsIssue_.catalogIssue), cb.sum(root.get(MovementsIssue_.priceTotal)), cb.sum(root.get(MovementsIssue_.quantityIssues)));
-		cq.groupBy(root.get(MovementsIssue_.idIssue));
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
+		cq.multiselect(root.get(MovementsIssueEntity_.catalogIssue), cb.sum(root.get(MovementsIssueEntity_.priceTotal)), cb.sum(root.get(MovementsIssueEntity_.quantityIssues)));
+		cq.groupBy(root.get(MovementsIssueEntity_.idIssue));
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(root.get(MovementsIssue_.idTypeMovement).in(idTypeMovementList));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idBrokerAccount), idBrokerAccount));
+		predicatesAnd.add(root.get(MovementsIssueEntity_.idTypeMovement).in(idTypeMovementList));
 
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -121,7 +121,7 @@ public class MovementsIssueRepository {
 		
 		for (Tuple tuple: resultTuple) {
 			
-			CatalogIssue catalogIssue = (CatalogIssue) tuple.get(0);
+			CatalogIssueEntity catalogIssue = (CatalogIssueEntity) tuple.get(0);
 			
 			IssueTotalsPojo issueTotalsPojo = new IssueTotalsPojo();
 			issueTotalsPojo.setIdIssue(catalogIssue.getId());
@@ -140,13 +140,13 @@ public class MovementsIssueRepository {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<MovementsIssue> root = cq.from(MovementsIssue.class);
+		Root<MovementsIssueEntity> root = cq.from(MovementsIssueEntity.class);
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
-		predicatesAnd.add(cb.equal(root.get(MovementsIssue_.idIssue), idIssue));
+		predicatesAnd.add(cb.equal(root.get(MovementsIssueEntity_.idIssue), idIssue));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
-		cq.select(cb.count(root.get(MovementsIssue_.id)));
+		cq.select(cb.count(root.get(MovementsIssueEntity_.id)));
 
 		return em.createQuery(cq).getResultList().get(0) > 0;
 	}

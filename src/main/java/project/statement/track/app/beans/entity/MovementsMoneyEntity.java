@@ -12,20 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-
-/**
- * The persistent class for the movements_money database table.
- * 
- */
 @Entity
 @Table(name="movements_money")
-@NamedQuery(name="MovementsMoney.findAll", query="SELECT m FROM MovementsMoney m")
-public class MovementsMoney implements Serializable {
+public class MovementsMoneyEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -52,15 +45,15 @@ public class MovementsMoney implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_type_transaction", insertable = false, updatable= false)
-	CatalogTypeTransaction catalogTypeTransaction;
+	CatalogTypeTransactionEntity catalogTypeTransaction;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_broker_account", insertable = false, updatable= false)
-	BrokerAccount brokerAccount;
+	BrokerAccountEntity brokerAccount;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
-	CatalogIssue catalogIssue;
+	CatalogIssueEntity catalogIssue;
 
 	public int getId() {
 		return this.id;
@@ -110,11 +103,11 @@ public class MovementsMoney implements Serializable {
 		this.idTypeTransaction = idTypeTransaction;
 	}
 
-	public CatalogTypeTransaction getCatalogTypeTransaction() {
+	public CatalogTypeTransactionEntity getCatalogTypeTransaction() {
 		return catalogTypeTransaction;
 	}
 
-	public void setCatalogTypeTransaction(CatalogTypeTransaction catalogTypeTransaction) {
+	public void setCatalogTypeTransaction(CatalogTypeTransactionEntity catalogTypeTransaction) {
 		this.catalogTypeTransaction = catalogTypeTransaction;
 	}
 
@@ -126,19 +119,19 @@ public class MovementsMoney implements Serializable {
 		this.idIssue = idIssue;
 	}
 
-	public BrokerAccount getBrokerAccount() {
+	public BrokerAccountEntity getBrokerAccount() {
 		return brokerAccount;
 	}
 
-	public void setBrokerAccount(BrokerAccount brokerAccount) {
+	public void setBrokerAccount(BrokerAccountEntity brokerAccount) {
 		this.brokerAccount = brokerAccount;
 	}
 
-	public CatalogIssue getCatalogIssue() {
+	public CatalogIssueEntity getCatalogIssue() {
 		return catalogIssue;
 	}
 
-	public void setCatalogIssue(CatalogIssue catalogIssue) {
+	public void setCatalogIssue(CatalogIssueEntity catalogIssue) {
 		this.catalogIssue = catalogIssue;
 	}
 

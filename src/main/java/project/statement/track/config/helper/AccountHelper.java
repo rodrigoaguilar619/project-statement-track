@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lib.base.backend.exception.data.BusinessException;
-import project.statement.track.app.beans.entity.BrokerAccount;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
@@ -24,7 +24,7 @@ public class AccountHelper {
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 	
-	public BigDecimal getMovementMoneyPreviousTotal(BrokerAccount brokerAccount, Integer idCatalogTypeTransaction, Integer year, Integer month) throws BusinessException {
+	public BigDecimal getMovementMoneyPreviousTotal(BrokerAccountEntity brokerAccount, Integer idCatalogTypeTransaction, Integer year, Integer month) throws BusinessException {
 		
 		if(brokerAccount.getCutDay() == -1) {
 			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
@@ -34,7 +34,7 @@ public class AccountHelper {
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 	}
 	
-	public BigDecimal getMovementIssuePreviousTotal(BrokerAccount brokerAccount, Integer idCatalogTypeMovement, Integer year, Integer month) throws BusinessException {
+	public BigDecimal getMovementIssuePreviousTotal(BrokerAccountEntity brokerAccount, Integer idCatalogTypeMovement, Integer year, Integer month) throws BusinessException {
 		
 		if(brokerAccount.getCutDay() == -1) {
 			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
@@ -44,7 +44,7 @@ public class AccountHelper {
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 	}
 
-	public BigDecimal getTotalPreviousPeriod(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
+	public BigDecimal getTotalPreviousPeriod(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
 		BigDecimal movementsMoneyDepositsTotal;
 		BigDecimal movementsMoneyWithDrawsTotal;

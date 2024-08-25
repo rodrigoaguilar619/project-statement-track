@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.BrokerAccount;
-import project.statement.track.app.beans.entity.MovementsIssue;
-import project.statement.track.app.beans.entity.MovementsMoney;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
+import project.statement.track.app.beans.entity.MovementsIssueEntity;
+import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.business.broker.OperationStatementDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.AccountStatementDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.AccountStatementRequestPojo;
@@ -41,9 +41,9 @@ public class AccountStatementBusiness extends MainBusiness {
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
 
-	private List<MovementsMoney> getPeriodMoneyMovements(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
+	private List<MovementsMoneyEntity> getPeriodMoneyMovements(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
-		List<MovementsMoney> movementsMoneys;
+		List<MovementsMoneyEntity> movementsMoneys;
 		
 		if(brokerAccount.getCutDay() == -1) {
 			movementsMoneys = movementsMoneyRepository.getMovementsMoney(brokerAccount.getId(), null, year, month);
@@ -54,9 +54,9 @@ public class AccountStatementBusiness extends MainBusiness {
 		return movementsMoneys;
 	}
 	
-	private List<MovementsIssue> getPeriodIssueMovements(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
+	private List<MovementsIssueEntity> getPeriodIssueMovements(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
-		List<MovementsIssue> movementsIssues;
+		List<MovementsIssueEntity> movementsIssues;
 		
 		if(brokerAccount.getCutDay() == -1) {
 			movementsIssues = movementsIssueRepository.getMovementsIssue(brokerAccount.getId(), null, year, month);
@@ -67,12 +67,12 @@ public class AccountStatementBusiness extends MainBusiness {
 		return movementsIssues;
 	}
 	
-	private List<OperationStatementDataPojo> getPeriodMoneyMovementsPojos(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
+	private List<OperationStatementDataPojo> getPeriodMoneyMovementsPojos(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
-		List<MovementsMoney> movementsMoneys = getPeriodMoneyMovements(brokerAccount, year, month);
+		List<MovementsMoneyEntity> movementsMoneys = getPeriodMoneyMovements(brokerAccount, year, month);
 		List<OperationStatementDataPojo> operationStatementDataPojos = new ArrayList<>();
 		
-		for(MovementsMoney movementsMoney: movementsMoneys) {
+		for(MovementsMoneyEntity movementsMoney: movementsMoneys) {
 			
 			OperationStatementDataPojo operationstatementDataPojo = new OperationStatementDataPojo();
 			
@@ -94,12 +94,12 @@ public class AccountStatementBusiness extends MainBusiness {
 		return operationStatementDataPojos;
 	}
 	
-	private List<OperationStatementDataPojo> getPeriodIssueMovementsPojos(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
+	private List<OperationStatementDataPojo> getPeriodIssueMovementsPojos(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
-		List<MovementsIssue> movementsIssues = getPeriodIssueMovements(brokerAccount, year, month);
+		List<MovementsIssueEntity> movementsIssues = getPeriodIssueMovements(brokerAccount, year, month);
 		List<OperationStatementDataPojo> operationStatementDataPojos = new ArrayList<>();
 		
-		for(MovementsIssue movementsIssue: movementsIssues) {
+		for(MovementsIssueEntity movementsIssue: movementsIssues) {
 			
 			if (movementsIssue.getCatalogTypeMovement().getId() == CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED) {
 				continue;
@@ -162,7 +162,7 @@ public class AccountStatementBusiness extends MainBusiness {
 		return operationStatementDataPojo;
 	}
 	
-	private List<OperationStatementDataPojo> getPeriodOperations(BrokerAccount brokerAccount, Integer year, Integer month, BigDecimal previousBalance) throws BusinessException {
+	private List<OperationStatementDataPojo> getPeriodOperations(BrokerAccountEntity brokerAccount, Integer year, Integer month, BigDecimal previousBalance) throws BusinessException {
 		
 		List<OperationStatementDataPojo> operationStatementDataPojos = new ArrayList<>();
 		operationStatementDataPojos.addAll(getPeriodMoneyMovementsPojos(brokerAccount, year, month));
@@ -197,7 +197,7 @@ public class AccountStatementBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public AccountStatementDataPojo executeGetAccountStatement(AccountStatementRequestPojo requestPojo) throws BusinessException {
 		
-		BrokerAccount brokerAccount = (BrokerAccount) genericCustomPersistance.findById(BrokerAccount.class, requestPojo.getIdAccountBroker());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdAccountBroker());
 		
 		AccountStatementDataPojo accountStatementResponsePojo = new AccountStatementDataPojo();
 		accountStatementResponsePojo.setYear(requestPojo.getYear());

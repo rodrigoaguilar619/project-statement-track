@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.persistance.GenericPersistence;
-import project.statement.track.app.beans.entity.BrokerAccount;
+import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.beans.pojos.entity.BrokerAccountResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetBADateStatementsDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetBrokerAccountsDataPojo;
@@ -30,10 +30,10 @@ public class BrokerAccountBusiness extends MainBusiness {
 	@SuppressWarnings("unchecked")
 	public List<BrokerAccountResumePojo> getBrokerAccounts() {
 		
-		List<BrokerAccount> brokerAccounts = genericCustomPersistance.findAll(BrokerAccount.class);
+		List<BrokerAccountEntity> brokerAccounts = genericCustomPersistance.findAll(BrokerAccountEntity.class);
 		List<BrokerAccountResumePojo> brokerAccountResumePojos = new ArrayList<>();
 		
-		for (BrokerAccount brokerAccount: brokerAccounts) {
+		for (BrokerAccountEntity brokerAccount: brokerAccounts) {
 			
 			BrokerAccountResumePojo brokerAccountResumePojo = buildEntityToPojoUtil.mapBrokerAccountResumePojo(null, brokerAccount);
 			
@@ -47,7 +47,7 @@ public class BrokerAccountBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public GetBADateStatementsDataPojo executeGetDateStatements(GetBADateStatementsRequestPojo requestPojo) {
 		
-		BrokerAccount brokerAccount = (BrokerAccount) genericCustomPersistance.findById(BrokerAccount.class, requestPojo.getIdBrokerAccount());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar startDate = Calendar.getInstance();
 		startDate.setTime(brokerAccount.getDateCreation());
