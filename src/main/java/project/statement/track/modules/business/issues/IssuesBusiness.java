@@ -12,7 +12,7 @@ import project.statement.track.app.beans.pojos.petition.data.GetIssuesBuyDataPoj
 import project.statement.track.app.beans.pojos.petition.request.GetIssuesBuyRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.vo.catalogs.CatalogTypeMovementEnum;
+import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.modules.business.MainBusiness;
 
 @Component
@@ -30,8 +30,8 @@ public class IssuesBusiness extends MainBusiness {
 		
 		//TODO: add minus for sell issues
 		List<Integer> idTypeMovementList = new ArrayList<>();
-		idTypeMovementList.add(CatalogTypeMovementEnum.BUY.getId());
-		idTypeMovementList.add(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getId());
+		idTypeMovementList.add(CatalogsEntity.CatalogTypeMovement.BUY);
+		idTypeMovementList.add(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
 		
 		List<IssueTotalsPojo> issueTotalsPojos = movementsIssueRepository.getIssuesTotals(requestPojo.getIdBrokerAccount(), idTypeMovementList);
 		

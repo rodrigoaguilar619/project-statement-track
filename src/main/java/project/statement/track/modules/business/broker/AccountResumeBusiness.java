@@ -21,7 +21,7 @@ import project.statement.track.app.beans.pojos.petition.data.GetAccountResumeDat
 import project.statement.track.app.beans.pojos.petition.request.GetAccountResumeRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
+import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
 
@@ -40,7 +40,7 @@ public class AccountResumeBusiness extends MainBusiness {
 	
 	private List<MovementMoneyResumePojo> getMovementsMoneyResume(Integer idBrokerAccount, Map<String, String> filters) {
 		
-		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogTypeTransactionEnum.DEPOSIT.getId(), CatalogTypeTransactionEnum.WITHDRAW.getId());
+		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogsEntity.CatalogTypeTransaction.DEPOSIT, CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
 		List<MovementsMoney> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList, filters);
@@ -69,14 +69,14 @@ public class AccountResumeBusiness extends MainBusiness {
 		BrokerAccount brokerAccount = (BrokerAccount) genericCustomPersistance.findById(BrokerAccount.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar currentDate = Calendar.getInstance();
-		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(new Long(requestPojo.getFilters().get("filterDateEnd"))) : new Date());
+		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(Long.parseLong(requestPojo.getFilters().get("filterDateEnd"))) : new Date());
 		
 		Integer currentYear = currentDate.get(Calendar.YEAR);
 		Integer currentMonth = currentDate.get(Calendar.MONTH) + 1;
 		
-		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DEPOSIT.getId(), requestPojo.getFilters());
-		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.WITHDRAW.getId(), requestPojo.getFilters());
-		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DIVIDEND.getId(), requestPojo.getFilters());
+		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DEPOSIT, requestPojo.getFilters());
+		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.WITHDRAW, requestPojo.getFilters());
+		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DIVIDEND, requestPojo.getFilters());
 		BigDecimal currentBalance = accountUtil.getTotalPreviousPeriod(brokerAccount, currentYear, currentMonth);
 		
 		GetAccountResumeDataPojo responsePojo = new GetAccountResumeDataPojo();

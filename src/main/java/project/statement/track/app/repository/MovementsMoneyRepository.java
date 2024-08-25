@@ -21,7 +21,7 @@ import project.statement.track.app.beans.entity.CatalogIssue;
 import project.statement.track.app.beans.entity.MovementsMoney;
 import project.statement.track.app.beans.entity.MovementsMoney_;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
-import project.statement.track.app.vo.catalogs.CatalogTypeTransactionEnum;
+import project.statement.track.app.vo.catalogs.CatalogsEntity;
 
 @Repository
 public class MovementsMoneyRepository {
@@ -55,10 +55,10 @@ public class MovementsMoneyRepository {
 		if (filters != null) {
 			
 			if (filters.get("filterDateStart") != null) {
-				predicatesAnd.add(cb.greaterThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(new Long(filters.get("filterDateStart")))));
+				predicatesAnd.add(cb.greaterThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(Long.parseLong(filters.get("filterDateStart")))));
 			}
 			if (filters.get("filterDateEnd") != null) {
-				predicatesAnd.add(cb.lessThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(new Long(filters.get("filterDateEnd")))));
+				predicatesAnd.add(cb.lessThanOrEqualTo(root.get(MovementsMoney_.dateTransaction).as(Date.class), new Date(Long.parseLong(filters.get("filterDateEnd")))));
 			}
 		}
 	}
@@ -121,7 +121,7 @@ public class MovementsMoneyRepository {
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idIssue), idIssue));
-		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), CatalogTypeTransactionEnum.DIVIDEND.getId()));
+		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), CatalogsEntity.CatalogTypeTransaction.DIVIDEND));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -155,7 +155,7 @@ public class MovementsMoneyRepository {
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), CatalogTypeTransactionEnum.DIVIDEND.getId()));
+		predicatesAnd.add(cb.equal(root.get(MovementsMoney_.idTypeTransaction), CatalogsEntity.CatalogTypeTransaction.DIVIDEND));
 		
 		buildMovementsMoneyFiltersDates(filters, root, cb, predicatesAnd);
 		

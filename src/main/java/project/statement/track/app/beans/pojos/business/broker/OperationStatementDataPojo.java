@@ -2,7 +2,7 @@ package project.statement.track.app.beans.pojos.business.broker;
 
 import java.math.BigDecimal;
 
-import project.statement.track.app.vo.catalogs.DefinitionTypeOperationEnum;
+import project.statement.track.app.vo.enums.DefinitionTypeOperationEnum;
 
 public class OperationStatementDataPojo implements Comparable<OperationStatementDataPojo> {
 

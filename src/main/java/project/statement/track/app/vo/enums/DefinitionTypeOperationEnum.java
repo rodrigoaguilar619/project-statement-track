@@ -1,4 +1,4 @@
-package project.statement.track.app.vo.catalogs;
+package project.statement.track.app.vo.enums;
 
 public enum DefinitionTypeOperationEnum {
 
