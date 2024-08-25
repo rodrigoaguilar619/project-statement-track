@@ -20,6 +20,7 @@ import project.statement.track.app.beans.pojos.petition.request.AccountStatement
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.app.vo.enums.DefinitionTypeOperationEnum;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
@@ -39,11 +40,6 @@ public class AccountStatementBusiness extends MainBusiness {
 	
 	@Autowired
 	MovementsIssueRepository movementsIssueRepository;
-	
-	private String messageOperationNotFound(OperationStatementDataPojo operationStatementDataPojo) {
-		
-		return String.format("For balance definition type operation not found. type operation: %s table: %s", operationStatementDataPojo.getTypeOperationId(), operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription());
-	}
 
 	private List<MovementsMoney> getPeriodMoneyMovements(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {
 		
@@ -53,7 +49,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			movementsMoneys = movementsMoneyRepository.getMovementsMoney(brokerAccount.getId(), null, year, month);
 		}
 		else
-			throw new BusinessException("Function of cut day not implemented");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 		
 		return movementsMoneys;
 	}
@@ -66,7 +62,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			movementsIssues = movementsIssueRepository.getMovementsIssue(brokerAccount.getId(), null, year, month);
 		}
 		else
-			throw new BusinessException("Function of cut day not implemented");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 		
 		return movementsIssues;
 	}
@@ -140,7 +136,7 @@ public class AccountStatementBusiness extends MainBusiness {
 				operationStatementDataPojo.setBalance(currentBalance);
 			}
 			else
-				throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgDefinitionBalanceNotFound(operationStatementDataPojo.getTypeOperationId(), operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription()));
 		
 		return operationStatementDataPojo;
 	}
@@ -161,7 +157,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			operationStatementDataPojo.setBalance(currentBalance);
 		}
 		else
-			throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgDefinitionBalanceNotFound(operationStatementDataPojo.getTypeOperationId(), operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription()));
 		
 		return operationStatementDataPojo;
 	}
@@ -189,7 +185,7 @@ public class AccountStatementBusiness extends MainBusiness {
 				currentBalance = operationStatementDataPojo.getBalance();
 			}
 			else
-				throw new BusinessException(messageOperationNotFound(operationStatementDataPojo));
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgDefinitionBalanceNotFound(operationStatementDataPojo.getTypeOperationId(), operationStatementDataPojo.getDefinitionTypeOperationEnum().getDescription()));
 		}
 		
 		return operationStatementDataPojos;

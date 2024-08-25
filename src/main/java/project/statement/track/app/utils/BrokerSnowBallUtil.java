@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -18,6 +16,7 @@ import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.utils.date.DateFormatUtil;
 import project.statement.track.app.beans.entity.BrokerDataSnowball;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 
 public class BrokerSnowBallUtil {
 	
@@ -83,7 +82,7 @@ public class BrokerSnowBallUtil {
 				//ignore parameter	
 				break;
 			default:
-				throw new BusinessException("Parameter not recognized key: " + entry.getKey() + " value: " + entry.getValue());
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgParameterNotRecognized(entry.getKey(), entry.getValue()));
 			}
 		}
 	}
@@ -123,7 +122,7 @@ public class BrokerSnowBallUtil {
 				Map<String, String> movementDataMap = new LinkedHashMap<>();
 				
 				if (movementDataList.length % 2 != 0)
-					throw new BusinessException("list is not odd. " + StringUtils.join(movementDataList, "|"));
+					throw new BusinessException(CatalogsErrorMessage.getErrorMsgListNotOdd(movementDataList));
 				
 				for(int i = 0; i < movementDataList.length; i = i + 2) {
 					
@@ -180,7 +179,7 @@ public class BrokerSnowBallUtil {
 			return brokerDataSnowballs;
 		}
 		catch (ParseException pe) {
-			throw new BusinessException("Error parsing date", pe);
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgParsingDate(), pe);
 		}
 	}
 }

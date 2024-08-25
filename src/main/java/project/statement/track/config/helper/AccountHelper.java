@@ -13,6 +13,7 @@ import project.statement.track.app.beans.entity.BrokerAccount;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 
 @Component
 public class AccountHelper {
@@ -30,7 +31,7 @@ public class AccountHelper {
 			return movementsMoneyRepository.getMovementsMoneyPreviousTotal(brokerAccount.getId(), idCatalogTypeTransaction, dateEnd);
 		}
 		else
-			throw new BusinessException("Function of cut day not implemented");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 	}
 	
 	public BigDecimal getMovementIssuePreviousTotal(BrokerAccount brokerAccount, Integer idCatalogTypeMovement, Integer year, Integer month) throws BusinessException {
@@ -40,7 +41,7 @@ public class AccountHelper {
 			return movementsIssueRepository.getMovementsIssuePreviousTotal(brokerAccount.getId(), idCatalogTypeMovement, dateEnd);
 		}
 		else
-			throw new BusinessException("Function of cut day not implemented");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgFunctionCutDayNotImplemented());
 	}
 
 	public BigDecimal getTotalPreviousPeriod(BrokerAccount brokerAccount, Integer year, Integer month) throws BusinessException {

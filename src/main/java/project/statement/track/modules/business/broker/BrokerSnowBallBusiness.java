@@ -24,6 +24,7 @@ import project.statement.track.app.repository.BrokerDataSnowBallRepository;
 import project.statement.track.app.repository.CatalogsRepository;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.modules.business.MainBusiness;
 
 @Component
@@ -58,7 +59,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				updateSnowBallTrack(brokerDataSnowball, tableTrack, Integer.parseInt(methodId.invoke(entityToSave) + "" ));
 				
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException |IllegalArgumentException | InvocationTargetException e) {
-				throw new BusinessException("Error getting id of table track", e);
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgBadIdTableTrack(), e);
 			}
 		}
 	}
@@ -76,7 +77,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
 		
 		if (catalogIssue == null)
-			throw new BusinessException("Error company " + company + " not found on mapping");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgMapCompanyNotFound(company));
 		else
 			return catalogIssue.getId();
 	}
@@ -163,7 +164,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		CatalogIssue catalogIssue = catalogsRepository.getCatalogIssueSnowBall(company);
 		
 		if (catalogIssue == null)
-			throw new BusinessException("Catalog no found for company '" + company + "' on registering movement money transaction");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgCatalogNotFoundForCompany(company));
 		
 		return catalogIssue;
 	}
@@ -178,7 +179,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 			BrokerDataSnowball brokerDataSnowball = (BrokerDataSnowball) genericCustomPersistance.findById(BrokerDataSnowball.class, brokerDataSnowballs.get(0).getId());
 			
 			if(brokerDataSnowball != null)
-				throw new BusinessException("First id of statement is registed, statement process cancelled");
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgStatementIdRegistered());
 		}
 		
 		genericCustomPersistance.save(brokerDataSnowballs);
@@ -271,7 +272,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
 				
 				if (movementsIssue == null)
-					throw new BusinessException("Issue for redeem not found, verify. company: " + brokerDataSnowball.getCompany() + " price: " + brokerDataSnowball.getBalanceEntry());
+					throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueRedeemNotFound(brokerDataSnowball.getCompany(), brokerDataSnowball.getBalanceEntry()));
 				
 				movementsIssue.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED);
 				genericCustomPersistance.update(movementsIssue);
@@ -279,7 +280,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				updateSnowBallTrack(brokerDataSnowball, TABLE_NAME_MOVEMENTS_ISSUE, movementsIssue.getId());
 			}
 			else
-				throw new BusinessException("Option of movement type not implemented. option: " + brokerDataSnowball.getMovementDescription());
+				throw new BusinessException(CatalogsErrorMessage.getErrorMsgOptionMovementTypeNotImplemented(brokerDataSnowball.getMovementDescription()));
 			
 			saveSnowBallEntity(brokerDataSnowball, entityToSave, tableTrack);
 		}

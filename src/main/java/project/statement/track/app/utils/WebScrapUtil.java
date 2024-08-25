@@ -12,6 +12,7 @@ import com.gargoylesoftware.htmlunit.html.HTMLParser;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import lib.base.backend.exception.data.BusinessException;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 
 public class WebScrapUtil {
 	
@@ -29,7 +30,7 @@ public class WebScrapUtil {
 			return HTMLParser.parseHtml(response, client.getCurrentWindow());
 			
 		} catch (FailingHttpStatusCodeException | IOException e) {
-			throw new BusinessException("Error reading file html");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgReadingFileHtml());
 		}
 	}
 	
@@ -46,7 +47,7 @@ public class WebScrapUtil {
 			return HTMLParser.parseHtml(response, client.getCurrentWindow());
 			
 		} catch (FailingHttpStatusCodeException | IOException e) {
-			throw new BusinessException("Error reading file html");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgReadingFileHtml());
 		}
 	}
 	

@@ -14,6 +14,7 @@ import lib.base.backend.persistance.GenericPersistence;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileBase64StatementRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileStatementRequestPojo;
+import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.modules.business.MainBusiness;
 import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
 
@@ -33,7 +34,7 @@ public class ReadFileSnowBallBusiness extends MainBusiness {
 		String[] textHtmlSplit = textHtml.split("\n", 1);
 		
 		if(textHtmlSplit.length == 0 || !textHtml.split("\n", 1)[0].contains("<div class=\"row\">"))
-			throw new BusinessException("File snowball statement incorrect");
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgStatementFileIncorrect());
 		
 		List<BrokerSnowBallPojo> resultList = brokerSnowBallUtil.getDataSnowBallFromText(textHtml);
 		
