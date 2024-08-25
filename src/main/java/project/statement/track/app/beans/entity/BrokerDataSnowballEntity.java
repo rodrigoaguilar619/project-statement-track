@@ -12,7 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name="broker_data_snowball")
 public class BrokerDataSnowballEntity implements Serializable {
@@ -65,126 +68,6 @@ public class BrokerDataSnowballEntity implements Serializable {
 	
 	@Column(name="status_movement")
 	private Boolean statusMovement;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Date getDateTransaction() {
-		return dateTransaction;
-	}
-
-	public void setDateTransaction(Date dateTransaction) {
-		this.dateTransaction = dateTransaction;
-	}
-
-	public BigDecimal getPreviousBalance() {
-		return previousBalance;
-	}
-
-	public void setPreviousBalance(BigDecimal previousBalance) {
-		this.previousBalance = previousBalance;
-	}
-
-	public BigDecimal getActualBalance() {
-		return actualBalance;
-	}
-
-	public void setActualBalance(BigDecimal actualBalance) {
-		this.actualBalance = actualBalance;
-	}
-
-	public String getMovementDescription() {
-		return movementDescription;
-	}
-
-	public void setMovementDescription(String movementDescription) {
-		this.movementDescription = movementDescription;
-	}
-
-	public String getCompany() {
-		return company;
-	}
-
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
-	public Integer getTotalIssues() {
-		return totalIssues;
-	}
-
-	public void setTotalIssues(Integer totalIssues) {
-		this.totalIssues = totalIssues;
-	}
-
-	public BigDecimal getBalanceEntry() {
-		return balanceEntry;
-	}
-
-	public void setBalanceEntry(BigDecimal balanceEntry) {
-		this.balanceEntry = balanceEntry;
-	}
-
-	public BigDecimal getBalanceExit() {
-		return balanceExit;
-	}
-
-	public void setBalanceExit(BigDecimal balanceExit) {
-		this.balanceExit = balanceExit;
-	}
-
-	public String getTypePayment() {
-		return typePayment;
-	}
-
-	public void setTypePayment(String typePayment) {
-		this.typePayment = typePayment;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
-	public String getTrackTable() {
-		return trackTable;
-	}
-
-	public void setTrackTable(String trackTable) {
-		this.trackTable = trackTable;
-	}
-
-	public Integer getTrackTableId() {
-		return trackTableId;
-	}
-
-	public void setTrackTableId(Integer trackTableId) {
-		this.trackTableId = trackTableId;
-	}
-
-	public Boolean getStatusMovement() {
-		return statusMovement;
-	}
-
-	public void setStatusMovement(Boolean statusMovement) {
-		this.statusMovement = statusMovement;
-	}
 	
 	@Override
 	public String toString()

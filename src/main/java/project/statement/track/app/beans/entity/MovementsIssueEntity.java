@@ -15,7 +15,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name="movements_issue")
 public class MovementsIssueEntity implements Serializable {
@@ -57,93 +60,4 @@ public class MovementsIssueEntity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
 	CatalogIssueEntity catalogIssue;
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getDateTransaction() {
-		return this.dateTransaction;
-	}
-
-	public void setDateTransaction(Date dateTransaction) {
-		this.dateTransaction = dateTransaction;
-	}
-
-	public int getIdBrokerAccount() {
-		return this.idBrokerAccount;
-	}
-
-	public void setIdBrokerAccount(int idBrokerAccount) {
-		this.idBrokerAccount = idBrokerAccount;
-	}
-
-	public Integer getIdIssue() {
-		return this.idIssue;
-	}
-
-	public void setIdIssue(Integer idIssue) {
-		this.idIssue = idIssue;
-	}
-
-	public int getIdTypeMovement() {
-		return this.idTypeMovement;
-	}
-
-	public void setIdTypeMovement(int idTypeMovement) {
-		this.idTypeMovement = idTypeMovement;
-	}
-
-	public BigDecimal getPriceIssueUnity() {
-		return this.priceIssueUnity;
-	}
-
-	public void setPriceIssueUnity(BigDecimal priceIssueUnity) {
-		this.priceIssueUnity = priceIssueUnity;
-	}
-
-	public Integer getQuantityIssues() {
-		return this.quantityIssues;
-	}
-
-	public void setQuantityIssues(Integer quantityIssues) {
-		this.quantityIssues = quantityIssues;
-	}
-
-	public BigDecimal getPriceTotal() {
-		return priceTotal;
-	}
-
-	public void setPriceTotal(BigDecimal priceTotal) {
-		this.priceTotal = priceTotal;
-	}
-
-	public CatalogTypeMovementEntity getCatalogTypeMovement() {
-		return catalogTypeMovement;
-	}
-
-	public void setCatalogTypeMovement(CatalogTypeMovementEntity catalogTypeMovement) {
-		this.catalogTypeMovement = catalogTypeMovement;
-	}
-
-	public CatalogIssueEntity getCatalogIssue() {
-		return catalogIssue;
-	}
-
-	public void setCatalogIssue(CatalogIssueEntity catalogIssue) {
-		this.catalogIssue = catalogIssue;
-	}
-
-	public BigDecimal getComisionTotal() {
-		return comisionTotal;
-	}
-
-	public void setComisionTotal(BigDecimal comisionTotal) {
-		this.comisionTotal = comisionTotal;
-	}
-
 }

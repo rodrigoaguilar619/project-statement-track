@@ -14,7 +14,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name="broker_account")
 public class BrokerAccountEntity implements Serializable {
@@ -39,45 +42,4 @@ public class BrokerAccountEntity implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_creation")
 	private Date dateCreation;
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getCutDay() {
-		return this.cutDay;
-	}
-
-	public void setCutDay(int cutDay) {
-		this.cutDay = cutDay;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public CatalogBrokerEntity getCatalogBroker() {
-		return this.catalogBroker;
-	}
-
-	public void setCatalogBroker(CatalogBrokerEntity catalogBroker) {
-		this.catalogBroker = catalogBroker;
-	}
-
-	public Date getDateCreation() {
-		return dateCreation;
-	}
-
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = dateCreation;
-	}
-
 }

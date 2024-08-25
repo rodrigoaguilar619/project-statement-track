@@ -8,7 +8,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name="catalog_issue")
 public class CatalogIssueEntity implements Serializable {
@@ -24,37 +27,4 @@ public class CatalogIssueEntity implements Serializable {
 	
 	@Column(name="description_snowball")
 	private String descriptionSnowball;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getInitials() {
-		return initials;
-	}
-
-	public void setInitials(String initials) {
-		this.initials = initials;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDescriptionSnowball() {
-		return descriptionSnowball;
-	}
-
-	public void setDescriptionSnowball(String descriptionSnowball) {
-		this.descriptionSnowball = descriptionSnowball;
-	}
-
 }

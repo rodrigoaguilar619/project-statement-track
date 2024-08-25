@@ -1,5 +1,9 @@
 package project.statement.track.app.beans.pojos.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class BrokerAccountPojo {
 
 	private int id;
@@ -7,28 +11,4 @@ public class BrokerAccountPojo {
 	private int cutDay;
 
 	private String description;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getCutDay() {
-		return cutDay;
-	}
-
-	public void setCutDay(int cutDay) {
-		this.cutDay = cutDay;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 }

@@ -15,7 +15,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 @Table(name="movements_money")
 public class MovementsMoneyEntity implements Serializable {
@@ -54,85 +57,4 @@ public class MovementsMoneyEntity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_issue", insertable = false, updatable= false)
 	CatalogIssueEntity catalogIssue;
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public BigDecimal getAmount() {
-		return this.amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public BigDecimal getAmountMxn() {
-		return this.amountMxn;
-	}
-
-	public void setAmountMxn(BigDecimal amountMxn) {
-		this.amountMxn = amountMxn;
-	}
-
-	public Date getDateTransaction() {
-		return this.dateTransaction;
-	}
-
-	public void setDateTransaction(Date dateTransaction) {
-		this.dateTransaction = dateTransaction;
-	}
-
-	public int getIdBrokerAccount() {
-		return this.idBrokerAccount;
-	}
-
-	public void setIdBrokerAccount(int idBrokerAccount) {
-		this.idBrokerAccount = idBrokerAccount;
-	}
-
-	public int getIdTypeTransaction() {
-		return this.idTypeTransaction;
-	}
-
-	public void setIdTypeTransaction(int idTypeTransaction) {
-		this.idTypeTransaction = idTypeTransaction;
-	}
-
-	public CatalogTypeTransactionEntity getCatalogTypeTransaction() {
-		return catalogTypeTransaction;
-	}
-
-	public void setCatalogTypeTransaction(CatalogTypeTransactionEntity catalogTypeTransaction) {
-		this.catalogTypeTransaction = catalogTypeTransaction;
-	}
-
-	public Integer getIdIssue() {
-		return idIssue;
-	}
-
-	public void setIdIssue(Integer idIssue) {
-		this.idIssue = idIssue;
-	}
-
-	public BrokerAccountEntity getBrokerAccount() {
-		return brokerAccount;
-	}
-
-	public void setBrokerAccount(BrokerAccountEntity brokerAccount) {
-		this.brokerAccount = brokerAccount;
-	}
-
-	public CatalogIssueEntity getCatalogIssue() {
-		return catalogIssue;
-	}
-
-	public void setCatalogIssue(CatalogIssueEntity catalogIssue) {
-		this.catalogIssue = catalogIssue;
-	}
-
 }

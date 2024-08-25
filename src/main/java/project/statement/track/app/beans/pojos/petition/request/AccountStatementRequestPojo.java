@@ -1,5 +1,9 @@
 package project.statement.track.app.beans.pojos.petition.request;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class AccountStatementRequestPojo {
 
 	private Integer idAccountBroker;
@@ -7,28 +11,4 @@ public class AccountStatementRequestPojo {
 	private Integer year;
 	
 	private Integer month;
-
-	public Integer getIdAccountBroker() {
-		return idAccountBroker;
-	}
-
-	public void setIdAccountBroker(Integer idAccountBroker) {
-		this.idAccountBroker = idAccountBroker;
-	}
-
-	public Integer getYear() {
-		return year;
-	}
-
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	public Integer getMonth() {
-		return month;
-	}
-
-	public void setMonth(Integer month) {
-		this.month = month;
-	}
 }

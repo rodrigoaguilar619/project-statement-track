@@ -14,8 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Getter @Setter
 @Entity
 @Table(name="catalog_broker")
 public class CatalogBrokerEntity implements Serializable {
@@ -38,45 +41,4 @@ public class CatalogBrokerEntity implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="id_type_currency", insertable=false, updatable=false)
 	private CatalogTypeCurrencyEntity catalogTypeCurrency;
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getAcronym() {
-		return this.acronym;
-	}
-
-	public void setAcronym(String acronym) {
-		this.acronym = acronym;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public List<BrokerAccountEntity> getBrokerAccounts() {
-		return this.brokerAccounts;
-	}
-
-	public void setBrokerAccounts(List<BrokerAccountEntity> brokerAccounts) {
-		this.brokerAccounts = brokerAccounts;
-	}
-
-	public CatalogTypeCurrencyEntity getCatalogTypeCurrency() {
-		return this.catalogTypeCurrency;
-	}
-
-	public void setCatalogTypeCurrency(CatalogTypeCurrencyEntity catalogTypeCurrency) {
-		this.catalogTypeCurrency = catalogTypeCurrency;
-	}
-
 }
