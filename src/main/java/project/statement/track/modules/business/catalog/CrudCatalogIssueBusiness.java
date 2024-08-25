@@ -57,7 +57,7 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public CatalogDataPojo executeGetCatalogIssues(CatalogRequestPojo requestPojo) {
+	public CatalogDataPojo executeGetCatalogIssues() {
 		
 		List<CatalogIssue> catalogList = genericCustomPersistance.findAll(CatalogIssue.class);
 		List<CatalogIssuePojo> catalogPojoList = new ArrayList<>();
