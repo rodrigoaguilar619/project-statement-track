@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.beans.entity.MovementsIssueEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
@@ -25,21 +25,15 @@ import project.statement.track.app.vo.enums.DefinitionTypeOperationEnum;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class AccountStatementBusiness extends MainBusiness {
 	
 	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	AccountHelper accountUtil;
-	
-	@Autowired
-	MovementsMoneyRepository movementsMoneyRepository;
-	
-	@Autowired
-	MovementsIssueRepository movementsIssueRepository;
+	private final GenericPersistence genericPersistance;
+	private final AccountHelper accountHelper;
+	private final MovementsMoneyRepository movementsMoneyRepository;
+	private final MovementsIssueRepository movementsIssueRepository;
 
 	private List<MovementsMoneyEntity> getPeriodMoneyMovements(BrokerAccountEntity brokerAccount, Integer year, Integer month) throws BusinessException {
 		
@@ -197,13 +191,13 @@ public class AccountStatementBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public AccountStatementDataPojo executeGetAccountStatement(AccountStatementRequestPojo requestPojo) throws BusinessException {
 		
-		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdAccountBroker());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdAccountBroker());
 		
 		AccountStatementDataPojo accountStatementResponsePojo = new AccountStatementDataPojo();
 		accountStatementResponsePojo.setYear(requestPojo.getYear());
 		accountStatementResponsePojo.setMonth(requestPojo.getMonth());
-		accountStatementResponsePojo.setPreviousBalance(accountUtil.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth()));
-		accountStatementResponsePojo.setCurrentBalance(accountUtil.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth() + 1));
+		accountStatementResponsePojo.setPreviousBalance(accountHelper.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth()));
+		accountStatementResponsePojo.setCurrentBalance(accountHelper.getTotalPreviousPeriod(brokerAccount, requestPojo.getYear(), requestPojo.getMonth() + 1));
 		accountStatementResponsePojo.setOperationsStatement(getPeriodOperations(brokerAccount, requestPojo.getYear(), requestPojo.getMonth(), accountStatementResponsePojo.getPreviousBalance()));
 		accountStatementResponsePojo.setBrokerAccountResume(buildEntityToPojoUtil.mapBrokerAccountResumePojo(null, brokerAccount));
 		

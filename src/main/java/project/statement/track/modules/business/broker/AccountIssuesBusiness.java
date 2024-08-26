@@ -3,11 +3,10 @@ package project.statement.track.modules.business.broker;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
@@ -15,15 +14,11 @@ import project.statement.track.app.beans.pojos.petition.request.GetAccountDivide
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class AccountIssuesBusiness extends MainBusiness {
-
-	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
 	
-	@Autowired
-	MovementsMoneyRepository movementsMoneyRepository;
+	private final MovementsMoneyRepository movementsMoneyRepository;
 	
 	private List<MovementMoneyResumePojo> getAccountIssuesDividends(Integer idBrokerAccount, Integer idIssue) {
 		

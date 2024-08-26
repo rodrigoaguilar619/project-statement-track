@@ -2,7 +2,6 @@ package project.statement.track.modules.controller.file;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,16 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.utils.RestUtil;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileBase64StatementRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileStatementRequestPojo;
 import project.statement.track.app.vo.catalogs.CatalogsUri;
 import project.statement.track.modules.business.file.ReadFileSnowBallBusiness;
 
+@RequiredArgsConstructor
 @RestController
 public class ReadFileStatementController {
 	
-	@Autowired
-	ReadFileSnowBallBusiness readFileSnowBallBusiness;
+	private final ReadFileSnowBallBusiness readFileSnowBallBusiness;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping(path = CatalogsUri.API_STATEMENT_READ_FILE_BASE64, consumes = "application/json", produces = "application/json")

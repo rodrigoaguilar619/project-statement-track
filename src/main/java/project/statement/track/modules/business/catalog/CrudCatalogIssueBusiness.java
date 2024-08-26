@@ -3,7 +3,6 @@ package project.statement.track.modules.business.catalog;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,41 +11,31 @@ import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.modules.catalog.repository.CatalogRepository;
 import lib.base.backend.persistance.GenericPersistence;
 import lib.base.backend.pojo.catalog.CatalogDataPojo;
-import lib.base.backend.utils.CatalogUtil;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.pojos.entity.CatalogIssuePojo;
 import project.statement.track.app.beans.pojos.petition.data.GenericCatalogDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetCatalogIssueDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.catalog.CrudCatalogIssueRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.catalog.GenericCatalogIdRequestPojo;
-import project.statement.track.app.repository.CatalogsRepository;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class CrudCatalogIssueBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
-	@Autowired
-	protected GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	CatalogRepository catalogBaseRepository;
-	
-	@Autowired
-	MovementsIssueRepository movementsIssueRepository;
-	
-	@Autowired
-	CatalogsRepository catalogsRepository;
-	
-	CatalogUtil catalogUtil = new CatalogUtil();
+	private final GenericPersistence genericPersistance;
+	private final CatalogRepository catalogBaseRepository;
+	private final MovementsIssueRepository movementsIssueRepository;
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
 	public GetCatalogIssueDataPojo executeGetCatalogIssue(GenericCatalogIdRequestPojo requestPojo) {
 		
-		CatalogIssueEntity catalogIssue = (CatalogIssueEntity) genericCustomPersistance.findById(CatalogIssueEntity.class, requestPojo.getId());
+		CatalogIssueEntity catalogIssue = (CatalogIssueEntity) genericPersistance.findById(CatalogIssueEntity.class, requestPojo.getId());
 		CatalogIssuePojo catalogIssuePojo = buildEntityToPojoUtil.mapCatalogIssuePojo(null, catalogIssue);
 		
 		GetCatalogIssueDataPojo responsePojo = new GetCatalogIssueDataPojo();
@@ -59,7 +48,7 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public CatalogDataPojo executeGetCatalogIssues() {
 		
-		List<CatalogIssueEntity> catalogList = genericCustomPersistance.findAll(CatalogIssueEntity.class);
+		List<CatalogIssueEntity> catalogList = genericPersistance.findAll(CatalogIssueEntity.class);
 		List<CatalogIssuePojo> catalogPojoList = new ArrayList<>();
 		
 		for (CatalogIssueEntity catalogIssue: catalogList) {
@@ -84,14 +73,14 @@ public class CrudCatalogIssueBusiness extends MainBusiness {
 	public GenericCatalogDataPojo executeSaveUpdateCatalogIssue(CrudCatalogIssueRequestPojo requestPojo, CrudOptionsEnum crudOptionsEnum) {
 		
 		CatalogIssuePojo catalogData = requestPojo.getCatalogData();
-		CatalogIssueEntity catalogIssue = crudOptionsEnum.equals(CrudOptionsEnum.SAVE) ? null : (CatalogIssueEntity) genericCustomPersistance.findById(CatalogIssueEntity.class, catalogData.getId());
+		CatalogIssueEntity catalogIssue = crudOptionsEnum.equals(CrudOptionsEnum.SAVE) ? null : (CatalogIssueEntity) genericPersistance.findById(CatalogIssueEntity.class, catalogData.getId());
 		
 		catalogIssue = buildPojoToEntityUtil.generateCatalogIssueEntity(catalogIssue, catalogData);
 		
 		if (crudOptionsEnum.equals(CrudOptionsEnum.SAVE))
-			genericCustomPersistance.save(catalogIssue);
+			genericPersistance.save(catalogIssue);
 		else
-			genericCustomPersistance.update(catalogIssue);
+			genericPersistance.update(catalogIssue);
 		
 		GenericCatalogDataPojo dataPojo = new GenericCatalogDataPojo();
 		dataPojo.setId(catalogIssue.getId());

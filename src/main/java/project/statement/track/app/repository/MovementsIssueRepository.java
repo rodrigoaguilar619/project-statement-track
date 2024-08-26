@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -15,16 +14,17 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsIssueEntity;
 import project.statement.track.app.beans.entity.MovementsIssueEntity_;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 
+@RequiredArgsConstructor
 @Repository
 public class MovementsIssueRepository {
 
-	@Autowired
-	EntityManager em;
+	private final EntityManager em;
 	
 	public List<MovementsIssueEntity> getMovementsIssue(Integer idBrokerAccount, Integer idTypeMovement, Integer year, Integer month) {
 		

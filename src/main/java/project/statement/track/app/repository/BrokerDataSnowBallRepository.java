@@ -3,7 +3,6 @@ package project.statement.track.app.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -11,14 +10,15 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerDataSnowballEntity;
 import project.statement.track.app.beans.entity.BrokerDataSnowballEntity_;
 
+@RequiredArgsConstructor
 @Repository
 public class BrokerDataSnowBallRepository {
 
-	@Autowired
-	EntityManager em;
+	private final EntityManager em;
 	
 	public List<BrokerDataSnowballEntity> getDataPending() {
 		

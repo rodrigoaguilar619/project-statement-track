@@ -3,11 +3,10 @@ package project.statement.track.modules.business.issues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.petition.data.GetIssuesBuyDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetIssuesBuyRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
@@ -15,15 +14,11 @@ import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class IssuesBusiness extends MainBusiness {
 
-	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	MovementsIssueRepository movementsIssueRepository;
+	private final MovementsIssueRepository movementsIssueRepository;
 	
 	@Transactional(rollbackFor = Exception.class)
 	public GetIssuesBuyDataPojo executeGetIssuesBuy(GetIssuesBuyRequestPojo requestPojo) {

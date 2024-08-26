@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.beans.pojos.entity.BrokerAccountResumePojo;
 import project.statement.track.app.beans.pojos.petition.data.GetBADateStatementsDataPojo;
@@ -20,17 +20,17 @@ import project.statement.track.app.beans.pojos.petition.request.GetBADateStateme
 import project.statement.track.app.beans.pojos.petition.request.GetBrokerAccountsRequestPojo;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class BrokerAccountBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
+	private final GenericPersistence genericPersistance;
 	
 	@SuppressWarnings("unchecked")
 	public List<BrokerAccountResumePojo> getBrokerAccounts() {
 		
-		List<BrokerAccountEntity> brokerAccounts = genericCustomPersistance.findAll(BrokerAccountEntity.class);
+		List<BrokerAccountEntity> brokerAccounts = genericPersistance.findAll(BrokerAccountEntity.class);
 		List<BrokerAccountResumePojo> brokerAccountResumePojos = new ArrayList<>();
 		
 		for (BrokerAccountEntity brokerAccount: brokerAccounts) {
@@ -47,7 +47,7 @@ public class BrokerAccountBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public GetBADateStatementsDataPojo executeGetDateStatements(GetBADateStatementsRequestPojo requestPojo) {
 		
-		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar startDate = Calendar.getInstance();
 		startDate.setTime(brokerAccount.getDateCreation());

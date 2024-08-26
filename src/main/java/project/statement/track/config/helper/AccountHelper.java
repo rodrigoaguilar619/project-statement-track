@@ -5,24 +5,23 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lib.base.backend.exception.data.BusinessException;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 
+@RequiredArgsConstructor
 @Component
 public class AccountHelper {
 	
-	@Autowired
-	MovementsMoneyRepository movementsMoneyRepository;
+	private final MovementsMoneyRepository movementsMoneyRepository;
 	
-	@Autowired
-	MovementsIssueRepository movementsIssueRepository;
+	private final MovementsIssueRepository movementsIssueRepository;
 	
 	public BigDecimal getMovementMoneyPreviousTotal(BrokerAccountEntity brokerAccount, Integer idCatalogTypeTransaction, Integer year, Integer month) throws BusinessException {
 		

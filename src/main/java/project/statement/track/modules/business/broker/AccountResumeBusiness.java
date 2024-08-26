@@ -8,12 +8,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyResumePojo;
@@ -25,18 +25,14 @@ import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class AccountResumeBusiness extends MainBusiness {
 
 	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	AccountHelper accountUtil;
-	
-	@Autowired
-	MovementsMoneyRepository movementsMoneyRepository;
+	private final GenericPersistence genericPersistance;
+	private final AccountHelper accountHelper;
+	private final MovementsMoneyRepository movementsMoneyRepository;
 	
 	private List<MovementMoneyResumePojo> getMovementsMoneyResume(Integer idBrokerAccount, Map<String, String> filters) {
 		
@@ -66,7 +62,7 @@ public class AccountResumeBusiness extends MainBusiness {
 	@Transactional(rollbackFor = Exception.class)
 	public GetAccountResumeDataPojo executeGetAccountResume(GetAccountResumeRequestPojo requestPojo) throws BusinessException {
 		
-		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericCustomPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
+		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
 		
 		Calendar currentDate = Calendar.getInstance();
 		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(Long.parseLong(requestPojo.getFilters().get("filterDateEnd"))) : new Date());
@@ -77,7 +73,7 @@ public class AccountResumeBusiness extends MainBusiness {
 		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DEPOSIT, requestPojo.getFilters());
 		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.WITHDRAW, requestPojo.getFilters());
 		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DIVIDEND, requestPojo.getFilters());
-		BigDecimal currentBalance = accountUtil.getTotalPreviousPeriod(brokerAccount, currentYear, currentMonth);
+		BigDecimal currentBalance = accountHelper.getTotalPreviousPeriod(brokerAccount, currentYear, currentMonth);
 		
 		GetAccountResumeDataPojo responsePojo = new GetAccountResumeDataPojo();
 		responsePojo.setTotalDeposits(totalDeposits);

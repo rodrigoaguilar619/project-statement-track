@@ -1,12 +1,12 @@
 package project.statement.track.modules.controller.broker;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import lib.base.backend.utils.RestUtil;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.petition.data.GetBADateStatementsDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetBrokerAccountsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetBADateStatementsRequestPojo;
@@ -14,11 +14,11 @@ import project.statement.track.app.beans.pojos.petition.request.GetBrokerAccount
 import project.statement.track.app.vo.catalogs.CatalogsUri;
 import project.statement.track.modules.business.broker.BrokerAccountBusiness;
 
+@RequiredArgsConstructor
 @RestController
 public class BrokerAccountController {
 	
-	@Autowired
-	BrokerAccountBusiness brokerAccountBusiness;
+	private final BrokerAccountBusiness brokerAccountBusiness;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping(path = CatalogsUri.API_BROKER_ACCOUNT_LIST_GET, consumes = "application/json", produces = "application/json")

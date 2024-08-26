@@ -5,12 +5,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
-import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.BrokerSnowBallPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileBase64StatementRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.LoadFileStatementRequestPojo;
@@ -18,15 +17,11 @@ import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.modules.business.MainBusiness;
 import project.statement.track.modules.business.broker.BrokerSnowBallBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class ReadFileSnowBallBusiness extends MainBusiness {
 
-	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	BrokerSnowBallBusiness brokerSnowBallBusiness;
+	private final BrokerSnowBallBusiness brokerSnowBallBusiness;
 	
 	private void registerIssueTransaction(String fileBase64) throws BusinessException {
 		

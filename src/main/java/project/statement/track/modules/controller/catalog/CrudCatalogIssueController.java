@@ -1,6 +1,5 @@
 package project.statement.track.modules.controller.catalog;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +10,7 @@ import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.pojo.catalog.CatalogDataPojo;
 import lib.base.backend.pojo.catalog.CatalogRequestPojo;
 import lib.base.backend.utils.RestUtil;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.petition.data.GenericCatalogDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetCatalogIssueDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.catalog.CrudCatalogIssueRequestPojo;
@@ -18,11 +18,11 @@ import project.statement.track.app.beans.pojos.petition.request.catalog.GenericC
 import project.statement.track.app.vo.catalogs.CatalogsUri;
 import project.statement.track.modules.business.catalog.CrudCatalogIssueBusiness;
 
+@RequiredArgsConstructor
 @RestController
 public class CrudCatalogIssueController {
 
-	@Autowired
-	CrudCatalogIssueBusiness crudCatalogIssueBusiness;
+	private final CrudCatalogIssueBusiness crudCatalogIssueBusiness;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping(path = CatalogsUri.API_ADMIN_CUSTOM_CATALOG_ISSUE_LIST_GET, consumes = "application/json", produces = "application/json")

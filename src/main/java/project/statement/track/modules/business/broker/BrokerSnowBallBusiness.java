@@ -7,12 +7,12 @@ import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.persistance.GenericPersistence;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerDataSnowballEntity;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsIssueEntity;
@@ -27,30 +27,22 @@ import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
 import project.statement.track.modules.business.MainBusiness;
 
+@RequiredArgsConstructor
 @Component
 public class BrokerSnowBallBusiness extends MainBusiness {
 	
 	@SuppressWarnings("rawtypes")
-	@Autowired
-	GenericPersistence genericCustomPersistance;
-	
-	@Autowired
-	CatalogsRepository catalogsRepository;
-	
-	@Autowired
-	BrokerDataSnowBallRepository brokerDataSnowBallRepository;
-	
-	@Autowired
-	MovementsIssueRepository movementsIssueRepository;
-	
-	private static final String TABLE_NAME_MOVEMENTS_ISSUE = "movements_issue";
+	private final GenericPersistence genericPersistance;
+	private final CatalogsRepository catalogsRepository;
+	private final BrokerDataSnowBallRepository brokerDataSnowBallRepository;
+	private final MovementsIssueRepository movementsIssueRepository;
 	
 	@SuppressWarnings("unchecked")
 	private void saveSnowBallEntity(BrokerDataSnowballEntity brokerDataSnowball, Object entityToSave, String tableTrack) throws BusinessException {
 		
 		if (entityToSave != null) {
 		
-			genericCustomPersistance.save(entityToSave);
+			genericPersistance.save(entityToSave);
 			
 			Method methodId;
 			try {
@@ -69,7 +61,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		brokerDataSnowball.setTrackTable(trackTable);
 		brokerDataSnowball.setTrackTableId(trackId);
-		genericCustomPersistance.update(brokerDataSnowball);
+		genericPersistance.update(brokerDataSnowball);
 	}
 	
 	private Integer getIssueId(String company) throws BusinessException {
@@ -176,13 +168,13 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		if(!brokerDataSnowballs.isEmpty()) {
 			
-			BrokerDataSnowballEntity brokerDataSnowball = (BrokerDataSnowballEntity) genericCustomPersistance.findById(BrokerDataSnowballEntity.class, brokerDataSnowballs.get(0).getId());
+			BrokerDataSnowballEntity brokerDataSnowball = (BrokerDataSnowballEntity) genericPersistance.findById(BrokerDataSnowballEntity.class, brokerDataSnowballs.get(0).getId());
 			
 			if(brokerDataSnowball != null)
 				throw new BusinessException(CatalogsErrorMessage.getErrorMsgStatementIdRegistered());
 		}
 		
-		genericCustomPersistance.save(brokerDataSnowballs);
+		genericPersistance.save(brokerDataSnowballs);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -216,7 +208,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
 				
 				entityToSave = movementsIssue;
-				tableTrack = TABLE_NAME_MOVEMENTS_ISSUE;
+				tableTrack = jpaUtil.getTableName(MovementsIssueEntity.class);
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión") ) {
 
@@ -225,9 +217,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				
 				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
 				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
-				genericCustomPersistance.update(movementsIssue);
+				genericPersistance.update(movementsIssue);
 				
-				updateSnowBallTrack(brokerDataSnowball, TABLE_NAME_MOVEMENTS_ISSUE, movementsIssue.getId());
+				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market")) {
 
@@ -236,9 +228,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				
 				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
 				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
-				genericCustomPersistance.update(movementsIssue);
+				genericPersistance.update(movementsIssue);
 				
-				updateSnowBallTrack(brokerDataSnowball, TABLE_NAME_MOVEMENTS_ISSUE, movementsIssue.getId());
+				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Pago de Rendimiento Mensual") ||
 					brokerDataSnowball.getMovementDescription().equals("Bono por Dividendo") ||
@@ -261,7 +253,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 				
 				movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
 				entityToSave = movementsIssue;
-				tableTrack = TABLE_NAME_MOVEMENTS_ISSUE;
+				tableTrack = jpaUtil.getTableName(MovementsIssueEntity.class);
 			}
 			else if (brokerDataSnowball.getMovementDescription().equals("Devolución de pago de compra de acciones en Mercado Secundario por oferta no aceptada por parte del dueño de la ODI") ||
 					brokerDataSnowball.getMovementDescription().equals("Ajuste por transacción errónea en Snowball Market no se recibió 1 ODI") ||
@@ -275,9 +267,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 					throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueRedeemNotFound(brokerDataSnowball.getCompany(), brokerDataSnowball.getBalanceEntry()));
 				
 				movementsIssue.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED);
-				genericCustomPersistance.update(movementsIssue);
+				genericPersistance.update(movementsIssue);
 				
-				updateSnowBallTrack(brokerDataSnowball, TABLE_NAME_MOVEMENTS_ISSUE, movementsIssue.getId());
+				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
 			}
 			else
 				throw new BusinessException(CatalogsErrorMessage.getErrorMsgOptionMovementTypeNotImplemented(brokerDataSnowball.getMovementDescription()));

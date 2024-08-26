@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -17,17 +16,18 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity_;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
 import project.statement.track.app.vo.catalogs.CatalogsEntity;
 
+@RequiredArgsConstructor
 @Repository
 public class MovementsMoneyRepository {
 
-	@Autowired
-	EntityManager em;
+	private final EntityManager em;
 	
 	private BigDecimal getMovementsMoneyTotals(SingularAttribute<MovementsMoneyEntity, BigDecimal> column, Integer idBrokerAccount, Integer idTypetransaction, Map<String, String> filters) {
 		
