@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,19 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	private final CatalogsRepository catalogsRepository;
 	private final BrokerDataSnowBallRepository brokerDataSnowBallRepository;
 	private final MovementsIssueRepository movementsIssueRepository;
+	
+	private static final Set<String> SECTION_DEPOSIT_LIST = Set.of("Deposito");
+	private static final Set<String> SECTION_INVESTMENT_COMPROMISE_LIST = Set.of("Compromiso de Inversión");
+	private static final Set<String> SECTION_INVESTMENT_COMPROMISE_COMMISSION_LIST = Set.of("Comision por Compromiso de Inversión");
+	private static final Set<String> SECTION_PAYMENT_SECOND_MARKET_COMISSION_LIST = Set.of("Pago de comision por compra de acciones en Snowball Market");
+	private static final Set<String> SECTION_PAYMENT_YIELD_DIVIDEND_LIST = Set.of("Pago de Rendimiento Mensual", "Bono por Dividendo",
+			"Bono por Rendimiento", "Pago de Comisión Variable", "Pago de RODI");
+	private static final Set<String> SECTION_PAYMENT_SECOND_MARKET_LIST = Set.of("Pago de compra de acciones en Mercado Secundario",
+			"Pago de compra de acciones en Snowball Market");
+	private static final Set<String> SECTION_PAYMENT_RETURN_LIST = Set.of("Ajuste por transacción errónea en Snowball Market no se recibió 1 ODI",
+			"Devolución de pago de compra de acciones en Mercado Secundario por oferta no aceptada por parte del dueño de la ODI",
+			"Devolución de pago de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI",
+			"Devolución de comision de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI");
 	
 	@SuppressWarnings("unchecked")
 	private void saveSnowBallEntity(BrokerDataSnowballEntity brokerDataSnowball, Object entityToSave, String tableTrack) throws BusinessException {
@@ -160,6 +174,89 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		return catalogIssue;
 	}
+	
+	private void handleDeposit(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		MovementMoneyPojo movementMoneyPojo = buildMovementMoneyDeposit(brokerDataSnowball);
+		MovementsMoneyEntity movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
+		
+		saveSnowBallEntity(brokerDataSnowball, movementsMoney, jpaUtil.getTableName(MovementsMoneyEntity.class));
+	}
+	
+	private void handleInvestmentCompromise(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		MovementIssuePojo movementIssuePojo = buildMovementIssueInvestment(brokerDataSnowball);
+		MovementsIssueEntity movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
+		
+		saveSnowBallEntity(brokerDataSnowball, movementsIssue, jpaUtil.getTableName(MovementsIssueEntity.class));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void handleInvestmentCompromiseCommission(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY);
+		
+		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
+		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
+		genericPersistance.update(movementsIssue);
+		
+		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
+		
+		catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
+		movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY);
+		
+		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
+		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
+		genericPersistance.update(movementsIssue);
+		
+		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void handleInvestmentSecondMarketCommission(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		
+		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
+		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
+		genericPersistance.update(movementsIssue);
+		
+		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
+	}
+	
+	private void handlePaymentYieldDividend(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
+		MovementMoneyPojo movementMoneyPojo = buildMovementMoneyPayDividend(brokerDataSnowball, catalogIssue);
+		MovementsMoneyEntity movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
+		
+		saveSnowBallEntity(brokerDataSnowball, movementsMoney, jpaUtil.getTableName(MovementsMoneyEntity.class));
+	}
+	
+	private void handlePaymentSecondMarket(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		MovementIssuePojo movementIssuePojo = buildMovementIssueBuyMarketSecundary(brokerDataSnowball);
+		MovementsIssueEntity movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
+		
+		saveSnowBallEntity(brokerDataSnowball, movementsIssue, jpaUtil.getTableName(MovementsIssueEntity.class));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void handlePaymentReturn(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		
+		if (movementsIssue == null)
+			throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueRedeemNotFound(brokerDataSnowball.getCompany(), brokerDataSnowball.getBalanceEntry()));
+		
+		movementsIssue.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED);
+		genericPersistance.update(movementsIssue);
+		
+		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
+	}
 
 	@SuppressWarnings({ "unchecked" })
 	public void storeDataSnowBall(List<BrokerSnowBallPojo> snowBallPojos) throws BusinessException {
@@ -177,7 +274,6 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		genericPersistance.save(brokerDataSnowballs);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void assignSnowBallData() throws BusinessException {
 		
 		List<BrokerDataSnowballEntity> brokerDataSnowballs = brokerDataSnowBallRepository.getDataPending();
@@ -186,95 +282,29 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		for(BrokerDataSnowballEntity brokerDataSnowball: brokerDataSnowballs) {
 			
-			Object entityToSave = null;
-			String tableTrack = null;
-			MovementMoneyPojo movementMoneyPojo = null;
-			MovementIssuePojo movementIssuePojo = null;
-			MovementsMoneyEntity movementsMoney = null;
-			MovementsIssueEntity movementsIssue = null;
-			CatalogIssueEntity catalogIssue = null;
+			if (SECTION_DEPOSIT_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handleDeposit(brokerDataSnowball);
 			
-			if (brokerDataSnowball.getMovementDescription().equals("Deposito")) {
+			else if (SECTION_INVESTMENT_COMPROMISE_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handleInvestmentCompromise(brokerDataSnowball);
 				
-				movementMoneyPojo = buildMovementMoneyDeposit(brokerDataSnowball);
-				movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
+			else if (SECTION_INVESTMENT_COMPROMISE_COMMISSION_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handleInvestmentCompromiseCommission(brokerDataSnowball);
+			
+			else if (SECTION_PAYMENT_SECOND_MARKET_COMISSION_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handleInvestmentSecondMarketCommission(brokerDataSnowball);
+			
+			else if (SECTION_PAYMENT_YIELD_DIVIDEND_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handlePaymentYieldDividend(brokerDataSnowball);
 				
-				entityToSave = movementsMoney;
-				tableTrack = "movements_money";
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Compromiso de Inversión")) {
-				
-				movementIssuePojo = buildMovementIssueInvestment(brokerDataSnowball);
-				movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
-				
-				entityToSave = movementsIssue;
-				tableTrack = jpaUtil.getTableName(MovementsIssueEntity.class);
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Comision por Compromiso de Inversión") ) {
-
-				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY);
-				
-				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
-				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
-				genericPersistance.update(movementsIssue);
-				
-				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Pago de comision por compra de acciones en Snowball Market")) {
-
-				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-				movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
-				
-				movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
-				movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
-				genericPersistance.update(movementsIssue);
-				
-				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Pago de Rendimiento Mensual") ||
-					brokerDataSnowball.getMovementDescription().equals("Bono por Dividendo") ||
-					brokerDataSnowball.getMovementDescription().equals("Bono por Rendimiento") ||
-					brokerDataSnowball.getMovementDescription().equals("Pago de Comisión Variable") ||
-					brokerDataSnowball.getMovementDescription().equals("Pago de RODI")) {
-				
-				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-				
-				movementMoneyPojo = buildMovementMoneyPayDividend(brokerDataSnowball, catalogIssue);
-				movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
-				
-				entityToSave = movementsMoney;
-				tableTrack = "movements_money";
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Pago de compra de acciones en Mercado Secundario") ||
-					brokerDataSnowball.getMovementDescription().equals("Pago de compra de acciones en Snowball Market")) {
-
-				movementIssuePojo = buildMovementIssueBuyMarketSecundary(brokerDataSnowball);
-				
-				movementsIssue = buildPojoToEntityUtil.generateMovementsIssueEntity(null, movementIssuePojo);
-				entityToSave = movementsIssue;
-				tableTrack = jpaUtil.getTableName(MovementsIssueEntity.class);
-			}
-			else if (brokerDataSnowball.getMovementDescription().equals("Devolución de pago de compra de acciones en Mercado Secundario por oferta no aceptada por parte del dueño de la ODI") ||
-					brokerDataSnowball.getMovementDescription().equals("Ajuste por transacción errónea en Snowball Market no se recibió 1 ODI") ||
-					brokerDataSnowball.getMovementDescription().equals("Devolución de pago de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI") ||
-					brokerDataSnowball.getMovementDescription().equals("Devolución de comision de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI")) {
-				
-				catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-				movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
-				
-				if (movementsIssue == null)
-					throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueRedeemNotFound(brokerDataSnowball.getCompany(), brokerDataSnowball.getBalanceEntry()));
-				
-				movementsIssue.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED);
-				genericPersistance.update(movementsIssue);
-				
-				updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
-			}
+			else if (SECTION_PAYMENT_SECOND_MARKET_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handlePaymentSecondMarket(brokerDataSnowball);
+			
+			else if (SECTION_PAYMENT_RETURN_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handlePaymentReturn(brokerDataSnowball);
+			
 			else
 				throw new BusinessException(CatalogsErrorMessage.getErrorMsgOptionMovementTypeNotImplemented(brokerDataSnowball.getMovementDescription()));
-			
-			saveSnowBallEntity(brokerDataSnowball, entityToSave, tableTrack);
 		}
 	}
 	
