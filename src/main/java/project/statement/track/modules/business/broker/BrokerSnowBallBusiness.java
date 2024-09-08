@@ -202,15 +202,6 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		genericPersistance.update(movementsIssue);
 		
 		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
-		
-		catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-		movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY);
-		
-		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
-		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
-		genericPersistance.update(movementsIssue);
-		
-		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
 	}
 	
 	@SuppressWarnings("unchecked")
