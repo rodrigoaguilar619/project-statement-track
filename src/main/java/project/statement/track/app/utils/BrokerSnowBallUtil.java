@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import com.gargoylesoftware.htmlunit.html.DomElement;
@@ -26,6 +28,29 @@ public class BrokerSnowBallUtil {
 	
 	private String getNumberFormat(String number) {
 		return number.replace("$", "").replace(" MXN", "").replace(",", "");
+	}
+	
+	//remove from list "key" when value "keyNext" is next value "key"
+	private void removeKeyEmpty(List<String> dataList, String key, String keyNext) {
+		
+		ListIterator<String> iterator = dataList.listIterator();
+        String previous = null;
+        Integer indexRemove = null;
+        
+        while (iterator.hasNext()) {
+            String current = iterator.next();
+            
+            if (previous != null && previous.equals(key) && current.equals(keyNext)) {
+            	indexRemove = iterator.previousIndex() - 1;
+            	break;
+            }
+            
+            previous = current;
+        }
+        
+		if (indexRemove != null) {
+			dataList.remove(indexRemove.intValue());
+		}
 	}
 	
 	private void assignSnowBallValue(BrokerSnowBallPojo brokerSnowBallPojo, Map<String, String> movementDataMap) throws BusinessException {
@@ -78,6 +103,15 @@ public class BrokerSnowBallUtil {
 			case "Recibe":
 				//ignore parameter	
 				break;
+			case "Beneficiario":
+				//ignore parameter
+				break;
+			case "Banco":
+				//ignore parameter
+				break;
+			case "CLABE":
+				//ignore parameter
+				break;
 			case "Fecha de IE":
 				//ignore parameter	
 				break;
@@ -115,6 +149,9 @@ public class BrokerSnowBallUtil {
 				String[] movementDataList = movementData.split("\r\n");
 				
 				List<String> movementDataListTmp = new ArrayList<>(Arrays.asList(movementDataList));
+				removeKeyEmpty(movementDataListTmp, "Sucursal", "CLABE");
+				removeKeyEmpty(movementDataListTmp, "Comprobante", "Descargar");
+				
 				movementDataListTmp.remove(" Descargar");
 				movementDataListTmp.remove("Descargar");
 				movementDataList = movementDataListTmp.toArray(new String[0]);
