@@ -50,6 +50,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 			"Devolución de pago de compra de acciones en Mercado Secundario por oferta no aceptada por parte del dueño de la ODI",
 			"Devolución de pago de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI",
 			"Devolución de comision de compra de acciones en Snowball Market por oferta no aceptada por parte del dueño de la ODI");
+	private static final Set<String> SECTION_WITHDRAW_LIST = Set.of("Retiro");
 	
 	@SuppressWarnings("unchecked")
 	private void saveSnowBallEntity(BrokerDataSnowballEntity brokerDataSnowball, Object entityToSave, String tableTrack) throws BusinessException {
@@ -124,6 +125,18 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		return movementMoneyPojo;
 	}
 	
+	private MovementMoneyPojo buildMovementMoneyWithdraw(BrokerDataSnowballEntity brokerDataSnowball) {
+		
+		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
+		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceExit());
+		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceExit());
+		movementMoneyPojo.setDateTransactionMillis(brokerDataSnowball.getDateTransaction() != null ? brokerDataSnowball.getDateTransaction().getTime() : null);
+		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
+		
+		return movementMoneyPojo;
+	}
+	
 	private MovementIssuePojo buildMovementIssueInvestment(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		MovementIssuePojo movementIssuePojo = new MovementIssuePojo();
@@ -179,6 +192,14 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		MovementMoneyPojo movementMoneyPojo = buildMovementMoneyDeposit(brokerDataSnowball);
 		MovementsMoneyEntity movementsMoney =  buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
+		
+		saveSnowBallEntity(brokerDataSnowball, movementsMoney, jpaUtil.getTableName(MovementsMoneyEntity.class));
+	}
+	
+	private void handleWithdraw(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
+		
+		MovementMoneyPojo movementMoneyPojo = buildMovementMoneyWithdraw(brokerDataSnowball);
+		MovementsMoneyEntity movementsMoney = buildPojoToEntityUtil.generateMovementsMoneyEntity(null, movementMoneyPojo);
 		
 		saveSnowBallEntity(brokerDataSnowball, movementsMoney, jpaUtil.getTableName(MovementsMoneyEntity.class));
 	}
@@ -293,6 +314,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 			
 			else if (SECTION_PAYMENT_RETURN_LIST.contains(brokerDataSnowball.getMovementDescription()))
 				handlePaymentReturn(brokerDataSnowball);
+			
+			else if (SECTION_WITHDRAW_LIST.contains(brokerDataSnowball.getMovementDescription()))
+				handleWithdraw(brokerDataSnowball);
 			
 			else
 				throw new BusinessException(CatalogsErrorMessage.getErrorMsgOptionMovementTypeNotImplemented(brokerDataSnowball.getMovementDescription()));
