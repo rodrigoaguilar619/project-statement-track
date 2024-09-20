@@ -53,6 +53,12 @@ public class BrokerSnowBallUtil {
 		}
 	}
 	
+	private void removekeyLast(List<String> dataList, String keyLast) {
+		
+		if (dataList.getLast().equals(keyLast))
+			dataList.removeLast();
+	}
+	
 	private void assignSnowBallValue(BrokerSnowBallPojo brokerSnowBallPojo, Map<String, String> movementDataMap) throws BusinessException {
 		
 		for (Map.Entry<String,String> entry : movementDataMap.entrySet()) {
@@ -151,6 +157,7 @@ public class BrokerSnowBallUtil {
 				List<String> movementDataListTmp = new ArrayList<>(Arrays.asList(movementDataList));
 				removeKeyEmpty(movementDataListTmp, "Sucursal", "CLABE");
 				removeKeyEmpty(movementDataListTmp, "Comprobante", "Descargar");
+				removekeyLast(movementDataListTmp, "Comprobante");
 				
 				movementDataListTmp.remove(" Descargar");
 				movementDataListTmp.remove("Descargar");
