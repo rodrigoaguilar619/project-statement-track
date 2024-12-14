@@ -2,7 +2,7 @@ package project.statement.track.app.beans.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class MovementsMoneyEntity implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_transaction")
-	private Date dateTransaction;
+	private LocalDateTime dateTransaction;
 
 	@Column(name="id_broker_account")
 	private int idBrokerAccount;

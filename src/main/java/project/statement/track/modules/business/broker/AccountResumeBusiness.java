@@ -1,10 +1,9 @@
 package project.statement.track.modules.business.broker;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,11 +63,10 @@ public class AccountResumeBusiness extends MainBusiness {
 		
 		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
 		
-		Calendar currentDate = Calendar.getInstance();
-		currentDate.setTime(requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? new Date(Long.parseLong(requestPojo.getFilters().get("filterDateEnd"))) : new Date());
+		LocalDateTime currentDate = requestPojo.getFilters() != null && requestPojo.getFilters().get("filterDateEnd") != null ? dateUtil.getLocalDateTime(Long.parseLong(requestPojo.getFilters().get("filterDateEnd"))) : LocalDateTime.now();
 		
-		Integer currentYear = currentDate.get(Calendar.YEAR);
-		Integer currentMonth = currentDate.get(Calendar.MONTH) + 1;
+		Integer currentYear = currentDate.getYear();
+		Integer currentMonth = currentDate.getMonthValue();
 		
 		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DEPOSIT, requestPojo.getFilters());
 		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.WITHDRAW, requestPojo.getFilters());

@@ -118,7 +118,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceEntry());
-		movementMoneyPojo.setDateTransactionMillis(brokerDataSnowball.getDateTransaction() != null ? brokerDataSnowball.getDateTransaction().getTime() : null);
+		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
 		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
 		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.DEPOSIT);
 		
@@ -130,7 +130,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceExit());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceExit());
-		movementMoneyPojo.setDateTransactionMillis(brokerDataSnowball.getDateTransaction() != null ? brokerDataSnowball.getDateTransaction().getTime() : null);
+		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
 		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
 		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
 		
@@ -156,7 +156,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		MovementMoneyPojo movementMoneyPojo = new MovementMoneyPojo();
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceEntry());
-		movementMoneyPojo.setDateTransactionMillis(brokerDataSnowball.getDateTransaction() != null ? brokerDataSnowball.getDateTransaction().getTime() : null);
+		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
 		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
 		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.DIVIDEND);
 		movementMoneyPojo.setIdIssue(catalogIssue.getId());

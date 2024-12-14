@@ -1,8 +1,8 @@
 package project.statement.track.app.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -45,7 +45,7 @@ public class MovementsIssueRepository {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	public BigDecimal getMovementsIssuePreviousTotal(Integer idBrokerAccount, Integer idTypeMovement, Date dateEnd) {
+	public BigDecimal getMovementsIssuePreviousTotal(Integer idBrokerAccount, Integer idTypeMovement, LocalDateTime dateEnd) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);

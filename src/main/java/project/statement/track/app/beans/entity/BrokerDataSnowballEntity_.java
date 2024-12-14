@@ -1,7 +1,7 @@
 package project.statement.track.app.beans.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.metamodel.SingularAttribute;
@@ -12,7 +12,7 @@ import jakarta.persistence.metamodel.StaticMetamodel;
 public abstract class BrokerDataSnowballEntity_ {
 
 	public static volatile SingularAttribute<BrokerDataSnowballEntity, BigDecimal> balanceEntry;
-	public static volatile SingularAttribute<BrokerDataSnowballEntity, Date> dateTransaction;
+	public static volatile SingularAttribute<BrokerDataSnowballEntity, LocalDateTime> dateTransaction;
 	public static volatile SingularAttribute<BrokerDataSnowballEntity, BigDecimal> previousBalance;
 	public static volatile SingularAttribute<BrokerDataSnowballEntity, String> movementDescription;
 	public static volatile SingularAttribute<BrokerDataSnowballEntity, String> reference;

@@ -1,15 +1,14 @@
 package project.statement.track.app.beans.pojos.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class MovementIssuePojo {
 
-	private Date dateTransaction;
+	private LocalDateTime dateTransaction;
 
 	private int idBrokerAccount;
 

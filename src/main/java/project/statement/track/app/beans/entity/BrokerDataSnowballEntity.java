@@ -2,7 +2,7 @@ package project.statement.track.app.beans.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -28,7 +28,7 @@ public class BrokerDataSnowballEntity implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_transaction")
-	private Date dateTransaction;
+	private LocalDateTime dateTransaction;
 	
 	@Column(name="previous_balance")
 	private BigDecimal previousBalance;

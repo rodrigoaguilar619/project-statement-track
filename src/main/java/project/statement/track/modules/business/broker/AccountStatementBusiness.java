@@ -75,7 +75,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			if (movementsMoney.getIdTypeTransaction() == CatalogsEntity.CatalogTypeTransaction.DIVIDEND)
 				typeOperationDescription += " / " + ((movementsMoney.getCatalogIssue() != null) ? movementsMoney.getCatalogIssue().getInitials() : "");
 			
-			operationstatementDataPojo.setDate(movementsMoney.getDateTransaction().getTime());
+			operationstatementDataPojo.setDate(dateUtil.getMillis(movementsMoney.getDateTransaction()));
 			operationstatementDataPojo.setDateFormated(movementsMoney.getDateTransaction().toString());
 			operationstatementDataPojo.setTypeOperationId(movementsMoney.getIdTypeTransaction());
 			operationstatementDataPojo.setTypeOperationDescription(typeOperationDescription);
@@ -101,7 +101,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			
 			OperationStatementDataPojo operationstatementDataPojo = new OperationStatementDataPojo();
 			
-			operationstatementDataPojo.setDate(movementsIssue.getDateTransaction().getTime());
+			operationstatementDataPojo.setDate(dateUtil.getMillis(movementsIssue.getDateTransaction()));
 			operationstatementDataPojo.setDateFormated(movementsIssue.getDateTransaction().toString());
 			operationstatementDataPojo.setTypeOperationId(movementsIssue.getIdTypeMovement());
 			operationstatementDataPojo.setTypeOperationDescription(movementsIssue.getCatalogTypeMovement().getDescription() + " / " + movementsIssue.getCatalogIssue().getInitials());

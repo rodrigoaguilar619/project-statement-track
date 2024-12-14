@@ -1,7 +1,7 @@
 package project.statement.track.app.beans.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,5 +41,5 @@ public class BrokerAccountEntity implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_creation")
-	private Date dateCreation;
+	private LocalDateTime dateCreation;
 }

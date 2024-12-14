@@ -1,9 +1,8 @@
 package project.statement.track.modules.business.broker;
 
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,18 +47,16 @@ public class BrokerAccountBusiness extends MainBusiness {
 	public GetBADateStatementsDataPojo executeGetDateStatements(GetBADateStatementsRequestPojo requestPojo) {
 		
 		BrokerAccountEntity brokerAccount = (BrokerAccountEntity) genericPersistance.findById(BrokerAccountEntity.class, requestPojo.getIdBrokerAccount());
+
+		LocalDateTime startDate = brokerAccount.getDateCreation();
 		
-		Calendar startDate = Calendar.getInstance();
-		startDate.setTime(brokerAccount.getDateCreation());
+		Integer startYear = Integer.valueOf(startDate.getYear());
+		Integer startMonth = Integer.valueOf(startDate.getMonthValue());
 		
-		Integer startYear = startDate.get(Calendar.YEAR);
-		Integer startMonth = startDate.get(Calendar.MONTH) + 1;
+		LocalDateTime currentDate = LocalDateTime.now();
 		
-		Calendar currentDate = Calendar.getInstance();
-		currentDate.setTime(new Date());
-		
-		Integer currentYear = currentDate.get(Calendar.YEAR);
-		Integer currentMonth = currentDate.get(Calendar.MONTH) + 1;
+		Integer currentYear = Integer.valueOf(currentDate.getYear());
+		Integer currentMonth = Integer.valueOf(currentDate.getMonthValue());
 		
 		List<GetBADateStatementsDataPojo.StatementYearPojo> yearPojos = new ArrayList<>();
 		GetBADateStatementsDataPojo responsePojo = new GetBADateStatementsDataPojo();

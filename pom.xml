@@ -6,14 +6,14 @@
 	<parent>
 		<groupId>com.parent.project.web</groupId>
 		<artifactId>lib-parent-project-web</artifactId>
-		<version>4.0.0</version>
+		<version>5.0.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>project.statement.track</groupId>
 	<artifactId>project-statement-track</artifactId>
-	<version>2.0.0</version>
+	<version>3.0.0</version>
 	<packaging>${prop.packaging.type}</packaging>
 	<name>project-statement-track</name>
 	<description>Statement track project</description>
@@ -22,9 +22,18 @@
 		<jar.name>${server.servlet.context-path}</jar.name>
 		<prop.main.class>project.statement.track.config.starter.AppStatementTrack</prop.main.class>
 		<test.skip>true</test.skip>
+		<custom.base.version>4.0.0</custom.base.version>
 	</properties>
 
 	<dependencies>
+	
+		<!-- custom dependencies -->
+		<dependency>
+			<groupId>lib.base.backend</groupId>
+			<artifactId>lib-base-backend</artifactId>
+			<version>${custom.base.version}</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>

@@ -2,9 +2,8 @@ package project.statement.track.config.helper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 import lib.base.backend.exception.data.BusinessException;
@@ -26,7 +25,7 @@ public class AccountHelper {
 	public BigDecimal getMovementMoneyPreviousTotal(BrokerAccountEntity brokerAccount, Integer idCatalogTypeTransaction, Integer year, Integer month) throws BusinessException {
 		
 		if(brokerAccount.getCutDay() == -1) {
-			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
+			LocalDateTime dateEnd = LocalDate.of(year, month, 1).atStartOfDay();
 			return movementsMoneyRepository.getMovementsMoneyPreviousTotal(brokerAccount.getId(), idCatalogTypeTransaction, dateEnd);
 		}
 		else
@@ -36,7 +35,7 @@ public class AccountHelper {
 	public BigDecimal getMovementIssuePreviousTotal(BrokerAccountEntity brokerAccount, Integer idCatalogTypeMovement, Integer year, Integer month) throws BusinessException {
 		
 		if(brokerAccount.getCutDay() == -1) {
-			Date dateEnd = new GregorianCalendar(year, month - 1, 1).getTime();
+			LocalDateTime dateEnd = LocalDate.of(year, month, 1).atStartOfDay();
 			return movementsIssueRepository.getMovementsIssuePreviousTotal(brokerAccount.getId(), idCatalogTypeMovement, dateEnd);
 		}
 		else

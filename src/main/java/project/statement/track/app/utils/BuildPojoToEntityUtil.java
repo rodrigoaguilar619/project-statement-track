@@ -1,7 +1,6 @@
 package project.statement.track.app.utils;
 
-import java.util.Date;
-
+import lib.base.backend.utils.date.DateUtil;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsIssueEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
@@ -10,6 +9,8 @@ import project.statement.track.app.beans.pojos.entity.MovementIssuePojo;
 import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
 
 public class BuildPojoToEntityUtil {
+	
+	private DateUtil dateUtil = new DateUtil();
 
 	public MovementsMoneyEntity generateMovementsMoneyEntity(MovementsMoneyEntity movementsMoney, MovementMoneyPojo movementMoneyPojo) {
 		
@@ -18,7 +19,7 @@ public class BuildPojoToEntityUtil {
 		
 		movementsMoney.setAmount(movementMoneyPojo.getAmount());
 		movementsMoney.setAmountMxn(movementMoneyPojo.getAmountMxn());
-		movementsMoney.setDateTransaction(movementMoneyPojo.getDateTransactionMillis() != null ? new Date(movementMoneyPojo.getDateTransactionMillis()) : null);
+		movementsMoney.setDateTransaction(dateUtil.getLocalDateTime(movementMoneyPojo.getDateTransactionMillis()));
 		movementsMoney.setIdBrokerAccount(movementMoneyPojo.getIdBrokerAccount());
 		movementsMoney.setIdTypeTransaction(movementMoneyPojo.getIdTypeTransaction());
 		movementsMoney.setIdIssue(movementMoneyPojo.getIdIssue());

@@ -1,8 +1,8 @@
 package project.statement.track.app.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +16,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.SingularAttribute;
+import lib.base.backend.utils.date.DateUtil;
 import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
@@ -28,6 +29,7 @@ import project.statement.track.app.vo.catalogs.CatalogsEntity;
 public class MovementsMoneyRepository {
 
 	private final EntityManager em;
+	private DateUtil dateUtil = new DateUtil();
 	
 	private BigDecimal getMovementsMoneyTotals(SingularAttribute<MovementsMoneyEntity, BigDecimal> column, Integer idBrokerAccount, Integer idTypetransaction, Map<String, String> filters) {
 		
@@ -55,10 +57,10 @@ public class MovementsMoneyRepository {
 		if (filters != null) {
 			
 			if (filters.get("filterDateStart") != null) {
-				predicatesAnd.add(cb.greaterThanOrEqualTo(root.get(MovementsMoneyEntity_.dateTransaction).as(Date.class), new Date(Long.parseLong(filters.get("filterDateStart")))));
+				predicatesAnd.add(cb.greaterThanOrEqualTo(root.get(MovementsMoneyEntity_.dateTransaction).as(LocalDateTime.class), dateUtil.getLocalDateTime(Long.parseLong(filters.get("filterDateStart")))));
 			}
 			if (filters.get("filterDateEnd") != null) {
-				predicatesAnd.add(cb.lessThanOrEqualTo(root.get(MovementsMoneyEntity_.dateTransaction).as(Date.class), new Date(Long.parseLong(filters.get("filterDateEnd")))));
+				predicatesAnd.add(cb.lessThanOrEqualTo(root.get(MovementsMoneyEntity_.dateTransaction).as(LocalDateTime.class), dateUtil.getLocalDateTime(Long.parseLong(filters.get("filterDateEnd")))));
 			}
 		}
 	}
@@ -82,7 +84,7 @@ public class MovementsMoneyRepository {
 		return em.createQuery(cq).getResultList();
 	}
 	
-	public BigDecimal getMovementsMoneyPreviousTotal(Integer idBrokerAccount, Integer idTypetransaction, Date dateEnd) {
+	public BigDecimal getMovementsMoneyPreviousTotal(Integer idBrokerAccount, Integer idTypetransaction, LocalDateTime dateEnd) {
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<BigDecimal> cq = cb.createQuery(BigDecimal.class);

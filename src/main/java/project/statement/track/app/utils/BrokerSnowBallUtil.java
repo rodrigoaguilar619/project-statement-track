@@ -1,10 +1,8 @@
 package project.statement.track.app.utils;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -198,32 +196,27 @@ public class BrokerSnowBallUtil {
 		
 		List<BrokerDataSnowballEntity> brokerDataSnowballs = new ArrayList<>();
 		
-		try {
-			for(BrokerSnowBallPojo brokerSnowBallPojo: snowBallPojos) {
-				
-				BrokerDataSnowballEntity brokerDataSnowball = new BrokerDataSnowballEntity();
-				
-				brokerDataSnowball.setId(brokerSnowBallPojo.getDate().replace("-", "_") + "_" + brokerSnowBallPojo.getHour().replace(":", "_") + "_" + brokerSnowBallPojo.getPreviousBalance() + "_" + brokerSnowBallPojo.getActualBalance());
-				brokerDataSnowball.setActualBalance(brokerSnowBallPojo.getActualBalance() != null ? new BigDecimal(brokerSnowBallPojo.getActualBalance()) : null);
-				brokerDataSnowball.setPreviousBalance(brokerSnowBallPojo.getPreviousBalance() != null ? new BigDecimal(brokerSnowBallPojo.getPreviousBalance()) : null);
-				brokerDataSnowball.setBalanceEntry(brokerSnowBallPojo.getEntry() != null ? new BigDecimal(brokerSnowBallPojo.getEntry()) : null);
-				brokerDataSnowball.setBalanceExit(brokerSnowBallPojo.getExit() != null ? new BigDecimal(brokerSnowBallPojo.getExit()) : null);
-				brokerDataSnowball.setCompany(brokerSnowBallPojo.getCompany());
-				brokerDataSnowball.setMovementDescription(brokerSnowBallPojo.getMovementDescription());
-				brokerDataSnowball.setReference(brokerSnowBallPojo.getReference());
-				brokerDataSnowball.setStatus(brokerSnowBallPojo.getStatus());
-				brokerDataSnowball.setTotalIssues(brokerSnowBallPojo.getTotalIssues() != null ? Integer.parseInt(brokerSnowBallPojo.getTotalIssues()) : null);
-				brokerDataSnowball.setTypePayment(brokerSnowBallPojo.getTypePayment());
-				brokerDataSnowball.setDateTransaction(dateFormatUtil.formatDate(brokerSnowBallPojo.getDate() + " " + brokerSnowBallPojo.getHour(), "yyyy-MM-dd HH:mm:ss"));
-				brokerDataSnowball.setStatusMovement(true);
-				
-				brokerDataSnowballs.add(brokerDataSnowball);
-			}
+		for(BrokerSnowBallPojo brokerSnowBallPojo: snowBallPojos) {
 			
-			return brokerDataSnowballs;
+			BrokerDataSnowballEntity brokerDataSnowball = new BrokerDataSnowballEntity();
+			
+			brokerDataSnowball.setId(brokerSnowBallPojo.getDate().replace("-", "_") + "_" + brokerSnowBallPojo.getHour().replace(":", "_") + "_" + brokerSnowBallPojo.getPreviousBalance() + "_" + brokerSnowBallPojo.getActualBalance());
+			brokerDataSnowball.setActualBalance(brokerSnowBallPojo.getActualBalance() != null ? new BigDecimal(brokerSnowBallPojo.getActualBalance()) : null);
+			brokerDataSnowball.setPreviousBalance(brokerSnowBallPojo.getPreviousBalance() != null ? new BigDecimal(brokerSnowBallPojo.getPreviousBalance()) : null);
+			brokerDataSnowball.setBalanceEntry(brokerSnowBallPojo.getEntry() != null ? new BigDecimal(brokerSnowBallPojo.getEntry()) : null);
+			brokerDataSnowball.setBalanceExit(brokerSnowBallPojo.getExit() != null ? new BigDecimal(brokerSnowBallPojo.getExit()) : null);
+			brokerDataSnowball.setCompany(brokerSnowBallPojo.getCompany());
+			brokerDataSnowball.setMovementDescription(brokerSnowBallPojo.getMovementDescription());
+			brokerDataSnowball.setReference(brokerSnowBallPojo.getReference());
+			brokerDataSnowball.setStatus(brokerSnowBallPojo.getStatus());
+			brokerDataSnowball.setTotalIssues(brokerSnowBallPojo.getTotalIssues() != null ? Integer.parseInt(brokerSnowBallPojo.getTotalIssues()) : null);
+			brokerDataSnowball.setTypePayment(brokerSnowBallPojo.getTypePayment());
+			brokerDataSnowball.setDateTransaction(dateFormatUtil.formatLocalDateTime(brokerSnowBallPojo.getDate() + " " + brokerSnowBallPojo.getHour(), "yyyy-MM-dd HH:mm:ss"));
+			brokerDataSnowball.setStatusMovement(true);
+			
+			brokerDataSnowballs.add(brokerDataSnowball);
 		}
-		catch (ParseException pe) {
-			throw new BusinessException(CatalogsErrorMessage.getErrorMsgParsingDate(), pe);
-		}
+		
+		return brokerDataSnowballs;
 	}
 }
