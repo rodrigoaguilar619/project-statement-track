@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lib.base.backend.entity.generic.GenericCatalogIntEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,19 +22,13 @@ import lombok.Setter;
 @Getter @Setter
 @Entity
 @Table(name="catalog_broker")
-public class CatalogBrokerEntity implements Serializable {
+public class CatalogBrokerEntity extends GenericCatalogIntEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
 	@Column(name="id_type_currency")
 	private Integer idTypeCurrency;
 
 	private String acronym;
-
-	private String description;
 
 	@OneToMany(mappedBy="catalogBroker", fetch=FetchType.LAZY)
 	private List<BrokerAccountEntity> brokerAccounts = new ArrayList<>();

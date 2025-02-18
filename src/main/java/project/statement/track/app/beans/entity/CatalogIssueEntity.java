@@ -8,22 +8,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lib.base.backend.entity.generic.GenericCatalogIntEntity;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 @Entity
 @Table(name="catalog_issue")
-public class CatalogIssueEntity implements Serializable {
+public class CatalogIssueEntity extends GenericCatalogIntEntity implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
 	
 	private String initials;
-
-	private String description;
 	
 	@Column(name="description_snowball")
 	private String descriptionSnowball;
