@@ -17,12 +17,5 @@ public abstract class BrokerAccountEntity_ {
 	public static volatile SingularAttribute<BrokerAccountEntity, LocalDateTime> dateCreation;
 	public static volatile SingularAttribute<BrokerAccountEntity, CatalogBrokerEntity> catalogBroker;
 
-	public static final String DESCRIPTION = "description";
-	public static final String ID = "id";
-	public static final String ID_BROKER = "idBroker";
-	public static final String CUT_DAY = "cutDay";
-	public static final String DATE_CREATION = "dateCreation";
-	public static final String CATALOG_BROKER = "catalogBroker";
-
 }
 

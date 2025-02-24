@@ -11,8 +11,5 @@ public abstract class CatalogTypeMovementEntity_ {
 	public static volatile SingularAttribute<CatalogTypeMovementEntity, String> description;
 	public static volatile SingularAttribute<CatalogTypeMovementEntity, Integer> id;
 
-	public static final String DESCRIPTION = "description";
-	public static final String ID = "id";
-
 }
 

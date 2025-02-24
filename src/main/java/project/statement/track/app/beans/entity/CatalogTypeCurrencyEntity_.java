@@ -13,9 +13,5 @@ public abstract class CatalogTypeCurrencyEntity_ {
 	public static volatile SingularAttribute<CatalogTypeCurrencyEntity, String> description;
 	public static volatile SingularAttribute<CatalogTypeCurrencyEntity, Integer> id;
 
-	public static final String CATALOG_BROKERS = "catalogBrokers";
-	public static final String DESCRIPTION = "description";
-	public static final String ID = "id";
-
 }
 

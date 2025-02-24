@@ -51,6 +51,7 @@ public class BuildPojoToEntityUtil {
 		catalogIssue.setInitials(catalogIssuePojo.getInitials());
 		catalogIssue.setDescription(catalogIssuePojo.getDescription());
 		catalogIssue.setDescriptionSnowball(catalogIssuePojo.getDescriptionCustom());
+		catalogIssue.setIsActive(true);
 		
 		return catalogIssue;
 	}
