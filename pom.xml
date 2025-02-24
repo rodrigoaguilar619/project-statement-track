@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>project.statement.track</groupId>
 	<artifactId>project-statement-track</artifactId>
-	<version>3.0.0</version>
+	<version>4.0.0</version>
 	<packaging>${prop.packaging.type}</packaging>
 	<name>project-statement-track</name>
 	<description>Statement track project</description>
