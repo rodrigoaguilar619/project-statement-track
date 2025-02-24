@@ -11,8 +11,5 @@ public abstract class CatalogTypeTransactionEntity_ {
 	public static volatile SingularAttribute<CatalogTypeTransactionEntity, String> description;
 	public static volatile SingularAttribute<CatalogTypeTransactionEntity, Integer> id;
 
-	public static final String DESCRIPTION = "description";
-	public static final String ID = "id";
-
 }
 

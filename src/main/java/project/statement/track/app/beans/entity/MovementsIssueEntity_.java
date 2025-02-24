@@ -23,17 +23,5 @@ public abstract class MovementsIssueEntity_ {
 	public static volatile SingularAttribute<MovementsIssueEntity, CatalogIssueEntity> catalogIssue;
 	public static volatile SingularAttribute<MovementsIssueEntity, CatalogTypeMovementEntity> catalogTypeMovement;
 
-	public static final String ID_TYPE_MOVEMENT = "idTypeMovement";
-	public static final String PRICE_ISSUE_UNITY = "priceIssueUnity";
-	public static final String PRICE_TOTAL = "priceTotal";
-	public static final String ID_ISSUE = "idIssue";
-	public static final String ID = "id";
-	public static final String ID_BROKER_ACCOUNT = "idBrokerAccount";
-	public static final String DATE_TRANSACTION = "dateTransaction";
-	public static final String QUANTITY_ISSUES = "quantityIssues";
-	public static final String COMISION_TOTAL = "comisionTotal";
-	public static final String CATALOG_ISSUE = "catalogIssue";
-	public static final String CATALOG_TYPE_MOVEMENT = "catalogTypeMovement";
-
 }
 

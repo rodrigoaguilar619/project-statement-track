@@ -22,16 +22,5 @@ public abstract class MovementsMoneyEntity_ {
 	public static volatile SingularAttribute<MovementsMoneyEntity, CatalogTypeTransactionEntity> catalogTypeTransaction;
 	public static volatile SingularAttribute<MovementsMoneyEntity, BrokerAccountEntity> brokerAccount;
 
-	public static final String AMOUNT = "amount";
-	public static final String ID_TYPE_TRANSACTION = "idTypeTransaction";
-	public static final String AMOUNT_MXN = "amountMxn";
-	public static final String ID = "id";
-	public static final String ID_BROKER_ACCOUNT = "idBrokerAccount";
-	public static final String DATE_TRANSACTION = "dateTransaction";
-	public static final String ID_ISSUE = "idIssue";
-	public static final String CATALOG_ISSUE = "catalogIssue";
-	public static final String CATALOG_TYPE_TRANSACTION = "catalogTypeTransaction";
-	public static final String BROKER_ACCOUNT = "brokerAccount";
-
 }
 

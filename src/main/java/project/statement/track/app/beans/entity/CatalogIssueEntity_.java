@@ -13,10 +13,5 @@ public abstract class CatalogIssueEntity_ {
 	public static volatile SingularAttribute<CatalogIssueEntity, String> id;
 	public static volatile SingularAttribute<CatalogIssueEntity, String> initials;
 
-	public static final String DESCRIPTION = "description";
-	public static final String DESCRIPTION_SNOWBALL = "description_snowball";
-	public static final String ID = "id";
-	public static final String INITIALS = "initials";
-
 }
 
