@@ -22,7 +22,7 @@ import project.statement.track.app.beans.entity.CatalogIssueEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.entity.MovementsMoneyEntity_;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 
 @RequiredArgsConstructor
 @Repository
@@ -123,7 +123,7 @@ public class MovementsMoneyRepository {
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idBrokerAccount), idBrokerAccount));
 		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idIssue), idIssue));
-		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idTypeTransaction), CatalogsEntity.CatalogTypeTransaction.DIVIDEND));
+		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idTypeTransaction), CatalogTypeTransactionEnum.DIVIDEND.getValue()));
 		
 		cq.where( predicatesAnd.toArray(new Predicate[0]) );
 		
@@ -157,7 +157,7 @@ public class MovementsMoneyRepository {
 		
 		List<Predicate> predicatesAnd = new ArrayList<>();
 		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idBrokerAccount), idBrokerAccount));
-		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idTypeTransaction), CatalogsEntity.CatalogTypeTransaction.DIVIDEND));
+		predicatesAnd.add(cb.equal(root.get(MovementsMoneyEntity_.idTypeTransaction), CatalogTypeTransactionEnum.DIVIDEND.getValue()));
 		
 		buildMovementsMoneyFiltersDates(filters, root, cb, predicatesAnd);
 		

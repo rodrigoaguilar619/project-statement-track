@@ -20,7 +20,7 @@ import project.statement.track.app.beans.pojos.petition.data.GetAccountResumeDat
 import project.statement.track.app.beans.pojos.petition.request.GetAccountResumeRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueDividendsPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
 
@@ -35,7 +35,7 @@ public class AccountResumeBusiness extends MainBusiness {
 	
 	private List<MovementMoneyResumePojo> getMovementsMoneyResume(Integer idBrokerAccount, Map<String, String> filters) {
 		
-		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogsEntity.CatalogTypeTransaction.DEPOSIT, CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
+		List<Integer> idsTypeTransactionList = Arrays.asList(CatalogTypeTransactionEnum.DEPOSIT.getValue(), CatalogTypeTransactionEnum.WITHDRAW.getValue());
 		List<MovementMoneyResumePojo> movementMoneyResumePojos = new ArrayList<>();
 		
 		List<MovementsMoneyEntity> movementsMoneys = movementsMoneyRepository.getMovementsMoney(idBrokerAccount, idsTypeTransactionList, filters);
@@ -68,9 +68,9 @@ public class AccountResumeBusiness extends MainBusiness {
 		Integer currentYear = currentDate.getYear();
 		Integer currentMonth = currentDate.getMonthValue();
 		
-		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DEPOSIT, requestPojo.getFilters());
-		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.WITHDRAW, requestPojo.getFilters());
-		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogsEntity.CatalogTypeTransaction.DIVIDEND, requestPojo.getFilters());
+		BigDecimal totalDeposits = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DEPOSIT.getValue(), requestPojo.getFilters());
+		BigDecimal totalWithdraws = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.WITHDRAW.getValue(), requestPojo.getFilters());
+		BigDecimal totalDividends = movementsMoneyRepository.getMovementsMoneyTotals(requestPojo.getIdBrokerAccount(), CatalogTypeTransactionEnum.DIVIDEND.getValue(), requestPojo.getFilters());
 		BigDecimal currentBalance = accountHelper.getTotalPreviousPeriod(brokerAccount, currentYear, currentMonth);
 		
 		GetAccountResumeDataPojo responsePojo = new GetAccountResumeDataPojo();

@@ -12,7 +12,7 @@ import lib.base.backend.test.assessment.Assessment;
 import project.statement.track.ProjectIntegrationTest;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountResumeDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountResumeRequestPojo;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
 
 @SuppressWarnings("unchecked")
 class AccountResumeControllerTest extends ProjectIntegrationTest {
@@ -24,7 +24,7 @@ class AccountResumeControllerTest extends ProjectIntegrationTest {
 	void testGetAccountResume() throws BusinessException {
 		
 		GetAccountResumeRequestPojo requestPojo = new GetAccountResumeRequestPojo();
-		requestPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		requestPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		
 		ResponseEntity<GenericResponsePojo<GetAccountResumeDataPojo>> response = accountResumeController.getAccountResume(requestPojo);
 		

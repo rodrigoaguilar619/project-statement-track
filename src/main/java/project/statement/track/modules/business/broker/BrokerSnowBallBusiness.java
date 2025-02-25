@@ -24,8 +24,10 @@ import project.statement.track.app.beans.pojos.entity.MovementMoneyPojo;
 import project.statement.track.app.repository.BrokerDataSnowBallRepository;
 import project.statement.track.app.repository.CatalogsRepository;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
+import project.statement.track.app.vo.entities.CatalogTypeMovementEnum;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 import project.statement.track.modules.business.MainBusiness;
 
 @RequiredArgsConstructor
@@ -119,8 +121,8 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
-		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
-		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.DEPOSIT);
+		movementMoneyPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
+		movementMoneyPojo.setIdTypeTransaction(CatalogTypeTransactionEnum.DEPOSIT.getValue());
 		
 		return movementMoneyPojo;
 	}
@@ -131,8 +133,8 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceExit());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceExit());
 		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
-		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
-		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.WITHDRAW);
+		movementMoneyPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
+		movementMoneyPojo.setIdTypeTransaction(CatalogTypeTransactionEnum.WITHDRAW.getValue());
 		
 		return movementMoneyPojo;
 	}
@@ -141,9 +143,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		MovementIssuePojo movementIssuePojo = new MovementIssuePojo();
 		movementIssuePojo.setDateTransaction(brokerDataSnowball.getDateTransaction());
-		movementIssuePojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		movementIssuePojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		movementIssuePojo.setIdIssue(getIssueId(brokerDataSnowball.getCompany()));
-		movementIssuePojo.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY);
+		movementIssuePojo.setIdTypeMovement(CatalogTypeMovementEnum.BUY.getValue());
 		movementIssuePojo.setQuantityIssues(brokerDataSnowball.getTotalIssues());
 		movementIssuePojo.setPriceTotal(brokerDataSnowball.getBalanceExit());
 		movementIssuePojo.setPriceIssueUnity(brokerDataSnowball.getBalanceExit().divide(new BigDecimal(brokerDataSnowball.getTotalIssues()), 2, RoundingMode.HALF_UP));
@@ -157,8 +159,8 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		movementMoneyPojo.setAmount(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setAmountMxn(brokerDataSnowball.getBalanceEntry());
 		movementMoneyPojo.setDateTransactionMillis(dateUtil.getMillis(brokerDataSnowball.getDateTransaction()));
-		movementMoneyPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
-		movementMoneyPojo.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.DIVIDEND);
+		movementMoneyPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
+		movementMoneyPojo.setIdTypeTransaction(CatalogTypeTransactionEnum.DIVIDEND.getValue());
 		movementMoneyPojo.setIdIssue(catalogIssue.getId());
 		
 		return movementMoneyPojo;
@@ -168,9 +170,9 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 		
 		MovementIssuePojo movementIssuePojo = new MovementIssuePojo();
 		movementIssuePojo.setDateTransaction(brokerDataSnowball.getDateTransaction());
-		movementIssuePojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		movementIssuePojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		movementIssuePojo.setIdIssue(getIssueId(brokerDataSnowball.getCompany()));
-		movementIssuePojo.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		movementIssuePojo.setIdTypeMovement(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue());
 		movementIssuePojo.setQuantityIssues(brokerDataSnowball.getTotalIssues());
 		movementIssuePojo.setPriceTotal(brokerDataSnowball.getBalanceExit());
 		movementIssuePojo.setPriceIssueUnity(brokerDataSnowball.getBalanceExit().divide(new BigDecimal(brokerDataSnowball.getTotalIssues()), 2, RoundingMode.HALF_UP));
@@ -216,7 +218,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	private void handleInvestmentCompromiseCommission(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY);
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY.getValue());
 		
 		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
 		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
@@ -229,7 +231,7 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	private void handleInvestmentSecondMarketCommission(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByQuantityIssues(brokerDataSnowball.getTotalIssues(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue());
 		
 		movementsIssue.setPriceTotal(movementsIssue.getPriceTotal().add(brokerDataSnowball.getBalanceExit()));
 		movementsIssue.setComisionTotal(brokerDataSnowball.getBalanceExit());
@@ -259,12 +261,12 @@ public class BrokerSnowBallBusiness extends MainBusiness {
 	private void handlePaymentReturn(BrokerDataSnowballEntity brokerDataSnowball) throws BusinessException {
 		
 		CatalogIssueEntity catalogIssue = getCatalogIssue(brokerDataSnowball.getCompany());
-		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		MovementsIssueEntity movementsIssue = movementsIssueRepository.getMovementsIssueByPriceTotal(brokerDataSnowball.getBalanceEntry(), catalogIssue.getId(), CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue());
 		
 		if (movementsIssue == null)
 			throw new BusinessException(CatalogsErrorMessage.getErrorMsgIssueRedeemNotFound(brokerDataSnowball.getCompany(), brokerDataSnowball.getBalanceEntry()));
 		
-		movementsIssue.setIdTypeMovement(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED);
+		movementsIssue.setIdTypeMovement(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY_CANCELLED.getValue());
 		genericPersistance.update(movementsIssue);
 		
 		updateSnowBallTrack(brokerDataSnowball, jpaUtil.getTableName(MovementsIssueEntity.class), movementsIssue.getId());
