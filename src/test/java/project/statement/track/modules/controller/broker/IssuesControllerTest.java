@@ -9,7 +9,7 @@ import lib.base.backend.test.assessment.Assessment;
 import project.statement.track.ProjectIntegrationTest;
 import project.statement.track.app.beans.pojos.petition.data.GetIssuesBuyDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetIssuesBuyRequestPojo;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
 
 @SuppressWarnings("unchecked")
 class IssuesControllerTest extends ProjectIntegrationTest {
@@ -21,7 +21,7 @@ class IssuesControllerTest extends ProjectIntegrationTest {
 	void testGetIssuesBuy() {
 		
 		GetIssuesBuyRequestPojo requestPojo = new GetIssuesBuyRequestPojo();
-		requestPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		requestPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 
 		ResponseEntity<GenericResponsePojo<GetIssuesBuyDataPojo>> response = issuesController.getIssuesBuy(requestPojo);
 		

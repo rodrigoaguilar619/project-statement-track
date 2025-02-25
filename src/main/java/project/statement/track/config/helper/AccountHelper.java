@@ -11,8 +11,9 @@ import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.entity.BrokerAccountEntity;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
+import project.statement.track.app.vo.entities.CatalogTypeMovementEnum;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 
 @RequiredArgsConstructor
 @Component
@@ -51,12 +52,12 @@ public class AccountHelper {
 		BigDecimal movementsIssueBuyMarketSecundaryTotal;
 		BigDecimal movementsIssueSellTotal;
 		
-		movementsMoneyDepositsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeTransaction.DEPOSIT, year, month);
-		movementsMoneyDividendTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeTransaction.DIVIDEND, year, month);
-		movementsMoneyWithDrawsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeTransaction.WITHDRAW, year, month);
-		movementsIssueBuyTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeMovement.BUY, year, month);
-		movementsIssueBuyMarketSecundaryTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY, year, month);
-		movementsIssueSellTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogsEntity.CatalogTypeMovement.SELL, year, month);
+		movementsMoneyDepositsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.DEPOSIT.getValue(), year, month);
+		movementsMoneyDividendTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.DIVIDEND.getValue(), year, month);
+		movementsMoneyWithDrawsTotal = getMovementMoneyPreviousTotal(brokerAccount, CatalogTypeTransactionEnum.WITHDRAW.getValue(), year, month);
+		movementsIssueBuyTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.BUY.getValue(), year, month);
+		movementsIssueBuyMarketSecundaryTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue(), year, month);
+		movementsIssueSellTotal = getMovementIssuePreviousTotal(brokerAccount, CatalogTypeMovementEnum.SELL.getValue(), year, month);
 		
 		return movementsMoneyDepositsTotal.add(movementsIssueSellTotal).add(movementsMoneyDividendTotal).subtract(movementsMoneyWithDrawsTotal).subtract(movementsIssueBuyTotal).subtract(movementsIssueBuyMarketSecundaryTotal).setScale(2, RoundingMode.HALF_UP);
 	}

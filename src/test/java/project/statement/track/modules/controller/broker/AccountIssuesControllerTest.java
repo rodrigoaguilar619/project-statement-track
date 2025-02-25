@@ -9,7 +9,7 @@ import lib.base.backend.test.assessment.Assessment;
 import project.statement.track.ProjectIntegrationTest;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
 
 class AccountIssuesControllerTest extends ProjectIntegrationTest {
 
@@ -22,7 +22,7 @@ class AccountIssuesControllerTest extends ProjectIntegrationTest {
 		
 		GetAccountDividendsRequestPojo requestPojo = new GetAccountDividendsRequestPojo();
 		requestPojo.setIdIssue(1);
-		requestPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		requestPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		
 		ResponseEntity<GenericResponsePojo<GetAccountDividendsDataPojo>> response = accountIssuesController.getMovementsDividend(requestPojo);
 		

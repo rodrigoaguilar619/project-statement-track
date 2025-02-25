@@ -11,7 +11,7 @@ import project.statement.track.app.beans.pojos.petition.data.GetBADateStatements
 import project.statement.track.app.beans.pojos.petition.data.GetBrokerAccountsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetBADateStatementsRequestPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetBrokerAccountsRequestPojo;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
 
 @SuppressWarnings("unchecked")
 class BrokerAccountControllerTest extends ProjectIntegrationTest {
@@ -35,7 +35,7 @@ class BrokerAccountControllerTest extends ProjectIntegrationTest {
 	void testGetDateStatements() {
 		
 		GetBADateStatementsRequestPojo requestPojo = new GetBADateStatementsRequestPojo();
-		requestPojo.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		requestPojo.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		
 		ResponseEntity<GenericResponsePojo<GetBADateStatementsDataPojo>> response = brokerAccountController.getDateStatements(requestPojo);
 		

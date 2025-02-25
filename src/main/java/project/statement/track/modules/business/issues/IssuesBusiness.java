@@ -11,7 +11,7 @@ import project.statement.track.app.beans.pojos.petition.data.GetIssuesBuyDataPoj
 import project.statement.track.app.beans.pojos.petition.request.GetIssuesBuyRequestPojo;
 import project.statement.track.app.beans.pojos.tuple.IssueTotalsPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogTypeMovementEnum;
 import project.statement.track.modules.business.MainBusiness;
 
 @RequiredArgsConstructor
@@ -25,8 +25,8 @@ public class IssuesBusiness extends MainBusiness {
 		
 		//TODO: add minus for sell issues
 		List<Integer> idTypeMovementList = new ArrayList<>();
-		idTypeMovementList.add(CatalogsEntity.CatalogTypeMovement.BUY);
-		idTypeMovementList.add(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY);
+		idTypeMovementList.add(CatalogTypeMovementEnum.BUY.getValue());
+		idTypeMovementList.add(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue());
 		
 		List<IssueTotalsPojo> issueTotalsPojos = movementsIssueRepository.getIssuesTotals(requestPojo.getIdBrokerAccount(), idTypeMovementList);
 		

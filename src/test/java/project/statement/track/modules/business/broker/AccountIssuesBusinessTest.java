@@ -21,7 +21,8 @@ import project.statement.track.app.beans.entity.MovementsMoneyEntity;
 import project.statement.track.app.beans.pojos.petition.data.GetAccountDividendsDataPojo;
 import project.statement.track.app.beans.pojos.petition.request.GetAccountDividendsRequestPojo;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
+import project.statement.track.app.vo.entities.CatalogBrokerAccountEnum;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 
 class AccountIssuesBusinessTest extends ProjectUnitTest {
 
@@ -41,7 +42,7 @@ class AccountIssuesBusinessTest extends ProjectUnitTest {
 		
 		GetAccountDividendsRequestPojo requestDto = new GetAccountDividendsRequestPojo();
 		requestDto.setIdIssue(1);
-		requestDto.setIdBrokerAccount(CatalogsEntity.CatalogBrokerAccount.SNOWBALL_MAIN);
+		requestDto.setIdBrokerAccount(CatalogBrokerAccountEnum.SNOWBALL_MAIN.getValue());
 		
 		CatalogIssueEntity catalogIssue = new CatalogIssueEntity();
 		catalogIssue.setId(1);
@@ -61,7 +62,7 @@ class AccountIssuesBusinessTest extends ProjectUnitTest {
 		movementsMoney1.setId(1);
 		movementsMoney1.setIdBrokerAccount(requestDto.getIdBrokerAccount());
 		movementsMoney1.setIdIssue(requestDto.getIdIssue());
-		movementsMoney1.setIdTypeTransaction(CatalogsEntity.CatalogTypeTransaction.DEPOSIT);
+		movementsMoney1.setIdTypeTransaction(CatalogTypeTransactionEnum.DEPOSIT.getValue());
 		movementsMoney1.setCatalogIssue(catalogIssue);
 		movementsMoney1.setCatalogTypeTransaction(catalogTypeTransaction);
 		movementsMoney1.setBrokerAccount(brokerAccount);

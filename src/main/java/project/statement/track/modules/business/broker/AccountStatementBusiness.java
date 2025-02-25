@@ -19,8 +19,9 @@ import project.statement.track.app.beans.pojos.petition.data.AccountStatementDat
 import project.statement.track.app.beans.pojos.petition.request.AccountStatementRequestPojo;
 import project.statement.track.app.repository.MovementsIssueRepository;
 import project.statement.track.app.repository.MovementsMoneyRepository;
-import project.statement.track.app.vo.catalogs.CatalogsEntity;
 import project.statement.track.app.vo.catalogs.CatalogsErrorMessage;
+import project.statement.track.app.vo.entities.CatalogTypeMovementEnum;
+import project.statement.track.app.vo.entities.CatalogTypeTransactionEnum;
 import project.statement.track.app.vo.enums.DefinitionTypeOperationEnum;
 import project.statement.track.config.helper.AccountHelper;
 import project.statement.track.modules.business.MainBusiness;
@@ -72,7 +73,7 @@ public class AccountStatementBusiness extends MainBusiness {
 			
 			String typeOperationDescription = movementsMoney.getCatalogTypeTransaction().getDescription();
 			
-			if (movementsMoney.getIdTypeTransaction() == CatalogsEntity.CatalogTypeTransaction.DIVIDEND)
+			if (movementsMoney.getIdTypeTransaction() == CatalogTypeTransactionEnum.DIVIDEND.getValue())
 				typeOperationDescription += " / " + ((movementsMoney.getCatalogIssue() != null) ? movementsMoney.getCatalogIssue().getInitials() : "");
 			
 			operationstatementDataPojo.setDate(dateUtil.getMillis(movementsMoney.getDateTransaction()));
@@ -95,7 +96,7 @@ public class AccountStatementBusiness extends MainBusiness {
 		
 		for(MovementsIssueEntity movementsIssue: movementsIssues) {
 			
-			if (movementsIssue.getCatalogTypeMovement().getId() == CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY_CANCELLED) {
+			if (movementsIssue.getCatalogTypeMovement().getId() == CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY_CANCELLED.getValue()) {
 				continue;
 			}
 			
@@ -116,14 +117,14 @@ public class AccountStatementBusiness extends MainBusiness {
 	
 	private OperationStatementDataPojo getPeriodOperationMovement(OperationStatementDataPojo operationStatementDataPojo, BigDecimal currentBalance) throws BusinessException {
 		
-		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeTransaction.DEPOSIT) ||
-				operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeTransaction.DIVIDEND) ) {
+		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.DEPOSIT.getValue()) ||
+				operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.DIVIDEND.getValue()) ) {
 				
 				currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
 				operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
 				operationStatementDataPojo.setBalance(currentBalance);
 			}
-			else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeTransaction.WITHDRAW)) {
+			else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeTransactionEnum.WITHDRAW.getValue())) {
 				
 				currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
 				operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
@@ -137,14 +138,14 @@ public class AccountStatementBusiness extends MainBusiness {
 	
 	private OperationStatementDataPojo getPeriodOperationIssue(OperationStatementDataPojo operationStatementDataPojo, BigDecimal currentBalance) throws BusinessException {
 		
-		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeMovement.BUY) ||
-			operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeMovement.BUY_MARKET_SECUNDARY)) {
+		if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.BUY.getValue()) ||
+			operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.BUY_MARKET_SECUNDARY.getValue())) {
 			
 			currentBalance = currentBalance.subtract(operationStatementDataPojo.getAmount());
 			operationStatementDataPojo.setCharge(operationStatementDataPojo.getAmount().multiply(new BigDecimal(-1)));
 			operationStatementDataPojo.setBalance(currentBalance);
 		}
-		else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogsEntity.CatalogTypeMovement.SELL)) {
+		else if (operationStatementDataPojo.getTypeOperationId().equals(CatalogTypeMovementEnum.SELL.getValue())) {
 			
 			currentBalance = currentBalance.add(operationStatementDataPojo.getAmount());
 			operationStatementDataPojo.setIncome(operationStatementDataPojo.getAmount());
