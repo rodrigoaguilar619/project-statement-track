@@ -22,7 +22,7 @@
 		<jar.name>${server.servlet.context-path}</jar.name>
 		<prop.main.class>project.statement.track.config.starter.AppStatementTrack</prop.main.class>
 		<test.skip>true</test.skip>
-		<custom.base.version>4.0.0</custom.base.version>
+		<custom.base.version>5.0.0</custom.base.version>
 	</properties>
 
 	<dependencies>

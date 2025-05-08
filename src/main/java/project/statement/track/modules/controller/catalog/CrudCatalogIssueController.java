@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import lib.base.backend.enumerators.CrudOptionsEnum;
 import lib.base.backend.exception.data.BusinessException;
 import lib.base.backend.pojo.catalog.CatalogDataPojo;
 import lib.base.backend.pojo.catalog.CatalogRequestPojo;
 import lib.base.backend.utils.RestUtil;
+import lib.base.backend.vo.CrudOptionsEnum;
 import lombok.RequiredArgsConstructor;
 import project.statement.track.app.beans.pojos.petition.data.GenericCatalogDataPojo;
 import project.statement.track.app.beans.pojos.petition.data.GetCatalogIssueDataPojo;
