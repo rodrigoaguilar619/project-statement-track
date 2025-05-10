@@ -17,4 +17,7 @@ public class CatalogsUri {
 	public static final String API_ADMIN_CUSTOM_CATALOG_ISSUE_DELETE = "/api/admin/customCatalog/catalogIssue/deleteCatalogIssue";
 	public static final String API_STATEMENT_READ_FILE_BASE64 = "/api/readStatement/readStatementSnowBallFileBase64";
 	public static final String API_STATEMENT_READ_FILE_BYTES = "/api/readStatement/readStatementSnowBall";
+	
+	public static final String API_AFORE_PERIODS_RESUME_LIST_GET = "/api/afore/getAforePeriodsResume";
+	public static final String API_AFORE_PERIOD_DATA_GET = "/api/afore/getAforePeriodData";
 }
