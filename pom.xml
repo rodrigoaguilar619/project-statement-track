@@ -22,7 +22,7 @@
 		<jar.name>${server.servlet.context-path}</jar.name>
 		<prop.main.class>project.statement.track.config.starter.AppStatementTrack</prop.main.class>
 		<test.skip>true</test.skip>
-		<custom.base.version>4.0.0</custom.base.version>
+		<custom.base.version>5.0.0</custom.base.version>
 	</properties>
 
 	<dependencies>
@@ -38,6 +38,11 @@
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
 			<version>2.36.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
