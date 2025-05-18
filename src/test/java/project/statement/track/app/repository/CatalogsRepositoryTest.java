@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import project.statement.track.ProjectJpaTest;
+import project.statement.track.ProjectIntegrationTest;
 import project.statement.track.app.beans.entity.CatalogIssueEntity;
 
-class CatalogsRepositoryTest extends ProjectJpaTest {
+class CatalogsRepositoryTest extends ProjectIntegrationTest {
 	
 	@Autowired
 	CatalogsRepository catalogsRepository;
