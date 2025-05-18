@@ -14,4 +14,5 @@ CREATE TABLE `user_rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `catalog_rol` VALUES (1,'Admin',1),(2,'Demo',1);
+INSERT INTO `user_data` VALUES (1,'0yMz2to1RjfWL/KiTAokfiIRAxLnUMd/yO4oNTAa817btuCWp8y6SFU6s7AmwJz4B7Z/NFpKXJVprBSWTTEa1w==','ADMIN',1);
 INSERT INTO `user_rol` VALUES (1,1);
